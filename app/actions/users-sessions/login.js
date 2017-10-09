@@ -5,7 +5,7 @@ import fetchAllMeals from '../meals/fetchAllMeals'
 
 export default function login(userInfo) {
 	return (dispatch) => {
-		const apiUrl = `http://192.168.1.11:8000/api/v1/login`
+		const apiUrl = `https://ana-api.herokuapp.com/api/v1/login`
 		const requestData = {
 			method: 'POST', 
 	    headers: {

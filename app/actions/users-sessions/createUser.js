@@ -2,7 +2,7 @@ import { AsyncStorage } from 'react-native'
 
 export default function createUser(userInfo) {
 	return (dispatch) => {
-		const apiUrl = `http://192.168.1.11:8000/api/v1/users`
+		const apiUrl = `https://ana-api.herokuapp.com/api/v1/users`
 		const requestData = {
 			method: 'POST', 
 	    headers: {

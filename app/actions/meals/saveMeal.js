@@ -3,7 +3,7 @@ import Meal from '../../models/meal'
 import addMeal from './addMeal'
 
 export default function saveMeal(meal) {
-const apiUrl = `http://192.168.1.11:8000/api/v1/meals/${meal._id}`
+const apiUrl = `https://ana-api.herokuapp.com/api/v1/meals/${meal._id}`
 	return async (dispatch) => {
 
 		const token = await AsyncStorage.getItem('token')

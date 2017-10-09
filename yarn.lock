@@ -882,7 +882,7 @@ balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
 
-base-64@0.1.0, base-64@^0.1.0:
+base-64@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/base-64/-/base-64-0.1.0.tgz#780a99c84e7d600260361511c4877613bf24f6bb"
 
@@ -3661,9 +3661,9 @@ react-native-drawer-menu@^0.2.4:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/react-native-drawer-menu/-/react-native-drawer-menu-0.2.4.tgz#cfcac7743c106c4852b9a7b827758635e311449e"
 
-"react-native-drawer@git+https://github.com/GeekyAnts/react-native-drawer.git":
+"react-native-drawer@https://github.com/GeekyAnts/react-native-drawer":
   version "2.3.0"
-  resolved "git+https://github.com/GeekyAnts/react-native-drawer.git#8d9078516d177c9cb02d2579a6860706d2370d25"
+  resolved "https://github.com/GeekyAnts/react-native-drawer#8d9078516d177c9cb02d2579a6860706d2370d25"
   dependencies:
     prop-types "^15.5.8"
     tween-functions "^1.0.1"
@@ -3681,26 +3681,9 @@ react-native-fetch-blob@^0.10.8:
     base-64 "0.1.0"
     glob "7.0.6"
 
-react-native-flip-card@^3.5.1:
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/react-native-flip-card/-/react-native-flip-card-3.5.1.tgz#ef6ec7f420a4b9498d5a68441555776f4a09e28f"
-  dependencies:
-    prop-types "^15.5.10"
-
-react-native-fs@^2.5.1:
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.5.2.tgz#66022e6ca45daf9eea2d12e783f9db2669fb9202"
-  dependencies:
-    base-64 "^0.1.0"
-    utf8 "^2.1.1"
-
-react-native-image-to-base64@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-image-to-base64/-/react-native-image-to-base64-0.1.0.tgz#195fd8ab0348dd72d1fa8a45778ef0cac835ba5b"
-
-"react-native-keyboard-aware-scroll-view@git+https://github.com/GeekyAnts/react-native-keyboard-aware-scroll-view.git":
+"react-native-keyboard-aware-scroll-view@https://github.com/GeekyAnts/react-native-keyboard-aware-scroll-view":
   version "0.2.9"
-  resolved "git+https://github.com/GeekyAnts/react-native-keyboard-aware-scroll-view.git#f4805f254d6cc8e3329f5fb224944401f66655db"
+  resolved "https://github.com/GeekyAnts/react-native-keyboard-aware-scroll-view#f4805f254d6cc8e3329f5fb224944401f66655db"
   dependencies:
     create-react-class "^15.6.0"
     prop-types "^15.5.10"
@@ -3759,20 +3742,6 @@ react-native-multistep-wizard@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/react-native-multistep-wizard/-/react-native-multistep-wizard-0.0.1.tgz#a691845bc0c42dcba09bd1759d2b057340fed526"
 
-react-native-popover-tooltip@^1.0.6:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-popover-tooltip/-/react-native-popover-tooltip-1.1.1.tgz#fd69d7d9b2a8fc4d24687829596f23a97e5f5385"
-
-react-native-popover@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-popover/-/react-native-popover-0.2.0.tgz#bf66a4ce5d0583ff331edb00890380f4a1171f6f"
-  dependencies:
-    react-tween-state "0.0.5"
-
-react-native-popup-menu@^0.8.3:
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/react-native-popup-menu/-/react-native-popup-menu-0.8.3.tgz#1dbb0b4f889c9410b69b228a89d57b56aea5cc2e"
-
 react-native-progress@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-3.4.0.tgz#c002e6efb2f0b82dd6889510e669c492da2718ac"
@@ -3802,10 +3771,6 @@ react-native-tab-view@^0.0.69:
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.69.tgz#f52d4354a98a382f10eb5fcf61db5216c91dc7e7"
   dependencies:
     prop-types "^15.5.8"
-
-react-native-table-component@^1.0.6:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-table-component/-/react-native-table-component-1.1.0.tgz#68910a8272086c8431825ac63f94c45e1b0732ca"
 
 react-native-textinput-effects@^0.4.0:
   version "0.4.1"
@@ -3962,12 +3927,6 @@ react-transform-hmr@^1.0.4:
   dependencies:
     global "^4.3.0"
     react-proxy "^1.1.7"
-
-react-tween-state@0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/react-tween-state/-/react-tween-state-0.0.5.tgz#bd25c27f2558b839a6c7aee3b85fab967760d1d2"
-  dependencies:
-    tween-functions "^1.0.1"
 
 react-tween-state@^0.1.5:
   version "0.1.5"
@@ -4745,10 +4704,6 @@ ultron@~1.1.0:
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/unpipe/-/unpipe-1.0.0.tgz#b2bf4ee8514aae6165b4817829d21b2ef49904ec"
-
-utf8@^2.1.1:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/utf8/-/utf8-2.1.2.tgz#1fa0d9270e9be850d9b05027f63519bf46457d96"
 
 util-deprecate@1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"

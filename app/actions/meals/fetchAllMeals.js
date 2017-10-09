@@ -6,7 +6,7 @@ import { AsyncStorage } from 'react-native'
 export default function fetchAllMeals() {
 
 	return async (dispatch) => {
-		const apiUrl = `http://192.168.1.11:8000/api/v1/meals/`
+		const apiUrl = `https://ana-api.herokuapp.com/api/v1/meals/`
 		const token = await AsyncStorage.getItem('token')
 		const requestData = {
 			method: 'GET',
