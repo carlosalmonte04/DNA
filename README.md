@@ -22,7 +22,7 @@ To run the project you will need the following:
 Assuming you have what is needed:
 - download and `cd` into this repo
 - run `npm install`
-- run `react-native run-ios` or `react-native run-ios` depending on your preference
+- run `react-native run-ios` or `react-native run-android` depending on your preference
 
 Feel free to reach out with any questions.
 
