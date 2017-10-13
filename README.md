@@ -10,6 +10,8 @@ Project as-is, not intended nor ready for actual daily use. Project intended to 
   * First Mobile Application.
 
 - TODO
+  * Support for Android.
+  * Implement feedback gathered from Reddit. -> Change colors, enhance UX/UI ('see options' and 'change portion size' features).
   * Refactoring O(n2) of creating `Food` for each `food` in picture.
   * Changes in options for each food should reflect changes in macronutrients.
 
