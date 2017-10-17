@@ -11,9 +11,14 @@ Project as-is, not intended nor ready for actual daily use. Project intended to 
 
 - TODO
   * Support for Android.
-  * Implement feedback gathered from Reddit. -> Change colors, enhance UX/UI ('see options' and 'change portion size' features).
+  * Implement feedback gathered. -> Change colors, enhance UX/UI ('see options' and 'change portion size' features).
+  * Allowing existing pictures upload.
+  * Login/Signup after trying to persist data.
   * Refactoring O(n2) of creating `Food` for each `food` in picture.
   * Changes in options for each food should reflect changes in macronutrients.
+  
+- Icebox
+  * Implement clinical features.
 
 ## Getting started
 To run the project you will need the following:
