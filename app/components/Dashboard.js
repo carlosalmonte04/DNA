@@ -6,7 +6,7 @@ import SwipeALot from 'react-native-swipe-a-lot'
 import * as Progress from 'react-native-progress';
 import moment from 'moment'
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
-import { Container, Content, InputGroup, Input, Icon, Button, Text, Form, Title, Item, Label, List, Header} from 'native-base';
+import { Container, Content, InputGroup, Input, Icon, Button, Text, Form, Title, Item, Label, List, Header, Left, Right, Body, Subtitle} from 'native-base';
 import fetchAllMeals from '../actions/meals/fetchAllMeals'
 import changeDisplayingMeal from '../actions/ui/changeDisplayingMeal'
 import ListDashboard from './ListDashboard'
@@ -91,6 +91,35 @@ class Dashboard extends Component {
     }
   }
 
+  _renderPieCharts = () => {
+    return (
+      <View style={{height: screen.height / 2.7}}>
+        <View>
+          <View style={{padding: 5, alignSelf: 'center'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <View style={{flexDirection: 'column', margin: 10}}>
+                <Progress.Circle textStyle={{fontSize: 22, fontWeight: 'bold'}} showsText={true} thickness={3} borderWidth={2}  color={'#E3B041'} progress={this.state.caloriePercent || 0} size={80} animated={true} indeterminate={false}/>
+                <Text style={styles.label}>Calories</Text>
+                <Progress.Circle textStyle={{fontSize: 22, fontWeight: 'bold'}} showsText={true}  showsText={true} thickness={3} borderWidth={2}  color={'#E3B041'} progress={this.state.proteinPercent || 0} size={80} animated={true} indeterminate={false} style={{top: 10}}/>
+                <Text style={{color: 'white', backgroundColor: 'transparent', alignSelf: 'center', fontWeight: '400', top: 10}}>Protein</Text>
+              </View>
+              <View style={{top: 20}}>
+                <Progress.Pie  thickness={2} borderWidth={3} color={'#E3B041'} showsText={true} progress={this.state.dailyGoalPercent || 0} size={170} animated={true} indeterminate={false} style={{height: '79%'}}/>
+                <Text style={{color: 'white', backgroundColor: 'transparent', alignSelf: 'center', fontWeight: '400'}}>Daily goal</Text>
+              </View>
+              <View style={{flexDirection: 'column', margin: 10}}>
+                <Progress.Circle textStyle={{fontSize: 22, fontWeight: 'bold'}} showsText={true} thickness={3} borderWidth={2}  color={'#E3B041'} progress={this.state.fatPercent || 0} size={80} animated={true} indeterminate={false} />
+                <Text style={styles.label}>Fat</Text>
+                <Progress.Circle textStyle={{fontSize: 22, fontWeight: 'bold'}} showsText={true}  thickness={3} borderWidth={2}  color={'#E3B041'} progress={this.state.carbohydratePercent || 0} size={80} animated={true} indeterminate={false} style={{top: 10}}/>
+                <Text style={{color: 'white', backgroundColor: 'transparent', alignSelf: 'center', fontWeight: '400', fontSize: 12, top: 10}}>Carbohydrates</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    )
+  }
+
   _renderCalendarDay = (day) => {
     if (day) {
       return (
@@ -160,20 +189,26 @@ class Dashboard extends Component {
 
   }
 
-
   render() {
     return (
-        <LinearGradient colors={['#f6c244', '#f6c244', '#d7a93c']} style={styles.linearGradient}>
-        <Header style={{backgroundColor: '#fff', alignItems: "flex-start"}}>
-           <View style={{flexDirection: 'row', alignSelf: 'flex-start', width: "100%", justifyContent: 'space-between' }}>
-              <Text style={{color: 'white', backgroundColor: 'transparent', alignSelf: 'flex-end', fontFamily: 'Bayformance', fontSize: 48, color: '#8234FF', bottom: 8}}>dashboard</Text>
+        <LinearGradient colors={['#fff', '#fff', '#fff']}>
+         <Header>
+            <Left>
+              <Button transparent>
+                <Icon name='arrow-back' />
+              </Button>
+            </Left>
+            <Body>
+              <Title style={{fontWeight: '300', bottom: 5, fontSize: 24}}>{moment().format('MMM YYYY')}</Title>
+            </Body>
+            <Right>
               <TouchableOpacity onPress={this.openMenu}>
                 <Image source={require('../assets/img/user-male.png')} style={{height: 35, width: 35, margin: 10, bottom:8}}/>
               </TouchableOpacity>
-          </View>
-        </Header>
+            </Right>
+          </Header>
 
-        <View style={{height: screen.height / 2, padding: 3}}>
+        <View style={{height: screen.height / 2, padding: 5}}>
           <Agenda
             // the list of items that have to be displayed in agenda. If you want to render item as empty date
             // the value of date key kas to be an empty array []. If there exists no value for date key it is
@@ -206,39 +241,16 @@ class Dashboard extends Component {
               agendaKnobColor: 'blue'
             }}
             // agenda container style
-            style={{borderRadius: 4}}
+            style={{borderRadius: 4, backgroundColor: "#000"}}
           />
         </View>
-        <View style={{height: screen.height / 2.7}}>
-          <View>
-            <View style={{padding: 5, alignSelf: 'center'}}>
-              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <View style={{flexDirection: 'column', margin: 10}}>
-                  <Progress.Circle textStyle={{fontSize: 22, fontWeight: 'bold'}} showsText={true} thickness={3} borderWidth={2}  color={'#fec749'} progress={this.state.caloriePercent || 0} size={80} animated={true} indeterminate={false}/>
-                  <Text style={styles.label}>Calories</Text>
-                  <Progress.Circle textStyle={{fontSize: 22, fontWeight: 'bold'}} showsText={true}  showsText={true} thickness={3} borderWidth={2}  color={'#b3d6ff'} progress={this.state.proteinPercent || 0} size={80} animated={true} indeterminate={false} style={{top: 10}}/>
-                  <Text style={{color: 'white', backgroundColor: 'transparent', alignSelf: 'center', fontWeight: '400', top: 10}}>Protein</Text>
-                </View>
-                <View style={{top: 20}}>
-                  <Progress.Pie  thickness={2} borderWidth={3} color={'#8234FF'} showsText={true} progress={this.state.dailyGoalPercent || 0} size={170} animated={true} indeterminate={false} style={{height: '79%'}}/>
-                  <Text style={{color: 'white', backgroundColor: 'transparent', alignSelf: 'center', fontWeight: '400'}}>Daily goal</Text>
-                </View>
-                <View style={{flexDirection: 'column', margin: 10}}>
-                  <Progress.Circle textStyle={{fontSize: 22, fontWeight: 'bold'}} showsText={true} thickness={3} borderWidth={2}  color={'#e6e91a'} progress={this.state.fatPercent || 0} size={80} animated={true} indeterminate={false} />
-                  <Text style={styles.label}>Fat</Text>
-                  <Progress.Circle textStyle={{fontSize: 22, fontWeight: 'bold'}} showsText={true}  thickness={3} borderWidth={2}  color={'#c1564a'} progress={this.state.carbohydratePercent || 0} size={80} animated={true} indeterminate={false} style={{top: 10}}/>
-                  <Text style={{color: 'white', backgroundColor: 'transparent', alignSelf: 'center', fontWeight: '400', fontSize: 12, top: 10}}>Carbohydrates</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
+        {this._renderPieCharts()}
         </LinearGradient>
     );
   }
 }
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   linearGradient: {
     flex: 1,
   },
