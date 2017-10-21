@@ -13,6 +13,7 @@ import changeDisplayingMeal from '../actions/ui/changeDisplayingMeal'
 import Menu from './Menu'
 import Meal from './Meal'
 import Dashboard from './Dashboard'
+import WelcomeLoginForm from './WelcomeLoginForm'
 import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modalbox';
 
@@ -46,7 +47,7 @@ class DashboardContainer extends Component {
         onDrawerClose={() => {}}
         easingFunc={Easing.ease}
       >
-        <Dashboard openMenu={this.openMenu}/>
+        {this.props.isLoggedIn ? <Dashboard openMenu={this.openMenu}/> : <WelcomeLoginForm />} 
         <Modal
           style={[styles.modal, styles.modal1]}
           ref={"mealModal"}
@@ -100,7 +101,8 @@ function mapStateToProps(state) {
   return {
     meals: state.meals.all,
     displayingMeal: state.ui.displayingMeal,
-    isLoading: state.ui.isLoading
+    isLoading: state.ui.isLoading,
+    isLoggedIn: state.ui.isLoggedIn,
   }
 }
 

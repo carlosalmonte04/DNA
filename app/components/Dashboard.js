@@ -98,19 +98,19 @@ class Dashboard extends Component {
           <View style={{padding: 5, alignSelf: 'center'}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <View style={{flexDirection: 'column', margin: 10}}>
-                <Progress.Circle textStyle={{fontSize: 22, fontWeight: 'bold'}} showsText={true} thickness={3} borderWidth={2}  color={'#E3B041'} progress={this.state.caloriePercent || 0} size={80} animated={true} indeterminate={false}/>
+                <Progress.Circle textStyle={{fontSize: 22, fontWeight: 'bold'}} showsText={true} thickness={2} borderWidth={1}  color={'black'} progress={this.state.caloriePercent || 0} size={80} animated={true} indeterminate={false}/>
                 <Text style={styles.label}>Calories</Text>
-                <Progress.Circle textStyle={{fontSize: 22, fontWeight: 'bold'}} showsText={true}  showsText={true} thickness={3} borderWidth={2}  color={'#E3B041'} progress={this.state.proteinPercent || 0} size={80} animated={true} indeterminate={false} style={{top: 10}}/>
+                <Progress.Circle textStyle={{fontSize: 22, fontWeight: 'bold'}} showsText={true}  showsText={true} thickness={2} borderWidth={1}  color={'#696e68'} progress={this.state.proteinPercent || 0} size={80} animated={true} indeterminate={false} style={{top: 10}}/>
                 <Text style={{color: 'white', backgroundColor: 'transparent', alignSelf: 'center', fontWeight: '400', top: 10}}>Protein</Text>
               </View>
               <View style={{top: 20}}>
-                <Progress.Pie  thickness={2} borderWidth={3} color={'#E3B041'} showsText={true} progress={this.state.dailyGoalPercent || 0} size={170} animated={true} indeterminate={false} style={{height: '79%'}}/>
+                <Progress.Pie  thickness={2} borderWidth={3} color={'#696e68'} showsText={true} progress={this.state.dailyGoalPercent || 0} size={170} animated={true} indeterminate={false} style={{height: '79%'}}/>
                 <Text style={{color: 'white', backgroundColor: 'transparent', alignSelf: 'center', fontWeight: '400'}}>Daily goal</Text>
               </View>
               <View style={{flexDirection: 'column', margin: 10}}>
-                <Progress.Circle textStyle={{fontSize: 22, fontWeight: 'bold'}} showsText={true} thickness={3} borderWidth={2}  color={'#E3B041'} progress={this.state.fatPercent || 0} size={80} animated={true} indeterminate={false} />
+                <Progress.Circle textStyle={{fontSize: 22, fontWeight: 'bold'}} showsText={true} thickness={2} borderWidth={1}  color={'#696e68'} progress={this.state.fatPercent || 0} size={80} animated={true} indeterminate={false} />
                 <Text style={styles.label}>Fat</Text>
-                <Progress.Circle textStyle={{fontSize: 22, fontWeight: 'bold'}} showsText={true}  thickness={3} borderWidth={2}  color={'#E3B041'} progress={this.state.carbohydratePercent || 0} size={80} animated={true} indeterminate={false} style={{top: 10}}/>
+                <Progress.Circle textStyle={{fontSize: 22, fontWeight: 'bold'}} showsText={true}  thickness={2} borderWidth={1}  color={'#696e68'} progress={this.state.carbohydratePercent || 0} size={80} animated={true} indeterminate={false} style={{top: 10}}/>
                 <Text style={{color: 'white', backgroundColor: 'transparent', alignSelf: 'center', fontWeight: '400', fontSize: 12, top: 10}}>Carbohydrates</Text>
               </View>
             </View>

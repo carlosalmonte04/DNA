@@ -1,16 +1,16 @@
-import Food from '../models/user'
+import Food from '../models/food'
 
 const initialState = { 
   stageOne: [],
   stageTwo: [],
 	stageThree: [],
-  toBeLogged: [],
-  macrosToBeLogged: {
-    calorieTotal      : 0,
-    proteinTotal      : 0,
-    fatTotal          : 0,
-    carbohydrateTotal : 0,
-  }
+  // toBeLogged: [],
+  // macrosToBeLogged: {
+  //   calorieTotal      : 0,
+  //   proteinTotal      : 0,
+  //   fatTotal          : 0,
+  //   carbohydrateTotal : 0,
+  // }
 }
 
 function foodsReducer(state = initialState, action) {
@@ -19,7 +19,7 @@ function foodsReducer(state = initialState, action) {
       return Object.assign({}, state, {stageOne: action.payload})
 
     case "SET_IN_STAGE_TWO":
-      let foodInState = state.stageOne.find(food => food.id === action.payload.food.id)
+      let foodInState = Food.find(action.payload.food.id)
       foodInState.options = action.payload.usdaOptions.list.item
       return Object.assign({}, state, {stageTwo: [...state.stageOne, foodInState]})
 
@@ -27,12 +27,23 @@ function foodsReducer(state = initialState, action) {
       return Object.assign({}, state, {stageThree: action.payload})
 
     case "CHANGE_PORTION_SIZE":
-      foodInState = state.stageThree.find(food => food.id === action.payload.food.id)
+      foodInState = Food.find(action.payload.food.id)
       foodInState.portionSize = parseInt(action.payload.portionSize)
       return Object.assign({}, state)
     case "RESET_FOODS":
       Food.reset()
       return Object.assign({}, state, {...initialState})
+
+    case "CHANGE_SELECTED_OPTION":
+      foodInState = Food.find(action.payload.food.id)
+      foodInState.changeSelOption(action.payload.selectedOptionId)
+      return Object.assign({}, state)
+
+    case "CHANGE_OPTIONS":
+      foodInState = Food.find(action.payload.food.id)
+      foodInState.options = action.payload.newOptions
+      console.log("Changin options for", foodInState, "TOOO", foodInState.options)
+      return Object.assign({}, state)
 
     default:
       return state

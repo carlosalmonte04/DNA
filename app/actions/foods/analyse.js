@@ -12,7 +12,7 @@ import Meal from '../../models/meal'
 import {openFoodsModal} from '../ui/toggleFoodOptionsModal'
 
 
-export default function analyse(picturePath) {
+export function analyse(picturePath) {
   let stageOne = []
   let stageTwo = []  
   let stageThree = []
@@ -34,6 +34,9 @@ export default function analyse(picturePath) {
           const newFood = new Food(newFoodAttributes) // =-> stage I
           stageOne.push(newFood)
         })
+        console.log("SETTING SOONER IN S3", stageOne)
+        dispatch(setInStageThree(stageOne))
+        dispatch(setLoading(false))
 
   			return stageOne.map(food => {
 					dispatch(getResourceForStageTwo(food, food.name))
@@ -42,6 +45,7 @@ export default function analyse(picturePath) {
             food.options = usdaOptions // =-> stage II
 
             const ndbno = usdaOptions[0].ndbno
+            usdaOptions[0].selected = true
             return dispatch(getResourceForStageThree(food, ndbno))
           })
           .then((usdaAnalysis, err) => {
@@ -66,7 +70,7 @@ export default function analyse(picturePath) {
   }
 }
 
-function _cleanedAnalysis(analysis) {
+export function _cleanedAnalysis(analysis) {
 
   const MACROS = {
     '208'        : 'calorie',
@@ -91,13 +95,13 @@ function _cleanedAnalysis(analysis) {
         if (analysis[key].fg) cleanedAnalysis.foodGroup = analysis[key].fg
           break
       case 'nutrients':
-        _getCleanNutrients(analysis[key])
+        __getCleanNutrients(analysis[key])
         break
       default:
         break
     }
 
-    function _getCleanNutrients(nutrients) {
+    function __getCleanNutrients(nutrients) {
       cleanedAnalysis.measure = analysis[key][0].measures[0].label
       cleanedAnalysis.qty     = analysis[key][0].measures[0].qty
       nutrients.forEach(nutrient => {

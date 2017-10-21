@@ -44,7 +44,6 @@ function mealsReducer(state = initialState, action) {
       return Object.assign({}, state, {mealOnAnalyser: new Meal(), macros: {...initialState.macros}, all: []})
 
     case "UPDATE_MACROS":
-        state.mealOnAnalyser.foods = state.mealOnAnalyser.foods.filter(food => food.id !== action.payload)
         newMacros = state.mealOnAnalyser.macros()
         return Object.assign({}, state, {macros: newMacros})
         

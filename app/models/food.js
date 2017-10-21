@@ -14,13 +14,36 @@ const Food = ( () => {
 			return all
 		}
 
-		save() {
-		  all.push(this)
+		static find(foodId) {
+			return all.find(food => food.id === foodId)
 		}
 
 		static reset() {
 			all = []
 			stageThree = []
+		}
+
+		save() {
+		  all.push(this)
+		}
+
+		addAttributes(attributes) {
+		  for (var key in attributes) {
+		    this[key] = attributes[key];
+		  }
+		}
+
+		changeSelOption(selectedOptionId) {
+			this.options.forEach(option => option.selected = false)
+			const selectedOption = this.options.find(option => selectedOptionId === option.ndbno)
+			console.log("GOT HERE WTH ID", selectedOptionId)
+			selectedOption.selected = true
+		}
+
+		selectedOption() {
+			const selectedOption = this.options.find(option => option.selected)
+			console.log("OPTION SELECTED!!", selectedOption)
+			return selectedOption
 		}
 
 		updateMacros(action, macros) {

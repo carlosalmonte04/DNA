@@ -7,6 +7,7 @@ const initialState = {
   displayingMeal: null,
   signUpModalShowing: false,
   signUpFormCompleted: false,
+  isFoodModalOpen: false
 }
 
 function foodsReducer(state = initialState, action) {
@@ -42,6 +43,9 @@ function foodsReducer(state = initialState, action) {
       return Object.assign({}, state, {welcomeMessage: action.payload})
       break
 
+    case "TOGGLE_ADD_FOOD_MODAL":
+      return Object.assign({}, state, {isFoodModalOpen: !state.isFoodModalOpen})
+      break
 
     default:
       return state

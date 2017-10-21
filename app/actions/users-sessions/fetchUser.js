@@ -4,7 +4,7 @@ import setUser from './setUser'
 
 export default function fetchUser(token) {
 
-	const apiUrl = `https://ana-api.herokuapp.com/api/v1/me`
+	const apiUrl = `http://192.168.1.10:8000/api/v1/me`
 
 	return (dispatch) => {
 		const requestData = {

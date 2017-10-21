@@ -9,6 +9,9 @@ import fetchUser from '../actions/users-sessions/fetchUser';
 import SwipeALot from 'react-native-swipe-a-lot'
 import WelcomeLoginForm from './WelcomeLoginForm'
 import FullScreenLoader from './FullScreenLoader'
+import resetFoods from '../actions/foods/resetFoods'
+import resetMeals from '../actions/meals/resetMeals'
+import pictureOnAnalyser from '../actions/ui/pictureOnAnalyser'
 
 class CameraDashboardContainer extends Component {
 
@@ -19,15 +22,16 @@ class CameraDashboardContainer extends Component {
     this.props.setLoading(false)
   }
 
-  _renderCameraDashboard() {
+  resetAll = () => {
+    this.props.resetFoods()
+    this.props.resetMeals()
+    this.props.retakePicture()
+    this.props.navigation.navigate('CameraDashboardContainer')
+  }
+
+  _renderCameraDashboard = () => {
     return (
-      <SwipeALot
-        circleDefaultStyle={{opacity: 0}}
-        circleActiveStyle={{opacity: 0}}
-      >
-        <Camera navigation={this.props.navigation} />
-        <DashboardContainer navigation={this.props.navigation} />
-      </SwipeALot>
+        <Camera navigation={this.props.navigation} resetAll={this.resetAll} />
     )
   }
 
@@ -42,16 +46,9 @@ class CameraDashboardContainer extends Component {
   }
 
   render() {
-    if (this.props.isLoading) {
-      return (
-        <FullScreenLoader />
+    return(
+        /*this.props.isLoggedIn*/ true ? this._renderCameraDashboard() : this._renderWelcomeLoginForm() 
       )
-    }
-    else {
-      return ( 
-        this.props.isLoggedIn ? this._renderCameraDashboard() : this._renderWelcomeLoginForm() 
-      )
-    }
   }
 }
 
@@ -66,9 +63,14 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     toggleLoggedIn: (bool) => dispatch(toggleLoggedIn(bool)),
+    saveMeal: (meal) => dispatch(saveMeal(meal)),
     setLoading: (bool) => dispatch(setLoading(bool)),
-    fetchUser: (token) => dispatch(fetchUser(token))
+    fetchUser: (token) => dispatch(fetchUser(token)),
+    retakePicture: () => dispatch(pictureOnAnalyser(null)),
+    resetFoods: () => dispatch(resetFoods()),
+    resetMeals: () => dispatch(resetMeals()),
   }
 }
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(CameraDashboardContainer)

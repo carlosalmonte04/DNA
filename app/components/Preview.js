@@ -8,7 +8,7 @@ import * as Animatable from 'react-native-animatable';
 import { BlurView } from 'react-native-blur';
 import * as Progress from 'react-native-progress';
 
-const screen = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export default class Preview extends Component {
 
@@ -38,26 +38,26 @@ export default class Preview extends Component {
 
   _renderPlainTexts = () => {
     return (
-      <View style={styles.countersContainer}>
-        <View style={styles.macroContainer}>
-          <Icon name="ios-flame-outline" style={[styles.icon, {color: '#e6102b', top: 10}]}/>
-          <Text style={[styles.macro, styles.calorie]}> {this.props.macros.calorie}</Text>
-          <Label style={[styles.calorie, styles.label]}>Calories</Label> 
+      <View style={styles.row}>
+        <View style={styles.column}>
+          <View style={styles.macroContainer}>
+            <Label style={styles.label}>Calories</Label> 
+            <Text style={styles.macro}><Icon name="ios-flame-outline" style={[styles.icon, {color: '#686d6f'}]}/> {this.props.macros.calorie}</Text>
+          </View>
+          <View style={styles.macroContainer}>
+            <Label style={styles.label}>Protein</Label> 
+            <Text style={styles.macro}><Icon name="md-ionic" style={[styles.icon, {color: '#686d6f'}]}/> {this .props.macros.protein}</Text>
+          </View>
         </View>
-        <View style={styles.macroContainer}>
-          <Icon name="md-ionic" style={[styles.icon, {color: '#2357e4', top: 10}]}/>
-          <Text style={[styles.macro, styles.protein]}> {this.props.macros.protein}</Text>
-          <Label style={[styles.protein, styles.label]}>Protein</Label> 
-        </View>
-        <View style={styles.macroContainer}>
-          <Icon name="ios-flower-outline" style={[styles.icon, {color: '#e6a620', top: 10}]}/>
-          <Text style={[styles.macro, styles.fat]}> {this.props.macros.fat}</Text>
-          <Label style={[styles.fat, styles.label]}>Fat</Label> 
-        </View>
-        <View style={styles.macroContainer}>
-          <Icon name="ios-ice-cream-outline" style={[styles.icon, {color: '#e511e2', top: 10}]}/>
-          <Text style={[styles.macro, styles.carbohydrate]}> {this.props.macros.carbohydrate}</Text>
-          <Label style={[styles.carbohydrate, styles.label]}>carbohydrates</Label> 
+        <View style={styles.column}>
+          <View style={styles.macroContainer}>
+            <Label style={styles.label}>Fat</Label> 
+            <Text style={styles.macro}><Icon name="ios-flower-outline" style={[styles.icon, {color: '#686d6f'}]}/> {this.props.macros.fat}</Text>
+          </View>
+          <View style={styles.macroContainer}>
+            <Label style={styles.label}>carbs</Label> 
+            <Text style={styles.macro}><Icon name="ios-ice-cream-outline" style={[styles.icon, {color: '#686d6f'}]}/> {this.props.macros.carbohydrate}</Text>
+          </View>
         </View>
       </View>
     )
@@ -65,29 +65,36 @@ export default class Preview extends Component {
 
   _renderCounters = () => {
     return (
-      <View style={styles.countersContainer}>
-        <View style={styles.macroContainer}>
-          <Icon name="ios-flame-outline" style={[styles.icon, {color: '#e6102b', top: 10}]}/>
-          <Counter end={this.props.macros.calorie} start={this.calorieBefore || 0} time={1000} countBy={10} style={[styles.macro, styles.calorie]}/> 
-          <Label style={[styles.calorie, styles.label]}>Calories</Label> 
+      <View style={styles.row}>
+        <View style={styles.column}>
+          <View style={styles.macroContainer}>
+            <Label style={styles.label}>Calories</Label> 
+            <Text style={styles.macro}>
+              <Icon name="ios-flame-outline" style={[styles.icon, {color: '#686d6f'}]}/> <Counter end={this.props.macros.calorie} start={this.calorieBefore || 0} time={1000} countBy={10} />
+            </Text>
+          </View>
+          <View style={styles.macroContainer}>
+            <Label style={styles.label}>Protein</Label> 
+            <Text style={styles.macro}>
+              <Icon name="md-ionic" style={[styles.icon, {color: '#686d6f'}]}/> <Counter end={this.props.macros.protein} start={this.proteinBefore || 0} time={1000} countBy={10} />
+            </Text>
+          </View>
         </View>
-        <View style={styles.macroContainer}>
-          <Icon name="md-ionic" style={[styles.icon, {color: '#2357e4', top: 10}]}/>
-          <Counter end={this.props.macros.protein} start={this.proteinBefore || 0} time={1000} countBy={10} style={[styles.macro, styles.protein]} /> 
-          <Label style={[styles.protein, styles.label]}>Protein</Label> 
-        </View>
-        <View style={styles.macroContainer}>
-          <Icon name="ios-flower-outline" style={[styles.icon, {color: '#e6a620', top: 10}]}/>
-          <Counter end={this.props.macros.fat} start={this.fatBefore || 0} time={1000} countBy={10} style={[styles.macro, styles.fat]} /> 
-          <Label style={[styles.fat, styles.label]}>Fat</Label> 
-        </View>
-        <View style={styles.macroContainer}>
-          <Icon name="ios-ice-cream-outline" style={[styles.icon, {color: '#e511e2', top: 10}]}/>
-          <Counter end={this.props.macros.carbohydrate} start={this.carbohydrateBefore || 0} time={1000} countBy={10} style={[styles.macro, styles.carbohydrate]} onComplete={this.handleCounterComplete} /> 
-          <Label style={[styles.carbohydrate, styles.label]}>carbohydrates</Label> 
+        <View style={styles.column}>
+          <View style={styles.macroContainer}>
+            <Label style={styles.label}>Fat</Label> 
+            <Text style={styles.macro}>
+              <Icon name="ios-flower-outline" style={[styles.icon, {color: '#686d6f'}]}/> <Counter end={this.props.macros.fat} start={this.fatBefore || 0} time={1000} countBy={10} />
+            </Text>
+          </View>
+          <View style={styles.macroContainer}>
+            <Label style={styles.label}>carbs</Label> 
+            <Text style={styles.macro}>
+              <Icon name="ios-ice-cream-outline" style={[styles.icon, {color: '#686d6f'}]}/> <Counter end={this.props.macros.carbohydrate} start={this.carbohydrateBefore || 0} time={1000} countBy={10} onComplete={this.handleCounterComplete} />
+            </Text>
+          </View>
         </View>
       </View>
-
     )
   }
 
@@ -101,92 +108,107 @@ export default class Preview extends Component {
   render() {
     if (this.props.previewVisible) {
       return (
-        <View style={{flex: 1, alignItems: 'center', flexDirection: 'column', }}>
+        <View>
           <StatusBar hidden={false} style={{position: 'relative'}} />
-          <View style={{alignSelf: 'center', flexDirection: 'row', borderColor: 'black', borderWidth: 8, padding: 10, width: "100%", flexWrap: 'wrap', marginTop: 20}}>
-
-            <TouchableOpacity style={{position: "relative", marginBottom: 1}} onPress={this.handlePress}>
-              <Image source={{uri: this.props.pictureUri}} style={styles.image} />
-            </TouchableOpacity>
-          </View>
-        <Animatable.View animation="fadeIn" duration={500} style={[styles.counterContainer]}>
-            <Container style={{flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: "80%", alignSelf: 'center', borderWidth: 6, borderColor: '#2a555e', backgroundColor: 'white'}}>
-              <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={styles.header}>Totals</Text>
-              </View>
+          <View style={{justifyContent: 'center', backgroundColor: 'transparent', height: "100%"}}>
+            <Image source={{uri: this.props.pictureUri}} style={styles.image} />
+            <View style={[styles.boxContainer, styles.shadow]}>
               {this.state.countersComplete ? this._renderPlainTexts() : this._renderCounters()}
-            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center'}}>
-               <Button block light onPress={this.handleRetake} style={[styles.button, {alignSelf: 'flex-end', backgroundColor: '#E3B041'}]} >
-                  <Text style={{color: "white", fontFamily: 'Bayformance', fontSize: 24, textAlign: 'center'}}>retake</Text>
+              <View style={[styles.buttonsContainer]}>
+                <Button block light onPress={this.handleRetake} style={[styles.button, {alignSelf: 'flex-end', backgroundColor: 'white', borderColor: '#e4c271', borderWidth: 4, width: 95}]} >
+                  <Text style={styles.buttonText}>retake</Text>
                 </Button>
-            <Button block light onPress={this.handleButtonPress} style={[styles.button]} >
-                  <Text style={{color: "white", fontFamily: 'Bayformance', fontSize: 24, textAlign: 'center'}}>Save</Text>
+                <Button block light onPress={this.handleButtonPress} style={[styles.button, {alignSelf: 'flex-end'}]} >
+                  <Text style={styles.buttonText}>Save</Text>
                 </Button>
+              </View>
             </View>
-          </Container>
-
-        </Animatable.View>
+          </View>
         </View>
       )
     }
     else {
       return (
-        <View style={{flex: 1, flexDirection: 'row'}}>
-          <StatusBar hidden={false} style={{position: 'relative'}} />
-          <View style={{alignSelf: 'center', flexDirection: 'row', borderColor: 'black', borderWidth: 8, padding: 10, width: "100%", flexWrap: 'wrap', marginTop: 20, backgroundColor: '#5b25b3'}}>
-
-          <TouchableOpacity style={{position: "relative", marginBottom: 1}} onPress={this.handleRetake}>
-            <Image source={{uri: this.props.pictureUri}} style={styles.image} resizeMode={"cover"}/>
-          </TouchableOpacity>
-          </View>
-        </View>
+        <Image source={{uri: this.props.pictureUri}} style={styles.image} />
       )
     }
   }
 }
 
 const styles = StyleSheet.create({
-  image: {
-    height: screen.height / 3,
-    width: screen.width / 1.1,
-    backgroundColor: 'transparent'
-  },
-  header: {
-    fontSize: 56,
+  boxContainer: {
+    flex: 0.65,
     alignSelf: 'center',
-    fontFamily: 'Bayformance',
-    color: '#8234FF',
-    backgroundColor: 'transparent'
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    width: "75%"
   },
-  counterContainer: {
-    height: screen.height / 3.5,
-    width: screen.width,
-    backgroundColor: 'transparent',
-    position: 'absolute',
-    top: 60
+  row: {
+    flex: 1.7,
+    flexDirection: 'row',
+    top: 25,
+    width: '77%',
+    alignSelf: 'center'
+  },
+  column: {
+    flex: 0.5,
+    flexDirection: 'column',
+    marginLeft: 10
+  },
+  macroContainer: {
+    flex: 0.5,
+    alignItems: 'flex-start',
   },
   icon: {
-    opacity: 0
+    flex: 0.5,
+    top: 40
   },
-  absolute: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
+  macro: {
+    flex: 0.5,
+    fontSize: 32,
+    fontWeight: '300'
+  },
+  label: {
+    flex: 0.2,
+    fontSize: 14,
+    backgroundColor: 'transparent'
+  },
+  shadow: {
+    shadowOpacity: 0.4,
+    shadowOffset: {
+      width: -1,
+      height: 1
+    },
+  },
+  buttonsContainer: {
+  flex: 1,
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignSelf: 'center',
+  backgroundColor: 'transparent',
   },
   button: {
-    backgroundColor: "#8234ff",
+    backgroundColor: "#e5fef1",
+    borderColor: "#528c47",
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    borderWidth: 2,
     height: 40,
     width: 90,
     margin: 10
   },
-  countersContainer: {flex: 1, justifyContent: 'space-between', flexDirection: 'row', bottom: 20 },
-  macroContainer: {justifyContent: 'center', alignItems: 'center', top: 2},
-  macro: {fontFamily: 'Bayformance'},
-  label: {fontSize: 16, fontFamily: 'Bayformance', bottom: 10},
-  calorie: {fontSize: 46, color: '#2a555e'},
-  protein: {fontSize: 46, color: '#2a555e'},
-  fat: {fontSize: 46, color: '#2a555e'},
-  carbohydrate: {fontSize: 46, color: '#2a555e'},
+  buttonText: {
+    color: "#6f7670",
+    fontFamily: 'Bayformance',
+    fontSize: 24,
+    textAlign: 'center'
+  },
+  image: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    height: '100%',
+    width: '100%',
+    zIndex: -1,
+  },
 })
