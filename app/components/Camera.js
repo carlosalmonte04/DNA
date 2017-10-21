@@ -197,7 +197,7 @@ class CameraScreen extends Component {
       <View style={styles.bottom}>
         <View style={styles.shutterContainer}>
           <TouchableOpacity onPress={this.takePicture}>
-            <Progress.Circle thickness={3} borderWidth={8}  color={'#B6B3B3'} progress={this.state.caloriePercent || 0} size={70} animated={true} indeterminate={true}/>
+            <Progress.Circle thickness={3} borderWidth={8}  color={'#B6B3B3'} progress={this.state.caloriePercent || 0} size={70} animated={true} indeterminate={true} style={{top: 10}}/>
           </TouchableOpacity>
         </View>
       </View>
@@ -231,7 +231,6 @@ class CameraScreen extends Component {
     return(
       <Animatable.View style={[styles.previousMealContainer]} animation={"fadeIn"} duration={250}>
         <TouchableOpacity style={styles.previousMeal}>
-
           <Image source={{uri: this.props.user.unsavedMeal ? this.props.user.unsavedMeal.pictureUrl : "" }} style={{height: 40, width: 40}} resizeMode={'cover'}/>
               <Icon name="ios-refresh-outline" style={{fontSize: 28, top: 0, fontWeight: 'bold', color: '#5f6466', backgroundColor: 'transparent'}}/>
         </TouchableOpacity>
@@ -297,7 +296,7 @@ class CameraScreen extends Component {
               <Button style={{flex: 0.33}} onPress={this.handleImagePicker}>
                 <Icon name="ios-attach" style={{fontSize: 32, color: '#696e68'}}/>
               </Button>
-              {this.props.foods.length > 1 ? <Button rounded onPress={this.props.toggleAddFoodModal} style={styles.addFoodButton}><Text style={{fontSize: 20, fontWeight: '400', color: '#696e68', top: 2}}>Add food</Text><Icon name="ios-add" style={{fontSize: 38, fontWeight: '400', bottom: 1}}/></Button> : <Button />}
+              {this.props.foods.length > 1 ? <Button rounded onPress={this.props.toggleAddFoodModal} style={styles.addFoodButton}><Text style={{fontSize: 20, fontWeight: '400', color: '#696e68', top: 2}}>Add food</Text><Icon name="ios-add" style={{fontSize: 38, fontWeight: '400', bottom: 1}}/></Button> : <Button style={styles.empty}/>}
               <Button onPress={() => this.setState({isDashboardOpen: true})} style={{flex: 0.33}}>
                 <Text style={{color: '#696e68', bottom: 5}}>Dashboard</Text>
                 <Icon style={{color: '#696e68'}} name="ios-arrow-up"/>
@@ -454,6 +453,14 @@ const styles = StyleSheet.create({
       width: 1,
       height: 1
     }
+  },
+  empty: {
+    flex: 0.33,
+    bottom: 2,
+    backgroundColor: 'transparent',
+    borderRadius: 0,
+    height: 70,
+    width: 100,
   }
 })
 

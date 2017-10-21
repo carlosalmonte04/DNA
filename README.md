@@ -14,11 +14,13 @@ Project as-is, not intended nor ready for actual daily use. Project intended to 
   * Implement feedback gathered. -> Change colors, enhance UX/UI ('see options' and 'change portion size' features).
   * Allowing existing pictures upload.
   * Login/Signup after trying to persist data.
-  * Refactoring O(n2) of creating `Food` for each `food` in picture.
   * Changes in options for each food should reflect changes in macronutrients.
+  * Allow to get results require login when saving meal
+  * Not change main macros count when exploring meal
   
 - Icebox
-  * Implement clinical features.
+  * Implement clinical features
+  * Integrate with dietitian.help
 
 ## Getting started
 To run the project you will need the following:
