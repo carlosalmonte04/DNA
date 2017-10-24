@@ -4,8 +4,7 @@ import setUser from './setUser'
 
 export default function fetchUser(token) {
 
-	const apiUrl = `http://192.168.1.10:8000/api/v1/me`
-
+	const apiUrl = `https://ana-api.herokuapp.com/api/v1/me`
 	return (dispatch) => {
 		const requestData = {
 	    headers: {
@@ -15,8 +14,10 @@ export default function fetchUser(token) {
 	    },
 		}
 		return fetch(apiUrl, requestData)
+		.catch(err => console.log("Error while getting /me, most likely network request, check url being requested", err))
 		.then(res => res.json())
 		.then(persistedUserInfo => {
+			console.log("Preview", persistedUserInfo)
 			User.reset()
 			const user = new User(persistedUserInfo)
 			dispatch(setUser(user))

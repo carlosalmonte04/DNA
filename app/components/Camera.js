@@ -254,7 +254,7 @@ class CameraScreen extends Component {
   }
   _renderPicture = () => {
     return(
-      <View style={[styles.camera, styles.shadow]} onPress={this.handleRetake}>
+      <View style={[styles.camera, styles.shadow]}>
         <Preview {...this.props} handleSave={this.handleSave} />
       </View>
     )

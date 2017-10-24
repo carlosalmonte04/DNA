@@ -115,7 +115,7 @@ export default class Preview extends Component {
             <View style={[styles.boxContainer, styles.shadow]}>
               {this.state.countersComplete ? this._renderPlainTexts() : this._renderCounters()}
               <View style={[styles.buttonsContainer]}>
-                <Button block light onPress={this.handleRetake} style={[styles.button, {alignSelf: 'flex-end', backgroundColor: 'white', borderColor: '#e4c271', borderWidth: 4, width: 95}]} >
+                <Button block light onPress={this.handleRetake} style={[styles.button, {alignSelf: 'flex-end', backgroundColor: '#e4c271', width: 90}]} >
                   <Text style={styles.buttonText}>retake</Text>
                 </Button>
                 <Button block light onPress={this.handleButtonPress} style={[styles.button, {alignSelf: 'flex-end'}]} >
@@ -129,7 +129,9 @@ export default class Preview extends Component {
     }
     else {
       return (
-        <Image source={{uri: this.props.pictureUri}} style={styles.image} />
+        <TouchableOpacity style={styles.image}  onPress={this.handleRetake}>
+          <Image source={{uri: this.props.pictureUri}} style={styles.image}/>
+        </TouchableOpacity>
       )
     }
   }
@@ -139,10 +141,12 @@ const styles = StyleSheet.create({
   boxContainer: {
     flex: 0.65,
     alignSelf: 'center',
+    borderWidth: 2,
+    borderColor: '#e4c271',
     flexDirection: 'column',
     justifyContent: 'center',
     backgroundColor: 'white',
-    width: "75%"
+    width: "75%",
   },
   row: {
     flex: 1.7,
@@ -189,19 +193,20 @@ const styles = StyleSheet.create({
   backgroundColor: 'transparent',
   },
   button: {
-    backgroundColor: "#e5fef1",
-    borderColor: "#528c47",
-    shadowOpacity: 0.3,
-    shadowRadius: 1,
-    borderWidth: 2,
+    backgroundColor: "#8cba92",
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    shadowOffset: {
+      width: -1,
+      height: 3
+    },
     height: 40,
     width: 90,
     margin: 10
   },
   buttonText: {
-    color: "#6f7670",
-    fontFamily: 'Bayformance',
-    fontSize: 24,
+    color: "#fff",
+    fontSize: 20,
     textAlign: 'center'
   },
   image: {
