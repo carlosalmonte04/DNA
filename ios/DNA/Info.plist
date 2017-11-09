@@ -36,6 +36,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Let DNA access your camera</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Let DNA see the foods in your Camera Roll</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>

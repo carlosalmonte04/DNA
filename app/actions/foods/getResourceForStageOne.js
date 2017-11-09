@@ -1,8 +1,9 @@
 import RNFetchBlob from 'react-native-fetch-blob'
 import newMeal from '../meals/newMeal'
 import { AsyncStorage } from 'react-native'
-// const apiUrl = "https://ana-api.herokuapp.com/api/v1/pictures"
-const apiUrl = `https://ana-api.herokuapp.com/api/v1/meals`
+import { API_URL } from 'react-native-dotenv'
+const apiUrl = `${API_URL}/meals`
+// const apiUrl = `https://ana-api.herokuapp.com/api/v1/meals`
 
 export default function getResourceForStageOne(picturePath) {
 

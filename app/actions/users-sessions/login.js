@@ -2,10 +2,11 @@ import {AsyncStorage} from 'react-native'
 import toggleLoggedIn from '../ui/toggleLoggedIn'
 import fetchUser from '../users-sessions/fetchUser'
 import fetchAllMeals from '../meals/fetchAllMeals'
+import { API_URL } from 'react-native-dotenv'
 
 export default function login(userInfo) {
 	return (dispatch) => {
-		const apiUrl = `https://ana-api.herokuapp.com/api/v1/login`
+		const apiUrl = `${API_URL}/login`
 		const requestData = {
 			method: 'POST', 
 	    headers: {

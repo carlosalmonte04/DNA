@@ -181,10 +181,12 @@ class Dashboard extends Component {
 
   componentDidMount() {
     if (this.props.meals.length === 0) {
-      this.props.fetchAllMeals().then(meals => this.prepareCalendar())
+      setTimeout( () => {
+        this.props.fetchAllMeals().then(meals => this.prepareCalendar())
+      }, 1000)
     }
     else {
-      this.prepareCalendar()
+      setTimeout(this.prepareCalendar, 1000)
     }
 
   }

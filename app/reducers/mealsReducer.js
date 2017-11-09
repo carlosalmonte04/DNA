@@ -24,13 +24,15 @@ function mealsReducer(state = initialState, action) {
         console.log("removing")
         state.mealOnAnalyser.foods = state.mealOnAnalyser.foods.filter(food => food.id !== action.payload)
         const newMacros = state.mealOnAnalyser.macros()
-        return Object.assign({}, state, {macros: newMacros})
+        const newMicros = state.mealOnAnalyser.micros()
+        return Object.assign({}, state, {macros: newMacros, micros: newMicros})
       }
       else {
         state.mealOnAnalyser.foods.push(Food.all().find(food => food.id === action.payload))
         console.log("adding")
         const newMacros = state.mealOnAnalyser.macros()
-    	   return Object.assign({}, state, {macros: newMacros})
+        const newMicros = state.mealOnAnalyser.micros()
+    	   return Object.assign({}, state, {macros: newMacros, micros: newMicros})
       }
 
     case "ADD_MEAL":

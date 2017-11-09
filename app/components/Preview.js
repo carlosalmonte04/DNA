@@ -7,6 +7,7 @@ import Counter from 'react-native-counter';
 import * as Animatable from 'react-native-animatable';
 import { BlurView } from 'react-native-blur';
 import * as Progress from 'react-native-progress';
+import SwipeALot from 'react-native-swipe-a-lot'
 
 const { width, height } = Dimensions.get('window');
 
@@ -36,7 +37,7 @@ export default class Preview extends Component {
     this.setState({countersComplete: true})
   }
 
-  _renderPlainTexts = () => {
+  _renderMacrosText = () => {
     return (
       <View style={styles.row}>
         <View style={styles.column}>
@@ -63,7 +64,24 @@ export default class Preview extends Component {
     )
   }
 
-  _renderCounters = () => {
+  _renderMicros = () => {
+    let microsHTML = []
+    for(key in this.props.micros) {
+      microsHTML.push(
+        <View style={{display: 'flex', flexDirection: 'row'}}>
+          <Text key={key} style={{display: 'flex'}}>{key}</Text><Text style={{display: 'flex'}}> = {this.props.micros[key]}</Text>
+        </View>
+      )
+    }
+
+    return (
+      <View style={{position: 'absolute'}}>
+      {microsHTML}
+      </View>
+    )
+  }
+
+  _renderMacrosCounters = () => {
     return (
       <View style={styles.row}>
         <View style={styles.column}>
@@ -113,18 +131,33 @@ export default class Preview extends Component {
           <View style={{justifyContent: 'center', backgroundColor: 'transparent', height: "100%"}}>
             <Image source={{uri: this.props.pictureUri}} style={styles.image} />
             <View style={[styles.boxContainer, styles.shadow]}>
-              {this.state.countersComplete ? this._renderPlainTexts() : this._renderCounters()}
-              <View style={[styles.buttonsContainer]}>
-                <Button block light onPress={this.handleRetake} style={[styles.button, {alignSelf: 'flex-end', backgroundColor: '#e4c271', width: 90}]} >
-                  <Text style={styles.buttonText}>retake</Text>
-                </Button>
-                <Button block light onPress={this.handleButtonPress} style={[styles.button, {alignSelf: 'flex-end'}]} >
-                  <Text style={styles.buttonText}>Save</Text>
-                </Button>
+          <SwipeALot style={[styles.boxContainer]}>
+          <View>
+                {this.state.countersComplete ? this._renderMacrosText() : this._renderMacrosCounters()}
+                <View style={[styles.buttonsContainer]}>
+                  <Button block light onPress={this.handleRetake} style={[styles.button, {alignSelf: 'flex-end', backgroundColor: '#e4c271', width: 90}]} >
+                    <Text style={styles.buttonText}>retake</Text>
+                  </Button>
+                  <Button block light onPress={this.handleButtonPress} style={[styles.button, {alignSelf: 'flex-end'}]} >
+                    <Text style={styles.buttonText}>Save</Text>
+                  </Button>
+                </View>
               </View>
-            </View>
-          </View>
+          <View>
+                {this._renderMicros()}
+                <View style={[styles.buttonsContainer]}>
+                  <Button block light onPress={this.handleRetake} style={[styles.button, {alignSelf: 'flex-end', backgroundColor: '#e4c271', width: 90}]} >
+                    <Text style={styles.buttonText}>retake</Text>
+                  </Button>
+                  <Button block light onPress={this.handleButtonPress} style={[styles.button, {alignSelf: 'flex-end'}]} >
+                    <Text style={styles.buttonText}>Save</Text>
+                  </Button>
+                </View>
+              </View>
+          </SwipeALot>
         </View>
+        </View>
+      </View>
       )
     }
     else {
@@ -149,6 +182,7 @@ const styles = StyleSheet.create({
     width: "75%",
   },
   row: {
+    position: 'absolute',
     flex: 1.7,
     flexDirection: 'row',
     top: 25,

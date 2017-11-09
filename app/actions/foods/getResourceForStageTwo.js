@@ -1,5 +1,7 @@
+import { USDA_KEY } from 'react-native-dotenv'
+
 export default function getResourceForStageTwo(food, foodName) {
-	const apiUrl = `https://api.nal.usda.gov/ndb/search/?format=json&q=${foodName}&sort=r&max=50&api_key=a0BDOE70I6xrdLQTVCy1x7xcm3F4N5H2JimATwJn`
+	const apiUrl = `https://api.nal.usda.gov/ndb/search/?format=json&q=${foodName}&sort=r&max=50&api_key=${USDA_KEY}`
   return (dispatch) => {
   	if (foodName != undefined) {
 			return fetch(apiUrl)

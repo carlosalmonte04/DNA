@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Navigator, Image, View, Link, Dimensions, FlatList, ScrollView, Easing } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { connect } from 'react-redux'
-import SwipeALot from 'react-native-swipe-a-lot'
 import * as Progress from 'react-native-progress';
 import moment from 'moment'
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';

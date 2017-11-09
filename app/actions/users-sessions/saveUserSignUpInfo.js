@@ -3,9 +3,10 @@ import navigateToDashboard from '../ui/navigateToDashboard'
 import setUser from './setUser'
 import toggleSignUpFormCompleted from '../ui/toggleSignUpFormCompleted'
 import User from '../../models/user'
+import { API_URL } from 'react-native-dotenv'
 
 export default function saveUserSignUpInfo(userInfo, navigate) {
-	const apiUrl = "https://ana-api.herokuapp.com/api/v1/users"
+	const apiUrl = `${API_URL}/users`
 
 	return (dispatch) => {
 

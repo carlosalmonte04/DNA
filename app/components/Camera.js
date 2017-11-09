@@ -80,6 +80,7 @@ class CameraScreen extends Component {
     //options.location = ...
     this.camera.capture({metadata: options})
       .then(picture => {
+        console.log("PICTURE PATH!!!", picture)
         this.props.startAnalyser(picture.path)
       })
       .catch(err => console.error(err));
@@ -227,22 +228,11 @@ class CameraScreen extends Component {
       )
     }
   }
-  __renderUnsavedMeal = () => {
-    return(
-      <Animatable.View style={[styles.previousMealContainer]} animation={"fadeIn"} duration={250}>
-        <TouchableOpacity style={styles.previousMeal}>
-          <Image source={{uri: this.props.user.unsavedMeal ? this.props.user.unsavedMeal.pictureUrl : "" }} style={{height: 40, width: 40}} resizeMode={'cover'}/>
-              <Icon name="ios-refresh-outline" style={{fontSize: 28, top: 0, fontWeight: 'bold', color: '#5f6466', backgroundColor: 'transparent'}}/>
-        </TouchableOpacity>
-      </Animatable.View>
-    )
-  }
 
   _renderControllers = () => {
     return(
       <View style={styles.bottom}>
       <View style={{flex: 1}}>
-        {this.props.user.unsavedMeal ? this.__renderUnsavedMeal() : null}
         <View style={styles.shutterContainer}>
           <TouchableOpacity onPress={this.takePicture}>
             <Image source={require('../assets/img/cameraShutter.png')} height={70} width={70}/>
@@ -474,6 +464,7 @@ function mapStateToProps(state) {
     user: state.user.user,
     meal: state.meals.mealOnAnalyser,
     macros      : state.meals.macros,
+    micros : state.meals.micros,
   }
 }
 

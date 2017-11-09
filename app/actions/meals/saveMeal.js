@@ -1,14 +1,18 @@
 import { AsyncStorage } from 'react-native';
 import Meal from '../../models/meal'
 import addMeal from './addMeal'
+import { API_URL } from 'react-native-dotenv'
 
 export default function saveMeal(meal) {
-const apiUrl = `https://ana-api.herokuapp.com/api/v1/meals/${meal._id}`
+const apiUrl = `${API_URL}/meals/${meal._id}`
 	return async (dispatch) => {
 
 		const token = await AsyncStorage.getItem('token')
 
 		if (token) {
+
+			meal.completed = true
+			
 			const mealData = {
 		    headers: {
 		      'Accept': 'application/json',

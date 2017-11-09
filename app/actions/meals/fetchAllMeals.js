@@ -2,11 +2,12 @@ import setAllMealsInState from './setAllMealsInState'
 import Meal from '../../models/meal'
 import toggleDashboardLoading from '../../actions/ui/toggleDashboardLoading'
 import { AsyncStorage } from 'react-native'
+import { API_URL } from 'react-native-dotenv'
 
 export default function fetchAllMeals() {
 
 	return async (dispatch) => {
-		const apiUrl = `https://ana-api.herokuapp.com/api/v1/meals/`
+		const apiUrl = `${API_URL}/meals/`
 		const token = await AsyncStorage.getItem('token')
 		const requestData = {
 			method: 'GET',

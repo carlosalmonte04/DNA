@@ -1,10 +1,11 @@
 import { AsyncStorage } from 'react-native'
 import User from '../../models/user'
 import setUser from './setUser'
+import { API_URL } from 'react-native-dotenv'
 
 export default function fetchUser(token) {
 
-	const apiUrl = `https://ana-api.herokuapp.com/api/v1/me`
+	const apiUrl = `${API_URL}/me`
 	return (dispatch) => {
 		const requestData = {
 	    headers: {
