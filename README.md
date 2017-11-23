@@ -5,18 +5,16 @@ Daily Nutrients Analyzer - find nutrient values of food by taking a picture of y
 Project as-is, not intended nor ready for actual daily use. Project intended to showcase my skills of web development.
 
 - Highlights: 
-  * Succession of 3 API calls without affecting user experience.
-  * UI design manually created (except the fonts).
-  * First Mobile Application.
+  * Succession of 3 API calls with unstructured data.
 
 - TODO
-  * Support for Android.
-  * Implement feedback gathered. -> Change colors, enhance UX/UI ('see options' and 'change portion size' features).
-  * Allowing existing pictures upload.
+  * **Support for Android**.
+  * ~Implement feedback gathered. -> Change colors, enhance UX/UI ('see options' and 'change portion size' features).~
+  * ~Allowing existing pictures upload.~
   * Login/Signup after trying to persist data.
   * Changes in options for each food should reflect changes in macronutrients.
-  * Allow to get results require login when saving meal
-  * Not change main macros count when exploring meal
+  * **Allow to get results require login when saving meal**
+  * **Not change main macros count when exploring meal**
   
 - Icebox
   * Implement clinical features
