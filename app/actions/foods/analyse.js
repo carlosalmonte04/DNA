@@ -11,7 +11,6 @@ import Meal from '../../models/meal'
 
 import {openFoodsModal} from '../ui/toggleFoodOptionsModal'
 
-
 export function analyse(picturePath) {
   let stageOne = []
   let stageTwo = []  
@@ -23,7 +22,6 @@ export function analyse(picturePath) {
   	dispatch(getResourceForStageOne(picturePath))
   	.catch(error => console.log("Got the following error while getting stage one", error))
   	.then((foodsInPicture, err) => {
-      console.log("CONCEPTS IN PICTURE", foodsInPicture)
         foodsInPicture.forEach(concept => {
           const newFoodAttributes = {
             id          : concept.id,
@@ -34,7 +32,6 @@ export function analyse(picturePath) {
           const newFood = new Food(newFoodAttributes) // =-> stage I
           stageOne.push(newFood)
         })
-        console.log("SETTING SOONER IN S3", stageOne)
         dispatch(setInStageThree(stageOne))
         dispatch(setLoading(false))
 
@@ -113,6 +110,7 @@ export function _cleanedAnalysis(analysis) {
         else {
           cleanedAnalysis.micros[nutrient.name] = {
             value: parseInt(nutrient.measures[0].value),
+            unit: nutrient.measures[0].eunit
           }
         }
       })

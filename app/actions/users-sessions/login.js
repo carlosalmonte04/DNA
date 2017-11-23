@@ -5,6 +5,7 @@ import fetchAllMeals from '../meals/fetchAllMeals'
 import { API_URL } from 'react-native-dotenv'
 
 export default function login(userInfo) {
+	
 	return (dispatch) => {
 		const apiUrl = `${API_URL}/login`
 		const requestData = {

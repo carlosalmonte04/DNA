@@ -36,13 +36,11 @@ const Food = ( () => {
 		changeSelOption(selectedOptionId) {
 			this.options.forEach(option => option.selected = false)
 			const selectedOption = this.options.find(option => selectedOptionId === option.ndbno)
-			console.log("GOT HERE WTH ID", selectedOptionId)
 			selectedOption.selected = true
 		}
 
 		selectedOption() {
 			const selectedOption = this.options.find(option => option.selected)
-			console.log("OPTION SELECTED!!", selectedOption)
 			return selectedOption
 		}
 

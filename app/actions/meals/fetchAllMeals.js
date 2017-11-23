@@ -17,7 +17,7 @@ export default function fetchAllMeals() {
 	      'token': token
 	    },
 		}
-
+		console.log("H?")
 		return fetch(apiUrl, requestData)
 		.then(res => res.json())
 		.catch( error => console.log("error while getting all users meals", error))

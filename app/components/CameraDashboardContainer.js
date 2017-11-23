@@ -12,6 +12,7 @@ import FullScreenLoader from './FullScreenLoader'
 import resetFoods from '../actions/foods/resetFoods'
 import resetMeals from '../actions/meals/resetMeals'
 import pictureOnAnalyser from '../actions/ui/pictureOnAnalyser'
+import {API_URL} from 'react-native-dotenv'
 
 class CameraDashboardContainer extends Component {
 
@@ -26,7 +27,6 @@ class CameraDashboardContainer extends Component {
     this.props.resetFoods()
     this.props.resetMeals()
     this.props.retakePicture()
-    this.props.navigation.navigate('CameraDashboardContainer')
   }
 
   _renderCameraDashboard = () => {

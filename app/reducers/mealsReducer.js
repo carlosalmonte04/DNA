@@ -36,6 +36,7 @@ function mealsReducer(state = initialState, action) {
       }
 
     case "ADD_MEAL":
+      console.log("BEFORE ADDED MEAL TO STATE", state)
       return Object.assign({}, state, {all: [...state.all, action.payload]})
 
     case "SET_ALL_MEALS_IN_STATE":

@@ -37,12 +37,15 @@ const Meal = ( () => {
 
 		micros() {
 			let micros = {}
-
+			
 			this.foods.forEach(food => {
-				for (key in food.micros) {
-					console.log("VALUE:", parseInt(food.micros[key]['value']))
-					micros[key] ? micros[key] = parseInt(food.micros[key]['value']) : micros[key] = micros[key] + (parseInt(food.micros[key]['value']))
-					console.log("MICROS ON FIRST", micros)
+				for (let key in food.micros) {
+					if (micros[key]) {
+						micros[key]['value'] += (food.micros[key]['value'] * food.portionSize)
+					}
+					else {
+						micros[key] = Object.assign({}, food.micros[key])
+					}
 				}
 			})
 			return micros

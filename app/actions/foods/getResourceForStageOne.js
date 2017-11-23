@@ -3,7 +3,7 @@ import newMeal from '../meals/newMeal'
 import { AsyncStorage } from 'react-native'
 import { API_URL } from 'react-native-dotenv'
 const apiUrl = `${API_URL}/meals`
-// const apiUrl = `https://ana-api.herokuapp.com/api/v1/meals`
+
 
 export default function getResourceForStageOne(picturePath) {
 
@@ -12,7 +12,7 @@ export default function getResourceForStageOne(picturePath) {
 
     if (token) {
       return RNFetchBlob.fetch('POST', apiUrl, {'Content-Type' : 'application/octet-stream', token: token}, RNFetchBlob.wrap(picturePath))
-        .then(res => res.json() )
+        .then(res => {console.log(res); return res.json() })
         .then(foodsAndMeal => {
           console.log("FOODS AND MEAL", foodsAndMeal)
           dispatch(newMeal(foodsAndMeal.frontEndMeal))

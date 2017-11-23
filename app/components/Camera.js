@@ -93,7 +93,7 @@ class CameraScreen extends Component {
   handleSave = async () => {
     this.props.saveMeal(this.props.meal)
     .then(() => { 
-      this.setState({isDashboardOpen: true })
+      this.setState({isDashboardOpen: false })
       this.props.resetFoods()
       this.props.resetMeals()
       this.props.retakePicture()

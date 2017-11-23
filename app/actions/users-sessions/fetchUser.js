@@ -4,7 +4,6 @@ import setUser from './setUser'
 import { API_URL } from 'react-native-dotenv'
 
 export default function fetchUser(token) {
-
 	const apiUrl = `${API_URL}/me`
 	return (dispatch) => {
 		const requestData = {
@@ -18,7 +17,6 @@ export default function fetchUser(token) {
 		.catch(err => console.log("Error while getting /me, most likely network request, check url being requested", err))
 		.then(res => res.json())
 		.then(persistedUserInfo => {
-			console.log("Preview", persistedUserInfo)
 			User.reset()
 			const user = new User(persistedUserInfo)
 			dispatch(setUser(user))

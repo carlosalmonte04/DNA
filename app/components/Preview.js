@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Alert, Easing, StatusBar} from 'react-native';
+import { View, Image, StyleSheet, Dimensions, TouchableOpacity, Alert, Easing, StatusBar, ScrollView} from 'react-native';
 import { Icon, Text, Label, Button, Content, Container} from 'native-base';
 import { connect } from 'react-redux'
 import Counter from 'react-native-counter';
@@ -68,14 +68,14 @@ export default class Preview extends Component {
     let microsHTML = []
     for(key in this.props.micros) {
       microsHTML.push(
-        <View style={{display: 'flex', flexDirection: 'row'}}>
-          <Text key={key} style={{display: 'flex'}}>{key}</Text><Text style={{display: 'flex'}}> = {this.props.micros[key]}</Text>
+        <View key={key} style={{display: 'flex', flexDirection: 'row'}}>
+          <Text style={{display: 'flex', fontSize: 16, fontWeight: '200'}}>{key}</Text><Text style={{display: 'flex', fontSize: 16, fontWeight: '200'}}> = {`${this.props.micros[key]['value']} ${this.props.micros[key]['unit']}` }</Text>
         </View>
       )
     }
 
     return (
-      <View style={{position: 'absolute'}}>
+      <View>
       {microsHTML}
       </View>
     )
@@ -131,32 +131,24 @@ export default class Preview extends Component {
           <View style={{justifyContent: 'center', backgroundColor: 'transparent', height: "100%"}}>
             <Image source={{uri: this.props.pictureUri}} style={styles.image} />
             <View style={[styles.boxContainer, styles.shadow]}>
-          <SwipeALot style={[styles.boxContainer]}>
-          <View>
-                {this.state.countersComplete ? this._renderMacrosText() : this._renderMacrosCounters()}
-                <View style={[styles.buttonsContainer]}>
-                  <Button block light onPress={this.handleRetake} style={[styles.button, {alignSelf: 'flex-end', backgroundColor: '#e4c271', width: 90}]} >
-                    <Text style={styles.buttonText}>retake</Text>
-                  </Button>
-                  <Button block light onPress={this.handleButtonPress} style={[styles.button, {alignSelf: 'flex-end'}]} >
-                    <Text style={styles.buttonText}>Save</Text>
-                  </Button>
+              <SwipeALot style={styles.infoContainer} circleDefaultStyle={{opacity: 0}}>
+                <View>
+                  {this.state.countersComplete ? this._renderMacrosText() : this._renderMacrosCounters()}
                 </View>
+                <ScrollView style={{width: "100%"}}>
+                  {this._renderMicros()}
+                </ScrollView>
+              </SwipeALot>
+              <View style={[styles.buttonsContainer]}>
+                <Button block light onPress={this.handleRetake} style={[styles.button, {alignSelf: 'flex-end', backgroundColor: '#e4c271', width: 90}]} >
+                  <Text style={styles.buttonText}>retake</Text>
+                </Button>
+                <Button block light onPress={this.handleButtonPress} style={[styles.button, {alignSelf: 'flex-end'}]} >
+                  <Text style={styles.buttonText}>Save</Text>
+                </Button>
               </View>
-          <View>
-                {this._renderMicros()}
-                <View style={[styles.buttonsContainer]}>
-                  <Button block light onPress={this.handleRetake} style={[styles.button, {alignSelf: 'flex-end', backgroundColor: '#e4c271', width: 90}]} >
-                    <Text style={styles.buttonText}>retake</Text>
-                  </Button>
-                  <Button block light onPress={this.handleButtonPress} style={[styles.button, {alignSelf: 'flex-end'}]} >
-                    <Text style={styles.buttonText}>Save</Text>
-                  </Button>
-                </View>
-              </View>
-          </SwipeALot>
-        </View>
-        </View>
+            </View>
+          </View>
       </View>
       )
     }
@@ -180,6 +172,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
     width: "75%",
+  },
+  infoContainer: {
+    flex: 0.7
   },
   row: {
     position: 'absolute',
@@ -220,11 +215,9 @@ const styles = StyleSheet.create({
     },
   },
   buttonsContainer: {
-  flex: 1,
-  flexDirection: 'row',
-  justifyContent: 'center',
-  alignSelf: 'center',
-  backgroundColor: 'transparent',
+    flex: 0.3,
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   button: {
     backgroundColor: "#8cba92",
