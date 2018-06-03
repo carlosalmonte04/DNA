@@ -1,90 +1,90 @@
-const User = (() => {
-	let all = []
-	return class User {
+// import firebase, { Auth } from "react-native-firebase";
 
+const User = (() => {
+	let all = [];
+	return class User {
 		constructor(attributes) {
-			for(key in attributes) {
-				this[key] = attributes[key]
+			for (key in attributes) {
+				this[key] = attributes[key];
 			}
-			all.push(this)
+			all.push(this);
 		}
 
 		static all() {
-			return all
+			return all;
 		}
 
 		static reset() {
-			all = []
+			all = [];
 		}
 
 		getBmi() {
-			const weight = parseInt(this.weight)
-			const height = parseInt(this.height)
-			return ( ( (weight / height) / height ) * 703 ).toFixed(1)
+			const weight = parseInt(this.weight);
+			const height = parseInt(this.height);
+			return (weight / height / height * 703).toFixed(1);
 		}
 
-
 		getIbw() {
-			const height = parseInt(this.height)
-			switch(parseInt(this.gender)) {
+			const height = parseInt(this.height);
+			switch (parseInt(this.gender)) {
 				case 0:
-					return Math.round( ( (height - 60) * 6) + 106).toFixed(1)
+					return Math.round((height - 60) * 6 + 106).toFixed(1);
 				case 1:
-					return Math.round( ( (height - 60) * 5) + 105).toFixed(1)
+					return Math.round((height - 60) * 5 + 105).toFixed(1);
 
 				default:
-					return "Invalid gender"
+					return "Invalid gender";
 			}
 		}
 
 		getCaloricRequirement() {
-			const weight = parseInt(this.weight)
-			switch(this.goal) {
+			const weight = parseInt(this.weight);
+			switch (this.goal) {
 				case "Lose Weight":
-					return Math.round((weight / 2.2 ) * 25)
+					return Math.round(weight / 2.2 * 25);
 
 				case "Maintain Weight":
-					return Math.round((weight / 2.2 ) * 30)
+					return Math.round(weight / 2.2 * 30);
 
 				case "Gain Weight":
-					return Math.round((weight / 2.2 ) * 35)
+					return Math.round(weight / 2.2 * 35);
 
 				default:
-					return "Invalid goal"
+					return "Invalid goal";
 			}
 		}
 
 		getProteinRequirement() {
-			const weight = parseInt(this.weight)
+			const weight = parseInt(this.weight);
 
-			switch(this.goal) {
+			switch (this.goal) {
 				case "Lose Weight":
-					return Math.round((weight / 2.2 ) * 0.8)
+					return Math.round(weight / 2.2 * 0.8);
 
 				case "Maintain Weight":
-					return Math.round((weight / 2.2 ) * 1)
+					return Math.round(weight / 2.2 * 1);
 
 				case "Gain Weight":
-					return Math.round((weight / 2.2 ) * 1.2)
+					return Math.round(weight / 2.2 * 1.2);
 
 				default:
-					return "Invalid goal"
+					return "Invalid goal";
 			}
 		}
 
 		getFluidsRequirement() {
-			const weight = parseInt(this.weight)
-					return Math.round(( weight / 2.2 ) * 30)
+			const weight = parseInt(this.weight);
+			return Math.round(weight / 2.2 * 30);
 		}
 
 		getFatRequirement() {
-			return 40
+			return 40;
 		}
 
 		getCarbohydrateRequirement() {
-			return 130
+			return 130;
 		}
-	}
-})()
+	};
+})();
 
-export default User
+export default User;

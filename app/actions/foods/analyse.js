@@ -1,27 +1,22 @@
-import RNFetchBlob from 'react-native-fetch-blob'
 import getResourceForStageOne from './getResourceForStageOne'
 import getResourceForStageTwo from './getResourceForStageTwo'
 import getResourceForStageThree from './getResourceForStageThree'
 import setInStageThree from './setInStageThree'
-import newMeal from '../meals/newMeal'
 import setLoading from '../ui/setLoading'
 
 import Food from '../../models/food'
-import Meal from '../../models/meal'
-
-import {openFoodsModal} from '../ui/toggleFoodOptionsModal'
 
 export function analyse(picturePath) {
   let stageOne = []
-  let stageTwo = []  
+  let stageTwo = []
   let stageThree = []
 
   Food.reset()
 
   return (dispatch) => {
-  	dispatch(getResourceForStageOne(picturePath))
-  	.catch(error => console.log("Got the following error while getting stage one", error))
-  	.then((foodsInPicture, err) => {
+    dispatch(getResourceForStageOne(picturePath))
+    .catch(error => console.log("Got the following error while getting stage one", error))
+    .then((foodsInPicture, err) => {
         foodsInPicture.forEach(concept => {
           const newFoodAttributes = {
             id          : concept.id,
@@ -35,10 +30,10 @@ export function analyse(picturePath) {
         dispatch(setInStageThree(stageOne))
         dispatch(setLoading(false))
 
-  			return stageOne.map(food => {
-					dispatch(getResourceForStageTwo(food, food.name))
+        return stageOne.map(food => {
+          dispatch(getResourceForStageTwo(food, food.name))
           .catch(error => console.log("Got the following error while getting stage two", error))
-					.then(usdaOptions =>  {
+          .then(usdaOptions =>  {
             food.options = usdaOptions // =-> stage II
 
             const ndbno = usdaOptions[0].ndbno
@@ -59,10 +54,10 @@ export function analyse(picturePath) {
               dispatch(setLoading(false))
             }
             return food
-					})
+          })
           .catch(error => console.log("Got the following error while getting stage three", error))
-  			})
-  	})
+        })
+    })
     .catch(err => console.log("Error while at stage zero", err))
   }
 }
