@@ -1,6 +1,6 @@
 // import firebase, { Auth } from "react-native-firebase";
 
-const User = (() => {
+export const User = (() => {
 	let all = [];
 	return class User {
 		constructor(attributes) {
@@ -86,5 +86,3 @@ const User = (() => {
 		}
 	};
 })();
-
-export default User;
