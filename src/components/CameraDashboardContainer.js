@@ -1,24 +1,28 @@
 import React, { Component } from "react";
-import Camera from "./Camera";
 import { connect } from "react-redux";
-import DashboardContainer from "./DashboardContainer";
 import { AsyncStorage } from "react-native";
-import toggleLoggedIn from "../actions/ui/toggleLoggedIn";
-import setLoading from "../actions/ui/setLoading";
-import fetchUser from "../actions/users-sessions/fetchUser";
-import SwipeALot from "react-native-swipe-a-lot";
+import {
+  toggleLoggedIn,
+  saveMeal,
+  setLoading,
+  fetchUser,
+  resetFoods,
+  resetMeals,
+  pictureOnAnalyser
+} from "@dnaActions";
+import { CameraScreen } from "./Home";
 import WelcomeLoginForm from "./WelcomeLoginForm";
-import FullScreenLoader from "./FullScreenLoader";
-import resetFoods from "../actions/foods/resetFoods";
-import resetMeals from "../actions/meals/resetMeals";
-import pictureOnAnalyser from "../actions/ui/pictureOnAnalyser";
-import { API_URL } from "react-native-dotenv";
 
 class CameraDashboardContainer extends Component {
+  componentDidMount() {
+    this.isLoggedIn();
+  }
+
   isLoggedIn = async () => {
     const token = await AsyncStorage.getItem("token");
     this.props.toggleLoggedIn(!!token);
     if (this.props.isLoggedIn) await this.props.fetchUser(token);
+    console.log("Toggling to false");
     this.props.setLoading(false);
   };
 
@@ -28,9 +32,12 @@ class CameraDashboardContainer extends Component {
     this.props.retakePicture();
   };
 
-  _renderCameraDashboard = () => {
+  _renderCameraScreen = () => {
     return (
-      <Camera navigation={this.props.navigation} resetAll={this.resetAll} />
+      <CameraScreen
+        navigation={this.props.navigation}
+        resetAll={this.resetAll}
+      />
     );
   };
 
@@ -38,13 +45,9 @@ class CameraDashboardContainer extends Component {
     return <WelcomeLoginForm navigation={this.props.navigation} />;
   }
 
-  componentDidMount() {
-    this.isLoggedIn();
-  }
-
   render() {
     return /*this.props.isLoggedIn*/ true
-      ? this._renderCameraDashboard()
+      ? this._renderCameraScreen()
       : this._renderWelcomeLoginForm();
   }
 }
@@ -68,6 +71,15 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  CameraDashboardContainer
-);
+export default connect(
+  mapStateToProps,
+  {
+    toggleLoggedIn,
+    saveMeal,
+    setLoading,
+    fetchUser,
+    retakePicture: () => pictureOnAnalyser(null),
+    resetFoods,
+    resetMeals
+  }
+)(CameraDashboardContainer);

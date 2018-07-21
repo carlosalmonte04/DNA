@@ -12,13 +12,13 @@ import { createStore, applyMiddleware, combineReducers } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import { connect } from "react-redux";
+import { PersistGate } from "redux-persist/lib/integration/react";
+import { persistStore } from "redux-persist";
+import { store } from "@dnaStore";
+import { devFlags } from "@dnaConfig";
+import App from "./App";
 
-import foodsReducer from "./src/reducers/foodsReducer";
-import mealsReducer from "./src/reducers/mealsReducer";
-import uiReducer from "./src/reducers/uiReducer";
-import usersReducer from "./src/reducers/usersReducer";
-
-import AppNavigator from "./src/components/AppNavigator";
+console.log("***Store - store", store);
 
 console.disableYellowBox = true;
 
@@ -28,20 +28,28 @@ const screen = Dimensions.get("window");
 if (typeof process === "undefined") process = {};
 process.nextTick = setImmediate;
 
-const rootReducer = combineReducers({
-  foods: foodsReducer,
-  ui: uiReducer,
-  meals: mealsReducer,
-  user: usersReducer
-});
-
-const store = createStore(rootReducer, applyMiddleware(thunk));
-
 class DNA extends Component {
+  constructor(props) {
+    super(props);
+
+    this._persistor = persistStore(store, null, this.setRehydrated);
+
+    if (devFlags.purgeAllData) {
+      this._persistor.purge();
+    }
+
+    this.state = {
+      rehydrated: false
+    };
+  }
+
   render() {
+    const { rehydrated } = this.state;
     return (
-      <Provider store={store} style={styles.main}>
-        <AppNavigator style={{ position: "relative" }} />
+      <Provider store={store}>
+        <PersistGate persistor={this._persistor} loading={null}>
+          <App rehydrated={rehydrated} />
+        </PersistGate>
       </Provider>
     );
   }

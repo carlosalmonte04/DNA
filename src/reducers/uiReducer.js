@@ -1,4 +1,7 @@
-const initialState = { 
+import * as T from "@dnaActions";
+import { Meal } from "@dnaModels";
+
+const initialState = {
   isLoggedIn: false,
   isLoading: true,
   gotAnalysis: false,
@@ -7,50 +10,82 @@ const initialState = {
   displayingMeal: null,
   signUpModalShowing: false,
   signUpFormCompleted: false,
-  isFoodModalOpen: false
-}
+  isFoodModalOpen: false,
+  mealOnAnalyser: new Meal(),
+  activeConceptId: ""
+};
 
-function foodsReducer(state = initialState, action) {
+export const uiReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "OPEN_MODAL":
-      return Object.assign({}, state, {foodsModalOpen: true})
+    case T.OPEN_MODAL:
+      return Object.assign({}, state, { foodsModalOpen: true });
 
-    case "CLOSE_MODAL":
-      return Object.assign({}, state, {foodsModalOpen: false})
+    case T.CLOSE_MODAL:
+      return Object.assign({}, state, { foodsModalOpen: false });
 
-    case "SET_LOADING":
-      return Object.assign({}, state, {isLoading: action.payload})
+    case T.SET_LOADING:
+      return Object.assign({}, state, { isLoading: action.payload });
 
-    case "CHANGE_PICTURE_ON_ANALYSER":
-      return Object.assign({}, state, {pictureOnAnalyser: action.payload})
+    case T.SET_PICTURE_ON_ANALYSER:
+      const { picturePath } = action.payload;
+      return Object.assign({}, state, { pictureOnAnalyser: picturePath });
 
-    case "CHANGE_DISPLAYING_MEAL":
-      return Object.assign({}, state, {displayingMeal: action.payload})
+    case T.CHANGE_DISPLAYING_MEAL:
+      return Object.assign({}, state, { displayingMeal: action.payload });
 
-    case "TOGGLE_DASHBOARD_LOADING":
-      return Object.assign({}, state, {dashboardLoading: action.payload})
+    case T.TOGGLE_DASHBOARD_LOADING:
+      return Object.assign({}, state, { dashboardLoading: action.payload });
 
-    case "TOGGLE_SIGN_UP_MODAL":
-      return Object.assign({}, state, {signUpModalShowing: !state.signUpModalShowing})
+    case T.TOGGLE_SIGN_UP_MODAL:
+      return Object.assign({}, state, {
+        signUpModalShowing: !state.signUpModalShowing
+      });
 
-    case "TOGGLE_LOGGED_IN":
-      return Object.assign({}, state, {isLoggedIn: action.payload})
+    case T.TOGGLE_LOGGED_IN:
+      return Object.assign({}, state, { isLoggedIn: action.payload });
 
-    case "TOGGLE_SIGN_UP_FORM_COMPLETED":
-      return Object.assign({}, state, {signUpFormCompleted: action.payload})
+    case T.TOGGLE_SIGN_UP_FORM_COMPLETED:
+      return Object.assign({}, state, { signUpFormCompleted: action.payload });
 
-    case "TOGGLE_WELCOME_MESSAGE":
-      return Object.assign({}, state, {welcomeMessage: action.payload})
-      break
+    case T.TOGGLE_WELCOME_MESSAGE:
+      return Object.assign({}, state, { welcomeMessage: action.payload });
 
-    case "TOGGLE_ADD_FOOD_MODAL":
-      return Object.assign({}, state, {isFoodModalOpen: !state.isFoodModalOpen})
-      break
+    case T.TOGGLE_ADD_FOOD_MODAL:
+      return Object.assign({}, state, {
+        isFoodModalOpen: !state.isFoodModalOpen
+      });
+
+    case T.SET_STATUS_BAR_HEIGHT:
+      const {
+        payload: { statusBarHeight }
+      } = action;
+
+      return {
+        ...state,
+        statusBarHeight
+      };
+
+    case T.SET_ACTIVE_CONCEPT_ID:
+      const {
+        payload: { activeConceptId }
+      } = action;
+
+      return {
+        ...state,
+        activeConceptId
+      };
+
+    case T.SET_ANALYSER_PROCESS_TRACKER:
+      const {
+        payload: { processState }
+      } = action;
+
+      return {
+        ...state,
+        processState
+      };
 
     default:
-      return state
+      return state;
   }
-
-}
-
-export default foodsReducer
+};

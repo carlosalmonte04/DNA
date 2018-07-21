@@ -1,40 +1,63 @@
-import React, { Component } from 'react';
-import { StyleSheet, Navigator, Image, View, Link, Dimensions, FlatList, ScrollView, Easing } from 'react-native';
-import { StackNavigator } from 'react-navigation';
-import { connect } from 'react-redux'
-import * as Progress from 'react-native-progress';
-import moment from 'moment'
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
-import Drawer from 'react-native-drawer-menu';
-import { Container, Content, InputGroup, Input, Icon, Button, Text, Form, Title, Item, Label, List, Header} from 'native-base';
-import fetchAllMeals from '../actions/meals/fetchAllMeals'
-import changeDisplayingMeal from '../actions/ui/changeDisplayingMeal'
-import Menu from './Menu'
-import Meal from './Meal'
-import Dashboard from './Dashboard'
-import WelcomeLoginForm from './WelcomeLoginForm'
-import LinearGradient from 'react-native-linear-gradient';
-import Modal from 'react-native-modalbox';
+import React, { Component } from "react";
+import {
+  StyleSheet,
+  Navigator,
+  Image,
+  View,
+  Link,
+  Dimensions,
+  FlatList,
+  ScrollView,
+  Easing
+} from "react-native";
+import { StackNavigator } from "react-navigation";
+import { connect } from "react-redux";
+import * as Progress from "react-native-progress";
+import moment from "moment";
+import { Calendar, CalendarList, Agenda } from "react-native-calendars";
+// import Drawer from 'react-native-drawer-menu';
+import {
+  Container,
+  Content,
+  InputGroup,
+  Input,
+  Icon,
+  Button,
+  Text,
+  Form,
+  Title,
+  Item,
+  Label,
+  List,
+  Header
+} from "native-base";
+import fetchAllMeals from "../actions/meals/fetchAllMeals";
+import changeDisplayingMeal from "../actions/ui/changeDisplayingMeal";
+import Menu from "./Menu";
+import Meal from "./Meal";
+import Dashboard from "./Dashboard";
+import WelcomeLoginForm from "./WelcomeLoginForm";
+import LinearGradient from "react-native-linear-gradient";
+import Modal from "react-native-modalbox";
 
-const screen = Dimensions.get('window');
+const screen = Dimensions.get("window");
 
 class DashboardContainer extends Component {
-
   state = {
     selectedDates: {},
     displayingMeals: [],
     markedDates: {},
-    datesAndMeals: {},
-  }
+    datesAndMeals: {}
+  };
 
   openMenu = () => {
-    this.refs.menu.openDrawer()
-  }
+    this.refs.menu.openDrawer();
+  };
 
   render() {
     return (
       <Container>
-        <Drawer
+        {/*        <Drawer
         ref="menu"
         displayLoadingIndicator={this.props.isLoading}
         style={styles.container}
@@ -57,32 +80,32 @@ class DashboardContainer extends Component {
           onClosed={() => this.props.changeDisplayingMeal(null)}>
             <Meal meal={this.props.displayingMeal}/>
         </Modal>
-      </Drawer>
-    </Container>
+      </Drawer>*/}
+      </Container>
     );
   }
 }
 
 var styles = StyleSheet.create({
   linearGradient: {
-    flex: 1,
+    flex: 1
   },
   buttonText: {
     fontSize: 18,
-    fontFamily: 'Gill Sans',
-    textAlign: 'center',
+    fontFamily: "Gill Sans",
+    textAlign: "center",
     margin: 10,
-    color: '#ffffff',
-    backgroundColor: 'transparent',
+    color: "#ffffff",
+    backgroundColor: "transparent"
   },
   shadow: {
-    shadowColor: '#384a38',
-    shadowOffset: {width: 0, height: 0}, 
-    shadowOpacity: 0.8,
-  },  
+    shadowColor: "#384a38",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8
+  },
   modal: {
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center"
   },
 
   modal2: {
@@ -93,7 +116,7 @@ var styles = StyleSheet.create({
   modal3: {
     height: 300,
     width: 300
-  },
+  }
 });
 
 function mapStateToProps(state) {
@@ -101,16 +124,15 @@ function mapStateToProps(state) {
     meals: state.meals.all,
     displayingMeal: state.ui.displayingMeal,
     isLoading: state.ui.isLoading,
-    isLoggedIn: state.ui.isLoggedIn,
-  }
+    isLoggedIn: state.ui.isLoggedIn
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchAllMeals: () => dispatch(fetchAllMeals()),
-    changeDisplayingMeal: (meal) => dispatch(changeDisplayingMeal(meal)),
-  }
+    changeDisplayingMeal: meal => dispatch(changeDisplayingMeal(meal))
+  };
 }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

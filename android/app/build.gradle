@@ -72,6 +72,10 @@ import com.android.build.OutputFile
  * ]
  */
 
+project.ext.react = [
+    entryFile: "index.js"
+]
+
 apply from: "../../node_modules/react-native/react.gradle"
 
 /**
@@ -91,7 +95,7 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '25.0.0'
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "com.dna"
@@ -102,7 +106,6 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
-        vectorDrawables.useSupportLibrary = true
     }
     splits {
         abi {
@@ -135,6 +138,10 @@ android {
 
 dependencies {
     compile project(':react-native-image-crop-picker')
+    compile project(':react-native-picker')
+    compile project(':appcenter-crashes')
+    compile project(':appcenter-analytics')
+    compile project(':appcenter')
     compile project(':react-native-vector-icons')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-fetch-blob')

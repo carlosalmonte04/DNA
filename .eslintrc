@@ -1,0 +1,64 @@
+{
+  "parser": "babel-eslint",
+  "extends": [
+    "airbnb",
+    "plugin:react/recommended",
+    "plugin:react-native/all",
+    "prettier",
+    "prettier/flowtype",
+    "prettier/react"
+  ],
+  "plugins": [
+    "react",
+    "react-native",
+    "prettier",
+    "jsx-a11y"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 7,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "arrowFunctions": true,
+      "modules": true
+    }
+  },
+  "rules": {
+    "no-console": 0,
+    "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }],
+    "react/jsx-curly-brace-presence": 0,
+    "prettier/prettier": "error",
+    "arrow-body-style": 0,
+    "import/no-extraneous-dependencies": 0,
+    "react/forbid-prop-types": 0,
+    "import/prefer-default-export": 0,
+    "react-native/no-inline-styles": 0,
+    "global-require": 0,
+    "react/prop-types": 0,
+    "no-shadow": 0,
+    "no-underscore-dangle": 0,
+    "import/no-unresolved": [2,
+      {
+        "ignore": [
+          "@dnaAssets",
+          "@dnaConfig",
+          "@dnaComponents",
+          "@dnaCommon",
+          "@dnaHelpers",
+          "@dnaActions",
+          "@dnaLayoutAnimations"
+        ]
+      }
+    ],
+    "import/extensions": ["error", "ignorePackages", {
+      "js": "never",
+      "mjs": "never",
+      "jsx": "never",
+    }]
+  },
+  "env": {
+    "es6": true,
+    "node": true,
+    "browser": true
+  }
+}

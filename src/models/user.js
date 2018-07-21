@@ -7,7 +7,6 @@ export const User = (() => {
 			for (key in attributes) {
 				this[key] = attributes[key];
 			}
-			all.push(this);
 		}
 
 		static all() {
@@ -21,7 +20,7 @@ export const User = (() => {
 		getBmi() {
 			const weight = parseInt(this.weight);
 			const height = parseInt(this.height);
-			return (weight / height / height * 703).toFixed(1);
+			return ((weight / height / height) * 703).toFixed(1);
 		}
 
 		getIbw() {
@@ -41,13 +40,13 @@ export const User = (() => {
 			const weight = parseInt(this.weight);
 			switch (this.goal) {
 				case "Lose Weight":
-					return Math.round(weight / 2.2 * 25);
+					return Math.round((weight / 2.2) * 25);
 
 				case "Maintain Weight":
-					return Math.round(weight / 2.2 * 30);
+					return Math.round((weight / 2.2) * 30);
 
 				case "Gain Weight":
-					return Math.round(weight / 2.2 * 35);
+					return Math.round((weight / 2.2) * 35);
 
 				default:
 					return "Invalid goal";
@@ -59,13 +58,13 @@ export const User = (() => {
 
 			switch (this.goal) {
 				case "Lose Weight":
-					return Math.round(weight / 2.2 * 0.8);
+					return Math.round((weight / 2.2) * 0.8);
 
 				case "Maintain Weight":
-					return Math.round(weight / 2.2 * 1);
+					return Math.round((weight / 2.2) * 1);
 
 				case "Gain Weight":
-					return Math.round(weight / 2.2 * 1.2);
+					return Math.round((weight / 2.2) * 1.2);
 
 				default:
 					return "Invalid goal";
@@ -74,7 +73,7 @@ export const User = (() => {
 
 		getFluidsRequirement() {
 			const weight = parseInt(this.weight);
-			return Math.round(weight / 2.2 * 30);
+			return Math.round((weight / 2.2) * 30);
 		}
 
 		getFatRequirement() {

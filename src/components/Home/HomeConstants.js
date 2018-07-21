@@ -1,0 +1,4 @@
+import { VIEWABLE_CONTENT_HEIGHT } from "@dnaAssets";
+
+export const HT_FROM_HEADER_TO_LIST = 400;
+export const INACTIVE_LIST_HEIGHT = VIEWABLE_CONTENT_HEIGHT * 0.4;
