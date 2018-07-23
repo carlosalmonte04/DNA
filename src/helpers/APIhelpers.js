@@ -35,6 +35,8 @@ export const getUSDAApiUrl = ({
       return `https://api.nal.usda.gov/ndb/search/?format=json&q=${foodName}&sort=r&max=50&api_key=${USDA_KEY}`;
     case "report":
       return `https://api.nal.usda.gov/ndb/V2/reports?ndbno=${usdaNdbno}&type=f&format=json&api_key=${USDA_KEY}`;
+    default:
+      return "";
   }
 };
 
@@ -50,7 +52,21 @@ export const createMealWithPicture = async ({ picturePath, token }) => {
     RNFetchBlob.wrap(picturePath)
   );
 
+  console.log(`Meal RESPONSE ====>createMealWithPicture`, mealRes);
   const meal = await mealRes.json();
 
   return meal;
+};
+
+export const getAllUserMeals = async ({ token }) => {
+  const userMealsRes = await fetch(
+    getAPIEndpoint("/meals"),
+    defaultAPIReqData({ token })
+  );
+
+  const userMeals = await userMealsRes.json();
+
+  console.log(`Meals - got user meals`, userMeals);
+
+  return userMeals;
 };

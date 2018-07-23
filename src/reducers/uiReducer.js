@@ -85,6 +85,10 @@ export const uiReducer = (state = initialState, action) => {
         processState
       };
 
+    case T.RESET_KEEP_LOGGED_IN: {
+      return initialState;
+    }
+
     default:
       return state;
   }

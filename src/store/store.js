@@ -11,11 +11,18 @@ import {
   reduxifyNavigator
 } from "react-navigation-redux-helpers";
 import { persistStore, persistCombineReducers } from "redux-persist";
-import { DEV, devFlags } from "../Config";
+import { DEV, devFlags, defaultRefs } from "../Config";
 import { Reducers } from "@dnaReducers";
-import { navMiddleware } from "../navigation";
+import { Meal } from "@dnaModels";
+import {
+  navMiddleware,
+  homeNavMiddleware,
+  mealNavMiddleware
+} from "../navigation";
 
 const { keepMealOnView } = devFlags;
+
+const mealDependentReducers = ["ui", "foods", "meals"];
 
 const composeEnhancers =
   typeof window === "object" &&
@@ -29,7 +36,9 @@ const composeEnhancers =
 const config = {
   key: "root",
   storage: AsyncStorage,
-  blacklist: ["nav", DEV && keepMealOnView ? null : "ui"],
+  blacklist: ["nav"].concat(
+    DEV && keepMealOnView ? defaultRefs.emptyArr : mealDependentReducers
+  ),
   debounce: 50
 };
 
@@ -48,7 +57,7 @@ const middleware = createReactNavigationReduxMiddleware(
 
 // export const addListener = createReduxBoundAddListener("root");
 
-const middlewares = [navMiddleware, thunk];
+const middlewares = [navMiddleware, thunk, Meal.connectDispatch];
 
 const configureStore = () => {
   const store = createStore(

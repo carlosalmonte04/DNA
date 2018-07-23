@@ -15,7 +15,6 @@ import {
 } from "react-native";
 import { StackNavigator } from "react-navigation";
 import { connect } from "react-redux";
-import SwipeALot from "react-native-swipe-a-lot";
 import * as Progress from "react-native-progress";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 // import Drawer from 'react-native-drawer-menu';

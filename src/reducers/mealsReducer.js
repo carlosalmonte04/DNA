@@ -4,13 +4,15 @@ import * as T from "@dnaActions";
 const initialState = {
   all: [],
   mealOnAnalyser: new Meal(Meal.DEFAULT_MEAL_ATTRIBUTES), // =-> placeholder for Meal()}
+  userMeals: [],
   macros: {
     calorie: 0,
     protein: 0,
     fat: 0,
     carbohydrate: 0
   },
-  micros: {}
+  micros: {},
+  activeMealId: ""
 };
 
 export const mealsReducer = (state = initialState, action) => {
@@ -58,7 +60,12 @@ export const mealsReducer = (state = initialState, action) => {
       return Object.assign({}, state, { all: [...state.all, action.payload] });
 
     case T.SET_ALL_MEALS_IN_STATE:
-      return Object.assign({}, state, { all: action.payload });
+      const { userMealsIds, userMealsData } = action.payload;
+      return {
+        ...state,
+        userMealsIds,
+        userMealsData
+      };
 
     case T.RESET_MEALS:
       Meal.reset();
@@ -71,6 +78,14 @@ export const mealsReducer = (state = initialState, action) => {
     case T.UPDATE_MACROS:
       newMacros = state.mealOnAnalyser.macros();
       return Object.assign({}, state, { macros: newMacros });
+
+    case T.SET_ACTIVE_MEAL_ID:
+      const { mealId } = action.payload;
+      return Object.assign({}, state, { activeMealId: mealId });
+
+    case T.RESET_KEEP_LOGGED_IN: {
+      return initialState;
+    }
 
     default:
       return state;

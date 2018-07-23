@@ -3,27 +3,51 @@ import { Text } from "react-native";
 import PropTypes from "prop-types";
 import { IOS } from "@dnaAssets";
 
-export const DnaHText = props => {
-  const { text, fontSize, fontWeight, fontFamily } = props;
+const DEFAULT_SIZES = {
+  1: 30,
+  2: 28,
+  3: 24,
+  4: 20
+};
 
-  const styleToUse = {
+export const DnaHText = props => {
+  const {
+    size,
+    bold,
+    text,
     fontSize,
     fontWeight,
-    fontFamily
+    fontFamily,
+    color,
+    style
+  } = props;
+
+  const styleToUse = {
+    fontSize: fontSize || DEFAULT_SIZES[size],
+    fontWeight: bold ? "bold" : fontWeight,
+    fontFamily,
+    color
   };
 
-  return <Text style={styleToUse}>{text}</Text>;
+  return <Text style={[styleToUse, style]}>{text}</Text>;
 };
 
 DnaHText.propTypes = {
   text: PropTypes.string,
   fontSize: PropTypes.number,
-  fontWeight: PropTypes.string
+  size: PropTypes.number,
+  fontWeight: PropTypes.string,
+  fontFamily: PropTypes.string,
+  color: PropTypes.string,
+  bold: PropTypes.bool
 };
 
 DnaHText.defaultProps = {
   text: "",
-  fontSize: 18,
-  fontWeight: "bold",
-  fontFamily: IOS ? "Avenir" : "Roboto"
+  fontSize: 0,
+  size: 2,
+  fontWeight: "normal",
+  fontFamily: IOS ? "Avenir" : "Roboto",
+  color: IOS ? "Avenir" : "Roboto",
+  bold: false
 };

@@ -1,8 +1,9 @@
-import { fetchAllMeals } from "@dnaActions";
+import { setUserMeals } from "@dnaActions";
 import {
   createMealWithPicture,
   defaultAPIReqData,
-  getAPIEndpoint
+  getAPIEndpoint,
+  getAllUserMeals
 } from "@dnaHelpers";
 
 export const DEFAULT_MEAL_ATTRIBUTES = {
@@ -25,6 +26,7 @@ export const DEFAULT_MEAL_ATTRIBUTES = {
 
 export const Meal = (() => {
   let allUserMeals = [];
+  let dispatch;
 
   return class Meal {
     constructor(attributes) {
@@ -35,6 +37,13 @@ export const Meal = (() => {
 
     static reset() {
       allUserMeals = [];
+    }
+
+    static connectDispatch({ dispatch }) {
+      if (!this.dispatch) {
+        this.dispatch = dispatch;
+      }
+      return next => action => next(action);
     }
 
     static get DEFAULT_MEAL_ATTRIBUTES() {
@@ -60,11 +69,20 @@ export const Meal = (() => {
       return allUserMeals;
     }
 
-    static getAllUserMeals = async () => {
+    static getAllUserMeals = async token => {
       /*
         make API call to return all meals
       */
-      return dispatch(fetchAllMeals());
+
+      console.log(`Meals - Getting meals`);
+
+      const { userMealsIds, userMealsData } = await getAllUserMeals({ token });
+
+      userMealsIds.forEach(mealId => {
+        userMealsData[mealId] = new Meal(userMealsData[mealId]);
+      });
+      console.log(`meals - saving meals`);
+      return this.dispatch(setUserMeals({ userMealsIds, userMealsData }));
     };
 
     static async create({ picturePath, token }) {

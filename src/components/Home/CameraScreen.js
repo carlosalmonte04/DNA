@@ -1,3 +1,7 @@
+/*
+  eslint
+  no-use-before-define: 0
+*/
 import React, { Component } from "react";
 import {
   Alert,
@@ -8,8 +12,13 @@ import {
   Dimensions,
   StyleSheet,
   StatusBar,
-  ScrollView
+  ScrollView,
+  Animated,
+  Easing,
+  PanResponder
 } from "react-native";
+import LinearGradient from "react-native-linear-gradient";
+import { defaultRefs } from "@dnaConfig";
 import {
   Container,
   Button,
@@ -28,6 +37,8 @@ import {
   Footer,
   Form
 } from "native-base";
+import * as T from "@dnaActions";
+import { userMealseSel } from "@dnaReducers";
 import {
   toggleAddFoodModal,
   startAnalyser,
@@ -51,10 +62,25 @@ import { Jiro } from "react-native-textinput-effects";
 import Modal from "react-native-modalbox";
 import ImagePicker from "react-native-image-crop-picker";
 import * as Animatable from "react-native-animatable";
-import { Img, Colors, HEIGHT } from "@dnaAssets";
+import {
+  Img,
+  Colors,
+  HEIGHT,
+  WIDTH,
+  DEFAULT_HEADER_HEIGHT,
+  Styles,
+  DEFAULT_TABBAR_HEIGHT
+} from "@dnaAssets";
 import { DEV } from "@dnaConfig";
 import { Food } from "@dnaModels";
-import { FullScreenContainer, ConceptListItem, DnaContainer } from "@dnaCommon";
+import {
+  FullScreenContainer,
+  DnaImage,
+  ConceptListItem,
+  DnaContainer,
+  DnaShadowContainer
+} from "@dnaCommon";
+import { DnaCalendar } from "./";
 
 import DashboardContainer from "../DashboardContainer";
 import Preview from "../Preview";
@@ -64,23 +90,117 @@ import EditFood from "../EditFood";
 
 const { width, height } = Dimensions.get("window");
 
+const createAnimation = (
+  value,
+  toValue,
+  duration,
+  easing = Easing.elastic(0.7),
+  delay = 0,
+  useNativeDrive = true
+) => {
+  return Animated.timing(value, {
+    toValue,
+    duration: duration || 1000,
+    easing,
+    delay,
+    useNativeDrive
+  });
+};
+
 class UnconnectedCameraScreen extends Component {
-  state = {
-    hasCameraPermission: null,
-    foodName: "",
-    portionSize: 1,
-    isFoodsShowing: false,
-    isLoading: true,
-    foods: [],
-    foodSelected: null,
-    foodBeingEdited: null,
-    isEditDropdwnOpen: false,
-    isDashboardOpen: false,
-    isFoodModalOpen: false,
-    calorie: this.props.meal.macros.calorie,
-    protein: this.props.meal.macros.protein,
-    fat: this.props.macros.fat,
-    carbohydrate: this.props.macros.carbohydrate
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasCameraPermission: null,
+      foodName: "",
+      portionSize: 1,
+      isFoodsShowing: false,
+      isLoading: true,
+      foods: [],
+      foodSelected: null,
+      foodBeingEdited: null,
+      isEditDropdwnOpen: false,
+      isDashboardOpen: false,
+      isFoodModalOpen: false,
+      animEnded: false
+      // calorie: this.props.meal.macros.calorie,
+      // protein: this.props.meal.macros.protein,
+      // fat: this.props.macros.fat,
+      // carbohydrate: this.props.macros.carbohydrate
+    };
+    this._animVal = new Animated.Value(0);
+    this._panResponder = PanResponder.create({
+      // Ask to be the responder:
+      onStartShouldSetPanResponder: (evt, gestureState) => true,
+      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetPanResponder: (evt, gestureState) => true,
+      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+
+      onPanResponderGrant: this.onTouchStart,
+      onPanResponderMove: this.onTouchMove,
+      onPanResponderTerminationRequest: (evt, gestureState) => true,
+      onPanResponderRelease: this.onTouchEnd,
+      onPanResponderTerminate: (evt, gestureState) => {
+        // Another component has become the responder, so this gesture
+        // should be cancelled
+      },
+      onShouldBlockNativeResponder: (evt, gestureState) => {
+        // Returns whether this component should block native components from becoming the JS
+        // responder. Returns true by default. Is currently only supported on android.
+        return true;
+      }
+    });
+  }
+
+  componentDidMount() {
+    // if (this.props.pictureOnAnalyser) {
+    //   this._animPictureToTop();
+    // }
+  }
+
+  componentWillReceiveProps(nextProps, nextState) {
+    const { pictureOnAnalyser } = this.props;
+    const { pictureOnAnalyser: nextPictureOnAnalyser } = nextProps;
+
+    if (!nextPictureOnAnalyser) {
+      this._animPictureToCenter();
+      return;
+    }
+    if (!pictureOnAnalyser && nextPictureOnAnalyser) {
+      this._animPictureToTop();
+    }
+  }
+
+  onTouchMove = ({ nativeEvent }, { y0, moveY }) => {
+    if (this.props.activeMealId) {
+      return null;
+    }
+
+    if (moveY > y0 && this.state.calMidway) {
+      this.setState({ calMidway: false });
+    } else if (moveY < y0 && !this.state.calMidway) {
+      this.setState({ calMidway: true });
+    }
+  };
+
+  _animPictureToTop = () => {
+    this.setState({ animEnded: true }, () =>
+      createAnimation(
+        this._animVal,
+        1,
+        null,
+        undefined,
+        null,
+        1000,
+        true
+      ).start()
+    );
+  };
+
+  _animPictureToCenter = () => {
+    createAnimation(this._animVal, 0, null, undefined, null, null, true).start(
+      () => this.setState({ animEnded: false })
+    );
   };
 
   handleImagePicker = () => {
@@ -250,40 +370,89 @@ class UnconnectedCameraScreen extends Component {
   };
 
   _renderConcepts = () => {
-    if (this.props.isLoading) {
-      return (
-        <View style={localStyles.bottom}>
-          <View style={localStyles.shutterContainer}>
-            <TouchableOpacity onPress={this.takePicture}>
-              <Progress.Circle
-                thickness={3}
-                borderWidth={8}
-                color={Colors.gray}
-                progress={this.state.caloriePercent || 0}
-                size={70}
-                animated={true}
-                indeterminate={true}
-                style={{ top: 10 }}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-      );
-    }
-    return <ConceptsList conceptsIds={this.props.meal.concepts} />;
+    // if (!this.props.activeMeal.concepts) {
+    //   return null;
+    // }
+
+    // if (this.props.isLoading) {
+    //   return (
+    //     <TouchableOpacity onPress={this.takePicture}>
+    //       <Progress.Circle
+    //         thickness={3}
+    //         borderWidth={8}
+    //         color={Colors.gray}
+    //         progress={this.state.caloriePercent || 0}
+    //         size={70}
+    //         animated={true}
+    //         indeterminate={true}
+    //         style={{
+    //           height: 50,
+    //           width: 50,
+    //           borderRadius: 25,
+    //           borderColor: Colors.gray,
+    //           borderWidth: 4,
+    //           backgroundColor: Colors.white05,
+    //           alignSelf: "center",
+    //           bottom: 50,
+    //           position: "absolute"
+    //         }}
+    //       />
+    //     </TouchableOpacity>
+    //   );
+    // }
+
+    return (
+      <View>
+        <ConceptsList key={1} conceptsIds={this.props.activeMeal.concepts} />
+      </View>
+    );
   };
 
   _renderControllers = () => (
-    <CameraControllers getCameraRef={this._getCameraRef} />
+    <TouchableOpacity onPress={this.takePicture}>
+      <View
+        style={{
+          position: "absolute",
+          height: 50,
+          width: 50,
+          borderRadius: 25,
+          borderColor: Colors.gray,
+          borderWidth: 4,
+          backgroundColor: Colors.white05,
+          alignSelf: "center",
+          bottom: 50
+        }}
+      />
+    </TouchableOpacity>
   );
+
+  toggleAnimStatus = newState => {
+    if (newState === "atCenter") {
+      this._animPictureToCenter();
+    } else {
+      this._animPictureToTop();
+    }
+  };
 
   _getCameraRef = () => this.camera;
 
-  _renderPicture = () => <Preview {...this.props} save={this.handleSave} />;
+  _renderPicture = pictureUrl => [
+    <DnaImage
+      key={0}
+      source={{ uri: pictureUrl }}
+      style={[localStyles.picture]}
+    >
+      <LinearGradient
+        colors={["transparent", "#ff9674"]}
+        style={[localStyles.picture, { height: "50%", opacity: 0.5 }]}
+      />
+    </DnaImage>
+  ];
 
   _renderCamera = () => {
-    return (
+    return [
       <Camera
+        key={0}
         ref={cam => {
           this.camera = cam;
         }}
@@ -292,33 +461,111 @@ class UnconnectedCameraScreen extends Component {
         mirrorImage={false}
         captureTarget={Camera.constants.CaptureTarget.disk}
         captureQuality="medium"
-      />
-    );
+      />,
+      <TouchableOpacity key={1} onPress={this.takePicture}>
+        <View
+          style={{
+            position: "absolute",
+            height: 50,
+            width: 50,
+            borderRadius: 25,
+            borderColor: Colors.gray,
+            borderWidth: 4,
+            backgroundColor: Colors.white05,
+            alignSelf: "center",
+            bottom: 50
+          }}
+        />
+      </TouchableOpacity>
+    ];
+  };
+
+  renderUserMeals = () => {
+    if (!this.props.userMeals.length) {
+      return null;
+    }
+    return this.props.userMeals.map(({ pictureUrl, _id: mealId }, index) => (
+      <DnaShadowContainer
+        key={pictureUrl}
+        index={index}
+        animated
+        mealId={mealId}
+        containerStyle={[localStyles.cameraContainer]}
+        parentScrollView={this._scrollView}
+        toggleAnimStatus={this.toggleAnimStatus}
+      >
+        {this._renderPicture(pictureUrl)}
+      </DnaShadowContainer>
+    ));
   };
 
   render() {
-    const { pictureOnAnalyser, meal } = this.props;
+    const { pictureOnAnalyser, mealOnAnalyserId } = this.props;
 
+    const conceptsTopValue = this._animVal.interpolate({
+      inputRange: [0, 1],
+      outputRange: [HEIGHT, HEIGHT * 0.1]
+    });
+
+    const opacity = this._animVal.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 1]
+    });
+    console.log(`conceptsHeight`, this._animVal);
     return (
-      <DnaContainer>
-        <StatusBar hidden={false} />
-        <Header style={localStyles.header}>
-          <Left>
-            <Button transparent />
-          </Left>
-          <Body>
-            <Image
-              source={Img.greenLogoSmall}
-              height={100}
-              width={100}
-              style={{ bottom: 0 }}
-            />
-          </Body>
-          <Right />
-        </Header>
-        {pictureOnAnalyser ? this._renderPicture() : this._renderCamera()}
-        {pictureOnAnalyser ? this._renderConcepts() : this._renderControllers()}
-        {/*<Modal
+      <Animated.View style={{ flex: 1 }}>
+        <Image key={2} source={Img.collectionsBg} style={localStyles.bgImg} />
+        <DnaCalendar
+          hide={!!this.props.activeMealId}
+          midway={this.state.calMidway}
+        />
+        <StatusBar barStyle="light-content" />
+        <DnaContainer
+          ScrollView
+          {...this._panResponder.panHandlers}
+          key={1}
+          assignRef={el => {
+            this._scrollView = el;
+          }}
+          contentContainerStyle={{
+            paddingBottom: DEFAULT_HEADER_HEIGHT
+          }}
+          scrollEventThrottle={16}
+          scrollEnabled={!this.props.activeMealId}
+          // onTouchStart={this.onTouchStart}
+          // onTouchMove={this.onTouchMove}
+          // stickyHeaderIndices={[0]}
+          // showsVerticalScrollIndicator={false}
+        >
+          <DnaShadowContainer
+            animated
+            mealId={mealOnAnalyserId}
+            parentScrollView={this._scrollView}
+            containerStyle={localStyles.cameraContainer}
+            toggleAnimStatus={this.toggleAnimStatus}
+          >
+            {pictureOnAnalyser
+              ? this._renderPicture(this.props.pictureOnAnalyser)
+              : this._renderCamera()}
+          </DnaShadowContainer>
+          {this.renderUserMeals()}
+          {/*          <DnaShadowContainer
+            animated
+            height={pictureHeight}
+            width={pictureWidth}
+            containerStyle={[
+              localStyles.cameraContainer,
+              {
+                top: pictureTop,
+                borderRadius: pictureBorderRadius,
+                overflow: "hidden"
+              }
+            ]}
+          >
+            {pictureOnAnalyser ? this._renderPicture() : this._renderCamera()}
+          </DnaShadowContainer>*/}
+          {pictureOnAnalyser ? null : this._renderControllers()}
+          {/*<Modal
           ref={"addFoodModal"}
           style={{ height: height * 0.85 }}
           position={"bottom"}
@@ -374,12 +621,38 @@ class UnconnectedCameraScreen extends Component {
         >
           <DashboardContainer navigation={this.props.navigation} />
         </Modal>*/}
-      </DnaContainer>
+        </DnaContainer>
+        <Animated.View
+          style={{
+            transform: [{ translateY: conceptsTopValue }],
+            bottom: DEFAULT_TABBAR_HEIGHT,
+            width: "100%",
+            height: "60%",
+            position: "absolute",
+            backgroundColor: Colors.white,
+            opacity
+          }}
+        >
+          {this._renderConcepts()}
+        </Animated.View>
+      </Animated.View>
     );
   }
 }
 
 const localStyles = StyleSheet.create({
+  bgImg: {
+    position: "absolute",
+    height: HEIGHT,
+    width: WIDTH,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0
+  },
+  picture: {
+    flex: 1
+  },
   belowHeaderContainer: {
     flex: 1
   },
@@ -388,12 +661,16 @@ const localStyles = StyleSheet.create({
     flexDirection: "column"
   },
   header: {
-    // height: DEFAULT_HEADER_HEIGHT
+    height: DEFAULT_HEADER_HEIGHT
+  },
+  cameraContainer: {
+    alignSelf: "center",
+    marginVertical: 32,
+    overflow: "hidden"
   },
   camera: {
-    flex: 0.6,
-    // height: HEIGHT - INACTIVE_LIST_HEIGHT,
-    width: "100%"
+    flex: 1,
+    overflow: "hidden"
   },
   bottom: {
     flexDirection: "row",
@@ -482,32 +759,53 @@ const localStyles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({
-  meals: {
-    mealOnAnalyser: meal,
-    mealOnAnalyser: {
-      macros,
-      micros,
-      foods: mealFoods,
-      concepts: mealConcepts,
-      conceptsData: mealConceptsData
-    }
-  },
-  foods: { stageThree: foods },
-  ui: { pictureOnAnalyser, isLoading, isFoodModalOpen },
-  user
-}) => ({
-  previewVisible: DEV && false && !!mealConcepts && mealConcepts.length,
-  foods,
-  mealConcepts,
-  pictureOnAnalyser,
-  isLoading,
-  isFoodModalOpen,
-  user,
-  meal,
-  macros,
-  micros
-});
+const mapStateToProps = state => {
+  const {
+    meals: {
+      mealOnAnalyser: meal,
+      userMealsData,
+      mealOnAnalyser,
+      mealOnAnalyser: {
+        macros,
+        micros,
+        foods: mealFoods,
+        concepts: mealConcepts,
+        conceptsData: mealConceptsData,
+        _id: mealOnAnalyserId
+      },
+      activeMealId
+    },
+    foods: { stageThree: foods },
+    ui: { pictureOnAnalyser, isLoading, isFoodModalOpen },
+    user
+  } = state;
+  const userMeals = userMealseSel(state);
+
+  return {
+    previewVisible: DEV && false && !!mealConcepts && mealConcepts.length,
+    foods,
+    activeMealId,
+    userMeals: userMeals || defaultRefs.emptyArr,
+    mealConcepts,
+    pictureOnAnalyser,
+    isLoading,
+    isFoodModalOpen,
+    mealOnAnalyserId,
+    activeMeal:
+      mealOnAnalyserId === activeMealId
+        ? mealOnAnalyser
+        : userMealsData[activeMealId],
+    user,
+    meal,
+    macros,
+    micros
+  };
+};
+
+UnconnectedCameraScreen.defaultProps = {
+  activeMeal: defaultRefs.emptyObj
+};
+
 function mapDispatchToProps(dispatch) {
   return {
     startAnalyser: picturePath => dispatch(startAnalyser(picturePath)),
@@ -537,5 +835,6 @@ export const CameraScreen = connect(mapStateToProps, {
   startAnalyser,
   saveMeal,
   toggleAddFoodModal,
-  addOrRemoveFood
+  addOrRemoveFood,
+  reset: () => dispatch => dispatch({ type: T.RESET_KEEP_LOGGED_IN })
 })(UnconnectedCameraScreen);

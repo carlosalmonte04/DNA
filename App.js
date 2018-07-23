@@ -28,7 +28,7 @@ import {
 } from "@dnaConfig";
 import { Colors, IOSX } from "@dnaAssets";
 import { ConnectedAppWithNavState } from "@dnaNavigation";
-
+import { Meal } from "@dnaModels";
 const { StatusBarManager } = NativeModules;
 
 if (__DEV__) {
@@ -55,17 +55,14 @@ class App extends React.PureComponent {
   }
 
   async componentDidMount() {
-    console.log("**App just mounted**", getCurrentRouteName(this.props.nav));
-
     // const allowedStorage = await PermissionsAndroid.request(
     //   PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
     // );
 
     const { setIsSplashOver } = this.props;
 
-    Keyboard.dismiss();
-
     this.addAllEventListeners();
+    this.getAllUserData();
 
     setTimeout(() => {
       this.setState({ isLoaded: true }, setIsSplashOver);
@@ -88,6 +85,12 @@ class App extends React.PureComponent {
   componentWillUnmount() {
     this.removeAllEventListeners();
   }
+
+  getAllUserData = () => {
+    if (this.props.user.token) {
+      Meal.getAllUserMeals(this.props.user.token);
+    }
+  };
 
   addAllEventListeners = async () => {
     // STATUS BAR HEIGHT
@@ -239,14 +242,14 @@ class App extends React.PureComponent {
     console.log("PROPS", this.props);
     return (
       <FullScreenContainer>
-        <StatusBarAlert
+        {/*<StatusBarAlert
           visible={connectionType === "none"}
           message={"Connection Error"}
           backgroundColor={Colors.red}
           color={Colors.white}
           pulse={"text"}
           statusbarHeight={IOSX ? 36 : 20}
-        />
+        />*/}
         {/*{<Loading loading={!!this.props.isLoading} />}*/}
         <ConnectedAppWithNavState />
         {/*<PushNotificationListener />*/}

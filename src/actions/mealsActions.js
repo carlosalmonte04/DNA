@@ -60,10 +60,10 @@ export const resetMeals = () => {
   };
 };
 
-export const setAllMealsInState = allMeals => {
+export const setUserMeals = ({ userMealsIds, userMealsData }) => {
   return {
     type: T.SET_ALL_MEALS_IN_STATE,
-    payload: allMeals
+    payload: { userMealsIds, userMealsData }
   };
 };
 
@@ -77,6 +77,12 @@ export const setInStageThree = foods => {
   return {
     type: T.SET_IN_STAGE_THREE,
     payload: foods
+  };
+};
+export const setActiveMealId = mealId => {
+  return {
+    type: T.SET_ACTIVE_MEAL_ID,
+    payload: { mealId }
   };
 };
 
@@ -112,7 +118,7 @@ export const fetchAllMeals = () => {
       .then(allMealsResponse => {
         console.log("ALL MEALS RESPONSE", allMealsResponse);
         const mealsCollection = allMealsResponse.map(meal => new Meal(meal));
-        dispatch(setAllMealsInState(mealsCollection));
+        dispatch(setUserMeals({ meals: mealsCollection }));
         dispatch(toggleDashboardLoading(false));
         return mealsCollection;
       });

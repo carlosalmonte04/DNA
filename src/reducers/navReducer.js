@@ -3,7 +3,6 @@ import * as T from "../actions/types";
 import { AppNavigator } from "@dnaNavigation";
 import { createNavigationReducer } from "react-navigation-redux-helpers";
 
-console.log("NAv reducer", AppNavigator);
 // const initialState = AppNavigator.router.getStateForAction(
 //   NavigationActions.init()
 // );

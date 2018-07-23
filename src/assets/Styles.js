@@ -39,5 +39,18 @@ export const Styles = StyleSheet.create({
   },
   fullWidth: {
     width: WIDTH
+  },
+  flex1: {
+    flex: 1
+  },
+  alignSelfCenter: {
+    alignSelf: "center"
+  },
+  centerAll: {
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  flexRow: {
+    flexDirection: "row"
   }
 });

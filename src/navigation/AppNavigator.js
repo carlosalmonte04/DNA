@@ -22,7 +22,7 @@ export const AppNavigator = createStackNavigator({
 });
 
 const mapStateToProps = ({ nav }) => ({
-  state: nav
+  state: { ...nav }
 });
 
 export const navMiddleware = createReactNavigationReduxMiddleware(

@@ -1,4 +1,5 @@
 import Food from "../models/food";
+import * as T from "@dnaActions";
 
 const initialState = {
   stageOne: [],
@@ -51,6 +52,10 @@ export const foodsReducer = (state = initialState, action) => {
         foodInState.options
       );
       return Object.assign({}, state);
+
+    case T.RESET_KEEP_LOGGED_IN: {
+      return initialState;
+    }
 
     default:
       return state;

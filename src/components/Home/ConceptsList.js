@@ -17,26 +17,22 @@ import {
   VIEWABLE_CONTENT_HEIGHT,
   HEADER_AND_STATUS_BAR_HEIGHT
 } from "@dnaAssets";
-import { HT_FROM_HEADER_TO_LIST } from "./";
 
 const localStyles = StyleSheet.create({
   listContainer: {
     backgroundColor: Colors.white,
     width: "100%",
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    overflow: "hidden",
-    top: HEADER_AND_STATUS_BAR_HEIGHT
+    overflow: "hidden"
   },
   contentListContainer: {
-    position: "absolute",
     width: "100%",
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    height: VIEWABLE_CONTENT_HEIGHT,
-    bottom: 0,
-    left: 0,
-    right: 0
+    paddingTop: 15,
+    backgroundColor: Colors.white
+    // borderTopLeftRadius: 40,
+    // borderTopRightRadius: 40,
+    // bottom: 0,
+    // left: 0,
+    // right: 0
   },
   conceptsListToggle: {
     height: 40,
@@ -51,8 +47,8 @@ const localStyles = StyleSheet.create({
   listToggleImg: {}
 });
 
-const _renderConceptListItem = ({ item: conceptId }) => (
-  <ConceptListItem conceptId={conceptId} />
+const _renderConceptListItem = ({ item: conceptId }, index) => (
+  <ConceptListItem conceptId={conceptId} index={index} />
 );
 
 const _keyExtractor = concetpId => concetpId;
@@ -62,7 +58,7 @@ class ConceptsList extends Component {
     super(props);
 
     this.state = {
-      active: false,
+      active: true,
       conceptsListAnimValue: new Animated.Value(0)
     };
 
@@ -152,31 +148,22 @@ class ConceptsList extends Component {
 
     return (
       <Animated.View
-        style={[
-          localStyles.contentListContainer,
-          { transform: [{ translateY }] }
-        ]}
+        style={
+          [
+            // { transform: [{ translateY }] }
+          ]
+        }
       >
         <FlatList
           scrollEnabled={active}
           onResponderRelease={this.onFlatListPress}
-          ListHeaderComponent={this.renderConceptsListToggle}
-          stickyHeaderIndices={[0]}
+          // ListHeaderComponent={this.renderConceptsListToggle}
+          // stickyHeaderIndices={[0]}
           data={conceptsIds}
           keyExtractor={_keyExtractor}
           renderItem={_renderConceptListItem}
           style={localStyles.listContainer}
-          contentContainerStyle={localStyles.contentListContainer}
         />
-        {!active && (
-          <TouchableOpacity
-            style={[
-              localStyles.contentListContainer,
-              localStyles.listTransparentOverlay
-            ]}
-            onPress={this.onFlatListPress}
-          />
-        )}
       </Animated.View>
     );
   }

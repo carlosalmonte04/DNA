@@ -1,16 +1,16 @@
 import React from "react";
 import { View } from "react-native";
-import { Container } from "react-native-common-lib";
 import {
   DnaHeader,
   ProfileInfoContainer,
-  ProfileMealsContainer
+  ProfileMealsContainer,
+  DnaContainer
 } from "@dnaComponents";
 import { Styles } from "@dnaAssets";
 
 export const UserProfile = () => {
   return (
-    <Container style={[Styles.flexNull, Styles.fullScreen]}>
+    <DnaContainer style={[Styles.flexNull, Styles.fullScreen]}>
       <DnaHeader
         leftElementToggle=""
         leftElementAction=""
@@ -21,6 +21,6 @@ export const UserProfile = () => {
       />
       <ProfileInfoContainer location="UserProfile" />
       <ProfileMealsContainer />
-    </Container>
+    </DnaContainer>
   );
 };

@@ -16,7 +16,6 @@ import Counter from "react-native-counter";
 import * as Animatable from "react-native-animatable";
 import { BlurView } from "react-native-blur";
 import * as Progress from "react-native-progress";
-import SwipeALot from "react-native-swipe-a-lot";
 import { INACTIVE_LIST_HEIGHT } from "./Home/HomeConstants";
 import { HEIGHT, WIDTH } from "@dnaAssets";
 
@@ -205,7 +204,6 @@ export default class Preview extends Component {
   }
 
   render() {
-    console.log(`HEIGHT - INACTIVE_LIST_HEIGHT`, HEIGHT - INACTIVE_LIST_HEIGHT);
     if (this.props.previewVisible) {
       return (
         <View style={localStyles.container}>
@@ -214,7 +212,7 @@ export default class Preview extends Component {
             style={localStyles.image}
           />
           <View style={[localStyles.boxContainer, localStyles.shadow]}>
-            <SwipeALot>
+            <View>
               <View>
                 {this.state.countersComplete
                   ? this._renderMacrosText()
@@ -223,7 +221,7 @@ export default class Preview extends Component {
               <ScrollView style={{ width: "100%" }}>
                 {this._renderMicros()}
               </ScrollView>
-            </SwipeALot>
+            </View>
             <View style={[localStyles.buttonsContainer]}>
               <Button
                 block

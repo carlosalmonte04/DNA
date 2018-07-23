@@ -39,6 +39,7 @@ export const ADD_MEAL = "MEALS/ADD_MEAL";
 export const SET_ALL_MEALS_IN_STATE = "MEALS/SET_ALL_MEALS_IN_STATE";
 export const RESET_MEALS = "MEALS/RESET_MEALS";
 export const UPDATE_MACROS = "MEALS/UPDATE_MACROS";
+export const SET_ACTIVE_MEAL_ID = "MEALS/SET_ACTIVE_MEAL_ID";
 
 /*
   USER
@@ -47,3 +48,9 @@ export const UPDATE_MACROS = "MEALS/UPDATE_MACROS";
 export const SET_USER = "USER/SET_USER";
 export const RESET_USER = "USER/RESET_USER";
 export const SET_USER_TOKEN = "USER/SET_USER_TOKEN";
+
+/*
+  DEV
+*/
+
+export const RESET_KEEP_LOGGED_IN = "DEV/RESET_KEEP_LOGGED_IN";

@@ -8,3 +8,5 @@ export * from "./DnaContainer";
 export * from "./DnaHText";
 export * from "./DnaPText";
 export * from "./DnaTouchable";
+export * from "./DnaShadowContainer";
+export * from "./ConceptBadge";

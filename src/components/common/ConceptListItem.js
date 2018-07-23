@@ -58,7 +58,6 @@ class UnconnectedConceptListItem extends React.PureComponent {
   };
   render() {
     const { concept, conceptOptions } = this.props;
-    console.log(`concept`, concept);
     const { name, probability } = concept;
 
     const fomattedProbability = `${parseInt(probability * 100, 0)}%`;

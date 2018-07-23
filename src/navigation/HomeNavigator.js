@@ -7,9 +7,15 @@
 import React from "react";
 import { Image, View } from "react-native";
 import { createBottomTabNavigator } from "react-navigation";
+import { connect } from "react-redux";
+import { reduxifiedAppNavigator } from "@dnaStore";
 import { CameraScreen, ProfileScreen } from "@dnaComponents";
 import { DEV } from "@dnaConfig";
 import { Colors, IOS, Icons, DEFAULT_TABBAR_HEIGHT } from "@dnaAssets";
+import {
+  reduxifyNavigator,
+  createReactNavigationReduxMiddleware
+} from "react-navigation-redux-helpers";
 
 const FIRST_SCREEN = DEV ? "CameraScreen" : "CameraScreen";
 
@@ -107,3 +113,18 @@ export const HomeNavigator = createBottomTabNavigator(
   tabScreens,
   createTabConfig(FIRST_SCREEN)
 );
+
+const mapStateToProps = ({ nav }) => ({
+  state: nav
+});
+
+// export const homeNavMiddleware = createReactNavigationReduxMiddleware(
+//   "root",
+//   state => state.nav
+// );
+
+// const UnconnectedHomeWithNavState = reduxifyNavigator(HomeNavigator, "root");
+
+// export const ConnectedHomeWithNavState = connect(mapStateToProps)(
+//   UnconnectedHomeWithNavState
+// );

@@ -29,6 +29,8 @@ target 'DNA' do
   pod 'RNImageCropPicker', :path =>  '../node_modules/react-native-image-crop-picker'
   platform :ios, '9.0'
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
 end
 
 
