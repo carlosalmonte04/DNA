@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { customNavAction } from "@dnaActions";
 import { Colors } from "@dnaAssets";
+import { defaultRefs } from "@dnaConfig";
 import { DnaHText, DnaPText, DnaTouchable } from "@dnaCommon";
 import {
   conceptSel,
@@ -57,10 +58,8 @@ class UnconnectedConceptBadge extends React.PureComponent {
     return;
   };
   render() {
-    const { concept, conceptOptions } = this.props;
-    const { name, probability } = concept;
-
-    const fomattedProbability = `${parseInt(probability * 100, 0)}%`;
+    const { concept } = this.props;
+    const { name } = concept;
 
     return (
       <DnaTouchable
@@ -80,9 +79,7 @@ class UnconnectedConceptBadge extends React.PureComponent {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  concept: conceptSel(state, ownProps),
-  conceptOptions: conceptOptionsDataSel(state, ownProps),
-  selectedOptionName: selectedOptionNameSel(state, ownProps)
+  concept: conceptSel(state, ownProps) || defaultRefs.emptyObj
 });
 
 export const ConceptBadge = connect(mapStateToProps, { customNavAction })(

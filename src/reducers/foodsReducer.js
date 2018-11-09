@@ -4,7 +4,7 @@ import * as T from "@dnaActions";
 const initialState = {
   stageOne: [],
   stageTwo: [],
-  stageThree: []
+  stageThree: [],
   // toBeLogged: [],
   // macrosToBeLogged: {
   //   calorieTotal      : 0,
@@ -23,7 +23,7 @@ export const foodsReducer = (state = initialState, action) => {
       let foodInState = Food.find(action.payload.food.id);
       foodInState.options = action.payload.usdaOptions.list.item;
       return Object.assign({}, state, {
-        stageTwo: [...state.stageOne, foodInState]
+        stageTwo: [...state.stageOne, foodInState],
       });
 
     case "SET_IN_STAGE_THREE":
@@ -49,7 +49,7 @@ export const foodsReducer = (state = initialState, action) => {
         "Changin options for",
         foodInState,
         "TOOO",
-        foodInState.options
+        foodInState.options,
       );
       return Object.assign({}, state);
 

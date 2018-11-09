@@ -10,5 +10,5 @@ export const Reducers = {
   meals: mealsReducer,
   ui: uiReducer,
   user: userReducer,
-  nav: navReducer
+  nav: navReducer,
 };

@@ -5,29 +5,28 @@ import {
   View,
   TouchableOpacity,
   Animated,
-  Image
+  Image,
 } from "react-native";
 import GestureRecognizer, {
-  swipeDirections
+  swipeDirections,
 } from "react-native-swipe-gestures";
-import { Colors } from "@dnaAssets";
 import { ConceptListItem } from "@dnaCommon";
 import {
   Img,
+  Colors,
   VIEWABLE_CONTENT_HEIGHT,
-  HEADER_AND_STATUS_BAR_HEIGHT
+  HEADER_AND_STATUS_BAR_HEIGHT,
 } from "@dnaAssets";
 
 const localStyles = StyleSheet.create({
   listContainer: {
     backgroundColor: Colors.white,
     width: "100%",
-    overflow: "hidden"
   },
   contentListContainer: {
     width: "100%",
     paddingTop: 15,
-    backgroundColor: Colors.white
+    backgroundColor: Colors.white,
     // borderTopLeftRadius: 40,
     // borderTopRightRadius: 40,
     // bottom: 0,
@@ -39,12 +38,12 @@ const localStyles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: Colors.white
+    backgroundColor: Colors.white,
   },
   listTransparentOverlay: {
-    backgroundColor: Colors.transparent
+    backgroundColor: Colors.transparent,
   },
-  listToggleImg: {}
+  listToggleImg: {},
 });
 
 const _renderConceptListItem = ({ item: conceptId }, index) => (
@@ -59,11 +58,20 @@ class ConceptsList extends Component {
 
     this.state = {
       active: true,
-      conceptsListAnimValue: new Animated.Value(0)
+      conceptsListAnimValue: new Animated.Value(0),
     };
 
     this.translateYActiveVal = HEADER_AND_STATUS_BAR_HEIGHT;
     this.translateYInactiveVal = VIEWABLE_CONTENT_HEIGHT * 0.6;
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const { activeMealId } = this.props;
+    const { activeMealId: nextActiveMealId } = nextProps;
+    if (activeMealId !== nextActiveMealId) {
+      return true;
+    }
+    return false;
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -87,7 +95,7 @@ class ConceptsList extends Component {
     Animated.timing(this.state.conceptsListAnimValue, {
       toValue: direction === "up" ? 1 : 0,
       duration: 200,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start();
 
   onConceptsListSwipe = gestureName => {
@@ -116,7 +124,7 @@ class ConceptsList extends Component {
     }
 
     this.setState({
-      active: !this.state.active
+      active: !this.state.active,
     });
   };
 
@@ -138,33 +146,19 @@ class ConceptsList extends Component {
   );
 
   render() {
-    const { conceptsIds } = this.props;
+    const { conceptsIds, onConceptsLayout} = this.props;
     const { active, conceptsListAnimValue } = this.state;
 
-    const translateY = conceptsListAnimValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [this.translateYInactiveVal, this.translateYActiveVal]
-    });
-
     return (
-      <Animated.View
-        style={
-          [
-            // { transform: [{ translateY }] }
-          ]
-        }
-      >
-        <FlatList
-          scrollEnabled={active}
-          onResponderRelease={this.onFlatListPress}
-          // ListHeaderComponent={this.renderConceptsListToggle}
-          // stickyHeaderIndices={[0]}
-          data={conceptsIds}
-          keyExtractor={_keyExtractor}
-          renderItem={_renderConceptListItem}
-          style={localStyles.listContainer}
-        />
-      </Animated.View>
+      <FlatList
+        onLayout={onConceptsLayout}
+        scrollEnabled={active}
+        onResponderRelease={this.onFlatListPress}
+        data={conceptsIds}
+        keyExtractor={_keyExtractor}
+        renderItem={_renderConceptListItem}
+        style={localStyles.listContainer}
+      />
     );
   }
 }

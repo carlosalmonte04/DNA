@@ -86,6 +86,11 @@ export const setActiveMealId = mealId => {
   };
 };
 
+export const setConceptPortionSize = ({ conceptId, portionSize }) => ({
+  type: T.SET_CONCEPT_PORTION_SIZE,
+  payload: { conceptId, portionSize }
+});
+
 export const startAnalyser = picturePath => {
   const {
     store: { getState }

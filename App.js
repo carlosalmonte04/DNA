@@ -12,7 +12,7 @@ import {
   Keyboard,
   NetInfo,
   NativeModules,
-  StatusBarIOS
+  StatusBarIOS,
 } from "react-native";
 import { connect } from "react-redux";
 import StatusBarAlert from "react-native-statusbar-alert";
@@ -24,7 +24,7 @@ import {
   Constants,
   DEV,
   ALLOWED_DEEPLINKING_ROUTES,
-  IOS
+  IOS,
 } from "@dnaConfig";
 import { Colors, IOSX } from "@dnaAssets";
 import { ConnectedAppWithNavState } from "@dnaNavigation";
@@ -48,7 +48,7 @@ class App extends React.PureComponent {
     super(props);
     this.state = {
       isLoaded: false,
-      connectionType: IOS ? "wifi" : "wifi"
+      connectionType: IOS ? "wifi" : "wifi",
     };
 
     // this.checkForCodePushOTA();
@@ -58,11 +58,11 @@ class App extends React.PureComponent {
     // const allowedStorage = await PermissionsAndroid.request(
     //   PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
     // );
-
+    console.log(`HEYYY REHYDRATED STATUS!!`, this.props.rehydrated);
     const { setIsSplashOver } = this.props;
 
     this.addAllEventListeners();
-    this.getAllUserData();
+    // this.getAllUserData();
 
     setTimeout(() => {
       this.setState({ isLoaded: true }, setIsSplashOver);
@@ -108,12 +108,12 @@ class App extends React.PureComponent {
         res => {
           if (res) {
             const {
-              frame: { height: statusBarHeight }
+              frame: { height: statusBarHeight },
             } = res;
             console.log("***Status Bar - res", res);
             this.props.setStatusBarHeight(statusBarHeight);
           }
-        }
+        },
       );
     }
 
@@ -123,7 +123,7 @@ class App extends React.PureComponent {
       const connectionInfo = await NetInfo.getConnectionInfo();
       const { type: connectionType } = connectionInfo;
       this.setState({
-        connectionType
+        connectionType,
       });
     } else {
       Linking.addEventListener("url", this.handleOpenURL);
@@ -148,12 +148,12 @@ class App extends React.PureComponent {
           updateDialog: {
             mandatoryUpdateMessage:
               "There's an update available for Kickwheel!",
-            mandatoryContinueButtonLabel: "Download and Install"
+            mandatoryContinueButtonLabel: "Download and Install",
           },
           // checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
-          installMode: codePush.InstallMode.IMMEDIATE
+          installMode: codePush.InstallMode.IMMEDIATE,
         },
-        this.trackCodePushUpdate
+        this.trackCodePushUpdate,
       );
     }
   };
@@ -201,7 +201,7 @@ class App extends React.PureComponent {
   resetConnectionChangeHandler = () => {
     NetInfo.removeEventListener(
       "connectionChange",
-      this.handleConnectionChange
+      this.handleConnectionChange,
     );
     NetInfo.addEventListener("connectionChange", this.handleConnectionChange);
   };
@@ -219,11 +219,11 @@ class App extends React.PureComponent {
       `**Internet connection changed from`,
       prevConnectionType,
       `to`,
-      connectionType
+      connectionType,
     );
     this.setState(
       {
-        connectionType
+        connectionType,
       },
       /* 
         NetInfo does not handle multiple
@@ -232,27 +232,19 @@ class App extends React.PureComponent {
         connection type change
       */
       () =>
-        this.handleResetConnChangeHandler(prevConnectionType, connectionType)
+        this.handleResetConnChangeHandler(prevConnectionType, connectionType),
     );
   };
 
   render() {
     const { connectionType } = this.state;
     const { user } = this.props;
-    console.log("PROPS", this.props);
+
+    console.log("**** FULL RENDER ****");
+
     return (
       <FullScreenContainer>
-        {/*<StatusBarAlert
-          visible={connectionType === "none"}
-          message={"Connection Error"}
-          backgroundColor={Colors.red}
-          color={Colors.white}
-          pulse={"text"}
-          statusbarHeight={IOSX ? 36 : 20}
-        />*/}
-        {/*{<Loading loading={!!this.props.isLoading} />}*/}
         <ConnectedAppWithNavState />
-        {/*<PushNotificationListener />*/}
         {!user._id && <EnterLoginModal />}
       </FullScreenContainer>
     );
@@ -262,10 +254,10 @@ class App extends React.PureComponent {
 const mapStateToProps = ({ user, nav }) => {
   return {
     user,
-    nav
+    nav,
   };
 };
 
 export default connect(mapStateToProps, {
-  setStatusBarHeight
+  setStatusBarHeight,
 })(App);

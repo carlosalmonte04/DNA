@@ -1,13 +1,13 @@
 import React from "react";
 import { Text } from "react-native";
 import PropTypes from "prop-types";
-import { IOS } from "@dnaAssets";
+import { IOS } from "@dnaConfig";
 
 const DEFAULT_SIZES = {
   1: 30,
   2: 28,
   3: 24,
-  4: 20
+  4: 20,
 };
 
 export const DnaHText = props => {
@@ -19,14 +19,14 @@ export const DnaHText = props => {
     fontWeight,
     fontFamily,
     color,
-    style
+    style,
   } = props;
 
   const styleToUse = {
     fontSize: fontSize || DEFAULT_SIZES[size],
     fontWeight: bold ? "bold" : fontWeight,
     fontFamily,
-    color
+    color,
   };
 
   return <Text style={[styleToUse, style]}>{text}</Text>;
@@ -39,15 +39,15 @@ DnaHText.propTypes = {
   fontWeight: PropTypes.string,
   fontFamily: PropTypes.string,
   color: PropTypes.string,
-  bold: PropTypes.bool
+  bold: PropTypes.bool,
 };
 
 DnaHText.defaultProps = {
   text: "",
   fontSize: 0,
   size: 2,
-  fontWeight: "normal",
-  fontFamily: IOS ? "Avenir" : "Roboto",
-  color: IOS ? "Avenir" : "Roboto",
-  bold: false
+  fontWeight: "500",
+  fontFamily: IOS ? "Raleway" : "Roboto",
+  color: IOS ? "Raleway" : "Roboto",
+  bold: false,
 };

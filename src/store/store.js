@@ -1,24 +1,13 @@
-import React from "react";
 import { AsyncStorage } from "react-native";
 import { createStore, applyMiddleware, compose } from "redux";
-import { connect } from "react-redux";
-
 import thunk from "redux-thunk";
 import applyAppStateListener from "redux-enhancer-react-native-appstate";
-import {
-  createReduxBoundAddListener,
-  createReactNavigationReduxMiddleware,
-  reduxifyNavigator
-} from "react-navigation-redux-helpers";
-import { persistStore, persistCombineReducers } from "redux-persist";
+import { createReactNavigationReduxMiddleware } from "react-navigation-redux-helpers";
+import { persistCombineReducers } from "redux-persist";
 import { DEV, devFlags, defaultRefs } from "../Config";
 import { Reducers } from "@dnaReducers";
 import { Meal } from "@dnaModels";
-import {
-  navMiddleware,
-  homeNavMiddleware,
-  mealNavMiddleware
-} from "../navigation";
+import { navMiddleware } from "../navigation";
 
 const { keepMealOnView } = devFlags;
 

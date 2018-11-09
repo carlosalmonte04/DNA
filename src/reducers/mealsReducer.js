@@ -1,10 +1,13 @@
 import { Meal, Food } from "@dnaModels";
+import { defaultRefs } from "@dnaConfig";
 import * as T from "@dnaActions";
 
+const { emptyArr } = defaultRefs;
+
 const initialState = {
-  all: [],
+  all: emptyArr,
   mealOnAnalyser: new Meal(Meal.DEFAULT_MEAL_ATTRIBUTES), // =-> placeholder for Meal()}
-  userMeals: [],
+  userMeals: emptyArr,
   macros: {
     calorie: 0,
     protein: 0,
@@ -12,7 +15,9 @@ const initialState = {
     carbohydrate: 0
   },
   micros: {},
-  activeMealId: ""
+  activeMealId: "",
+  userMealsIds: emptyArr,
+  userMealsData: {}
 };
 
 export const mealsReducer = (state = initialState, action) => {
@@ -72,9 +77,26 @@ export const mealsReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         mealOnAnalyser: new Meal(),
         macros: { ...initialState.macros },
-        all: []
+        all: emptyArr
       });
 
+    case T.SET_CONCEPT_PORTION_SIZE: {
+      const { conceptId, portionSize } = action.payload;
+      const mealConceptsData = state.mealOnAnalyser.conceptsData;
+      return {
+        ...state,
+        mealOnAnalyser: {
+          ...state.mealOnAnalyser,
+          conceptsData: {
+            ...mealConceptsData,
+            [conceptId]: {
+              ...mealConceptsData[conceptId],
+              portionSize
+            }
+          }
+        }
+      };
+    }
     case T.UPDATE_MACROS:
       newMacros = state.mealOnAnalyser.macros();
       return Object.assign({}, state, { macros: newMacros });

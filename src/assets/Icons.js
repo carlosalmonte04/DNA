@@ -7,5 +7,7 @@ export const Icons = {
   whiteUpArrow: require("./icons/whiteUpArrow.png"),
   whiteDownArrow: require("./icons/whiteDownArrow.png"),
   whiteLocation: require("./icons/whiteLocation.png"),
-  pinkHeart: require("./icons/pinkHeart.png")
+  pinkHeart: require("./icons/pinkHeart.png"),
+  whiteMinus: require("./icons/whiteMinus.png"),
+  whitePlus: require("./icons/whitePlus.png")
 };

@@ -5,14 +5,14 @@ const { nullfunc, emptyArr } = defaultRefs;
 
 const ConceptsDataSel = ({
   meals: {
-    mealOnAnalyser: { conceptsData }
-  }
+    mealOnAnalyser: { conceptsData },
+  },
 }) => conceptsData;
 
 const optionsDataSel = ({
   meals: {
-    mealOnAnalyser: { optionsData }
-  }
+    mealOnAnalyser: { optionsData },
+  },
 }) => optionsData;
 
 const concepIdSelector = (state, { conceptId }) => conceptId;
@@ -20,45 +20,44 @@ const concepIdSelector = (state, { conceptId }) => conceptId;
 export const conceptSel = createSelector(
   ConceptsDataSel,
   concepIdSelector,
-  (conceptsData, conceptId) => conceptsData[conceptId]
+  (conceptsData, conceptId) => conceptsData[conceptId],
 );
 
-const conceptOptionsSel = createSelector(
-  conceptSel,
-  nullfunc,
-  concept => concept.options
-);
+const conceptOptionsSel = createSelector(conceptSel, nullfunc, concept => {
+  return concept && concept.options;
+});
 
 export const conceptOptionsDataSel = createSelector(
   [conceptSel, conceptOptionsSel, optionsDataSel],
   (concept, options, optionsData) =>
-    options && options.map(optionId => optionsData[optionId])
+    options && options.map(optionId => optionsData[optionId]),
 );
 
 export const conceptNameSel = createSelector(
   [conceptSel],
-  concept => concept && concept.name
+  concept => concept && concept.name,
 );
 
 export const conceptSelectedOptionSel = createSelector(
   conceptSel,
   optionsDataSel,
   (concept, optionsData) => {
-    optionsData[concept.selectedOptionId];
-  }
+    if (concept) {
+      optionsData[concept.selectedOptionId];
+    } else {
+      return {};
+    }
+  },
 );
 
 export const selectedOptionNameSel = createSelector(
   [conceptSelectedOptionSel],
-  selectedOption => {
-    console.log(`selectedOption`, selectedOption);
-    return "";
-  }
+  ({ name }) => name,
 );
 
 export const conceptAnalysisSel = createSelector(
   [conceptSelectedOptionSel],
-  ({ analysis }) => analysis
+  ({ analysis }) => analysis,
 );
 
 export const conceptMicrosSel = createSelector(
@@ -70,13 +69,13 @@ export const conceptMicrosSel = createSelector(
     }
 
     return emptyArr;
-  }
+  },
 );
 
 const getUserMealsIdsFromState = ({ meals: { userMealsIds, userMealsData } }) =>
   userMealsIds.map(mealId => userMealsData[mealId]);
 
-export const userMealseSel = createSelector(
+export const userMealsSel = createSelector(
   [getUserMealsIdsFromState],
-  userMeals => userMeals
+  userMeals => userMeals,
 );

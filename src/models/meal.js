@@ -11,10 +11,9 @@ export const DEFAULT_MEAL_ATTRIBUTES = {
   name: "",
   userId: "",
   pictureUrl: "",
-  foods: [],
-  foodsObj: {},
+  optionsData: {},
   concepts: [],
-  conceptsObj: {},
+  conceptsData: {},
   micros: {},
   macros: {
     calorie: 0,
@@ -88,7 +87,7 @@ export const Meal = (() => {
     static async create({ picturePath, token }) {
       if (token) {
         try {
-          const { meal: mealData } = await createMealWithPicture({
+          const { meal: mealData, conceptsData } = await createMealWithPicture({
             picturePath,
             token
           });
@@ -166,6 +165,7 @@ export const Meal = (() => {
         // TODO: Automatically selecting first option
         // find programatically way of auto selecting based on prev selections
         const [firstOptionId] = this.conceptsData[conceptId].options;
+        console.log(`FIRST OPTION ID!!!`, firstOptionId);
         this.conceptsData[conceptId].selectedOptionId = firstOptionId;
       });
 

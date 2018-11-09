@@ -10,3 +10,4 @@ export * from "./DnaPText";
 export * from "./DnaTouchable";
 export * from "./DnaShadowContainer";
 export * from "./ConceptBadge";
+export * from "./DnaCounter";

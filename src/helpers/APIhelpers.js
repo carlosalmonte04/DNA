@@ -45,17 +45,20 @@ export const getUSDAApiUrl = ({
 */
 
 export const createMealWithPicture = async ({ picturePath, token }) => {
-  const mealRes = await RNFetchBlob.fetch(
+  const mealAndConceptsDataRes = await RNFetchBlob.fetch(
     "POST",
     getAPIEndpoint("/meals"),
     { "Content-Type": "application/octet-stream", token },
     RNFetchBlob.wrap(picturePath)
   );
 
-  console.log(`Meal RESPONSE ====>createMealWithPicture`, mealRes);
-  const meal = await mealRes.json();
+  console.log(
+    `Meal RESPONSE ====>createMealWithPicture`,
+    mealAndConceptsDataRes
+  );
+  const mealAndConceptsData = await mealAndConceptsDataRes.json();
 
-  return meal;
+  return mealAndConceptsData;
 };
 
 export const getAllUserMeals = async ({ token }) => {

@@ -17,7 +17,7 @@ const appBundleIdentifier = `${DeviceInfo.getBundleId()}`;
 const SERVER_DEV_API = true;
 
 export const ALLOWED_DEEPLINKING_ROUTES = {
-  "": true
+  "": true,
 };
 
 // process.env.NODE_ENV = "production";
@@ -28,12 +28,12 @@ export const DEVICE_INFO = {
   appBuildVersion,
   appBundleIdentifier,
   rawAppVersionNumber,
-  pointingTo: API_URL.includes("localhost") ? "staging" : "production"
+  pointingTo: API_URL.includes("localhost") ? "staging" : "production",
 };
 
 export const ENV = {
   API_URL: SERVER_DEV_API ? API_URL_DEV : API_URL,
-  USDA_KEY
+  USDA_KEY,
 };
 
 export const DEV = process.env.NODE_ENV === "development";
@@ -42,11 +42,11 @@ export const homeTabNames = {
   Directory: true,
   Forums: true,
   Messages: true,
-  Profile: true
+  Profile: true,
 };
 
 export const Constants = {
-  SPLASH_TIME: DEV ? 0 : 4000
+  SPLASH_TIME: DEV ? 0 : 4000,
 };
 
 /*
@@ -54,13 +54,13 @@ export const Constants = {
     - PURGE_ALL_CHANNELS: purges Twilio channel data. Reload the app twice when toggling from false to true. You know it's successful if you reload the app and the CHAT/SET_ALL_USER_CHANNELS action sets an empty object
 */
 export const devFlags = {
-  keepMealOnView: DEV && true
+  keepMealOnView: DEV && true,
 };
 
 export const defaultRefs = {
   emptyObj: {},
   nullfunc: () => {},
-  emptyArr: []
+  emptyArr: [],
 };
 
 export const PLATFORM = Platform.OS === "ios" ? "ios" : "android";
@@ -71,7 +71,7 @@ console.table({
   "app name": { "": "DNA" },
   bundle: { "": appBundleIdentifier },
   version: { "": appVersionNumber },
-  build: { "": appBuildVersion }
+  build: { "": appBuildVersion },
 });
 
 export const nullfunc = () => null;

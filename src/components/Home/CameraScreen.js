@@ -4,6 +4,7 @@
 */
 import React, { Component } from "react";
 import {
+  FlatList,
   Alert,
   Text,
   View,
@@ -15,10 +16,9 @@ import {
   ScrollView,
   Animated,
   Easing,
-  PanResponder
+  PanResponder,
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import { defaultRefs } from "@dnaConfig";
 import {
   Container,
   Button,
@@ -35,10 +35,10 @@ import {
   Title,
   FooterTab,
   Footer,
-  Form
+  Form,
 } from "native-base";
 import * as T from "@dnaActions";
-import { userMealseSel } from "@dnaReducers";
+import { userMealsSel } from "@dnaReducers";
 import {
   toggleAddFoodModal,
   startAnalyser,
@@ -53,7 +53,7 @@ import {
   getResourceForStageThree,
   _cleanedAnalysis,
   resetFoods,
-  resetMeals
+  resetMeals,
 } from "@dnaActions";
 import Camera from "react-native-camera";
 import { connect } from "react-redux";
@@ -69,16 +69,16 @@ import {
   WIDTH,
   DEFAULT_HEADER_HEIGHT,
   Styles,
-  DEFAULT_TABBAR_HEIGHT
+  DEFAULT_TABBAR_HEIGHT,
 } from "@dnaAssets";
-import { DEV } from "@dnaConfig";
+import { DEV, defaultRefs } from "@dnaConfig";
 import { Food } from "@dnaModels";
 import {
   FullScreenContainer,
   DnaImage,
   ConceptListItem,
   DnaContainer,
-  DnaShadowContainer
+  DnaShadowContainer,
 } from "@dnaCommon";
 import { DnaCalendar } from "./";
 
@@ -96,14 +96,14 @@ const createAnimation = (
   duration,
   easing = Easing.elastic(0.7),
   delay = 0,
-  useNativeDrive = true
+  useNativeDrive = true,
 ) => {
   return Animated.timing(value, {
     toValue,
     duration: duration || 1000,
     easing,
     delay,
-    useNativeDrive
+    useNativeDrive,
   });
 };
 
@@ -122,7 +122,7 @@ class UnconnectedCameraScreen extends Component {
       isEditDropdwnOpen: false,
       isDashboardOpen: false,
       isFoodModalOpen: false,
-      animEnded: false
+      animEnded: false,
       // calorie: this.props.meal.macros.calorie,
       // protein: this.props.meal.macros.protein,
       // fat: this.props.macros.fat,
@@ -131,24 +131,24 @@ class UnconnectedCameraScreen extends Component {
     this._animVal = new Animated.Value(0);
     this._panResponder = PanResponder.create({
       // Ask to be the responder:
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+      onStartShouldSetPanResponder: () => true,
+      onStartShouldSetPanResponderCapture: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponderCapture: () => true,
 
       onPanResponderGrant: this.onTouchStart,
       onPanResponderMove: this.onTouchMove,
-      onPanResponderTerminationRequest: (evt, gestureState) => true,
+      onPanResponderTerminationRequest: () => true,
       onPanResponderRelease: this.onTouchEnd,
-      onPanResponderTerminate: (evt, gestureState) => {
+      onPanResponderTerminate: () => {
         // Another component has become the responder, so this gesture
         // should be cancelled
       },
-      onShouldBlockNativeResponder: (evt, gestureState) => {
+      onShouldBlockNativeResponder: () => {
         // Returns whether this component should block native components from becoming the JS
         // responder. Returns true by default. Is currently only supported on android.
         return true;
-      }
+      },
     });
   }
 
@@ -171,6 +171,33 @@ class UnconnectedCameraScreen extends Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const { activeMealId } = this.props;
+    const { animEnded, calMidway } = this.state;
+    const { activeMealId: nextActiveMealId } = nextProps;
+    const { animEnded: nextAnimEnded, calMidway: nextCalMidway } = nextState;
+
+    if (activeMealId !== nextActiveMealId) {
+      return true;
+    }
+
+    if (this.state !== nextState) {
+      return true;
+    }
+
+    if (animEnded !== nextAnimEnded) {
+      return true;
+    }
+
+    if (calMidway !== nextCalMidway) {
+      return true;
+    }
+
+    console.log(`New state!!!!`, { ...this.state }, { ...nextState });
+
+    return true;
+  }
+
   onTouchMove = ({ nativeEvent }, { y0, moveY }) => {
     if (this.props.activeMealId) {
       return null;
@@ -184,7 +211,7 @@ class UnconnectedCameraScreen extends Component {
   };
 
   _animPictureToTop = () => {
-    this.setState({ animEnded: true }, () =>
+    this.setState({ animEnded: true, mealFocused: true }, () =>
       createAnimation(
         this._animVal,
         1,
@@ -192,14 +219,14 @@ class UnconnectedCameraScreen extends Component {
         undefined,
         null,
         1000,
-        true
-      ).start()
+        true,
+      ).start(),
     );
   };
 
   _animPictureToCenter = () => {
-    createAnimation(this._animVal, 0, null, undefined, null, null, true).start(
-      () => this.setState({ animEnded: false })
+    createAnimation(this._animVal, 0, null, undefined, true, true).start(() =>
+      this.setState({ animEnded: false, mealFocused: false }),
     );
   };
 
@@ -207,7 +234,7 @@ class UnconnectedCameraScreen extends Component {
     ImagePicker.openPicker({
       width: 300,
       height: 400,
-      cropping: true
+      cropping: true,
     }).then(picture => {
       this.props.startAnalyser(picture.path);
     });
@@ -218,7 +245,7 @@ class UnconnectedCameraScreen extends Component {
       "Retake Picture",
       "Unsaved results will be permanently erased.",
       [{ text: "Cancel" }, { text: "OK", onPress: this.props.resetAll }],
-      { cancelable: true }
+      { cancelable: true },
     );
   };
 
@@ -255,7 +282,7 @@ class UnconnectedCameraScreen extends Component {
           foodName,
           foods,
           isLoading: false,
-          isFoodsShowing: true
+          isFoodsShowing: true,
         });
       });
     }
@@ -291,7 +318,7 @@ class UnconnectedCameraScreen extends Component {
         this.setState({
           foodBeingEdited: food,
           isLoading: false,
-          isFoodsShowing: false
+          isFoodsShowing: false,
         });
       });
   };
@@ -310,7 +337,7 @@ class UnconnectedCameraScreen extends Component {
       foodBeingEdited: food,
       foods: food.options,
       foodName: food.name,
-      isEditFoodModalOpen: true
+      isEditFoodModalOpen: true,
     });
   };
 
@@ -326,7 +353,7 @@ class UnconnectedCameraScreen extends Component {
         this.setState({
           foodName: foodSelected.name,
           foodSelected,
-          isFoodsShowing: false
+          isFoodsShowing: false,
         });
       });
   };
@@ -339,7 +366,7 @@ class UnconnectedCameraScreen extends Component {
     else await meal.addFood(foodId);
 
     this.setState({
-      isSelected: isFoodInMeal
+      isSelected: isFoodInMeal,
     });
   };
 
@@ -402,9 +429,11 @@ class UnconnectedCameraScreen extends Component {
     // }
 
     return (
-      <View>
-        <ConceptsList key={1} conceptsIds={this.props.activeMeal.concepts} />
-      </View>
+      <ConceptsList
+        key={1}
+        conceptsIds={this.props.activeMeal.concepts}
+        activeMealId={this.props.activeMeal._id}
+      />
     );
   };
 
@@ -420,7 +449,7 @@ class UnconnectedCameraScreen extends Component {
           borderWidth: 4,
           backgroundColor: Colors.white05,
           alignSelf: "center",
-          bottom: 50
+          bottom: 50,
         }}
       />
     </TouchableOpacity>
@@ -441,12 +470,7 @@ class UnconnectedCameraScreen extends Component {
       key={0}
       source={{ uri: pictureUrl }}
       style={[localStyles.picture]}
-    >
-      <LinearGradient
-        colors={["transparent", "#ff9674"]}
-        style={[localStyles.picture, { height: "50%", opacity: 0.5 }]}
-      />
-    </DnaImage>
+    />,
   ];
 
   _renderCamera = () => {
@@ -473,169 +497,94 @@ class UnconnectedCameraScreen extends Component {
             borderWidth: 4,
             backgroundColor: Colors.white05,
             alignSelf: "center",
-            bottom: 50
+            bottom: 50,
           }}
         />
-      </TouchableOpacity>
+      </TouchableOpacity>,
     ];
   };
 
-  renderUserMeals = () => {
-    if (!this.props.userMeals.length) {
-      return null;
+  getFlatListRef = () => this._flatList;
+
+  renderMealItem = ({ item: { pictureUrl, _id: mealId }, index }) => {
+    const { mealOnAnalyserId, pictureOnAnalyser } = this.props;
+    if (!index) {
+      return (
+        <DnaShadowContainer
+          animated
+          camera
+          itemIndex={index}
+          mealId={mealOnAnalyserId}
+          parentFlatList={this._flatList}
+          containerStyle={localStyles.cameraContainer}
+          toggleAnimStatus={this.toggleAnimStatus}
+        >
+          {this._renderCamera()}
+        </DnaShadowContainer>
+      );
     }
-    return this.props.userMeals.map(({ pictureUrl, _id: mealId }, index) => (
+    return (
       <DnaShadowContainer
+        animated
+        itemIndex={index}
         key={pictureUrl}
         index={index}
-        animated
         mealId={mealId}
         containerStyle={[localStyles.cameraContainer]}
-        parentScrollView={this._scrollView}
+        parentFlatList={this._flatList}
         toggleAnimStatus={this.toggleAnimStatus}
       >
         {this._renderPicture(pictureUrl)}
       </DnaShadowContainer>
-    ));
+    );
+  };
+
+  renderUserMeals = () => {
+    const { userMeals } = this.props;
+
+    if (!userMeals.length) {
+      return null;
+    }
   };
 
   render() {
-    const { pictureOnAnalyser, mealOnAnalyserId } = this.props;
+    const { userMeals, activeMealId } = this.props;
+    const { mealFocused } = this.state;
 
     const conceptsTopValue = this._animVal.interpolate({
       inputRange: [0, 1],
-      outputRange: [HEIGHT, HEIGHT * 0.1]
+      outputRange: [HEIGHT, HEIGHT * 0.1],
     });
 
     const opacity = this._animVal.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, 1]
+      outputRange: [0, 1],
     });
-    console.log(`conceptsHeight`, this._animVal);
+
+    console.log(`CAM - mealFocused`, this.props.activeMealId);
     return (
-      <Animated.View style={{ flex: 1 }}>
+      <View>
         <Image key={2} source={Img.collectionsBg} style={localStyles.bgImg} />
         <DnaCalendar
           hide={!!this.props.activeMealId}
           midway={this.state.calMidway}
         />
         <StatusBar barStyle="light-content" />
-        <DnaContainer
-          ScrollView
-          {...this._panResponder.panHandlers}
-          key={1}
-          assignRef={el => {
-            this._scrollView = el;
+        <FlatList
+          // {...this._panResponder.panHandlers}
+          ref={el => {
+            this._flatList = el;
           }}
+          key={1}
+          data={userMeals}
+          renderItem={this.renderMealItem}
           contentContainerStyle={{
-            paddingBottom: DEFAULT_HEADER_HEIGHT
+            paddingBottom: DEFAULT_HEADER_HEIGHT,
           }}
           scrollEventThrottle={16}
-          scrollEnabled={!this.props.activeMealId}
-          // onTouchStart={this.onTouchStart}
-          // onTouchMove={this.onTouchMove}
-          // stickyHeaderIndices={[0]}
-          // showsVerticalScrollIndicator={false}
-        >
-          <DnaShadowContainer
-            animated
-            mealId={mealOnAnalyserId}
-            parentScrollView={this._scrollView}
-            containerStyle={localStyles.cameraContainer}
-            toggleAnimStatus={this.toggleAnimStatus}
-          >
-            {pictureOnAnalyser
-              ? this._renderPicture(this.props.pictureOnAnalyser)
-              : this._renderCamera()}
-          </DnaShadowContainer>
-          {this.renderUserMeals()}
-          {/*          <DnaShadowContainer
-            animated
-            height={pictureHeight}
-            width={pictureWidth}
-            containerStyle={[
-              localStyles.cameraContainer,
-              {
-                top: pictureTop,
-                borderRadius: pictureBorderRadius,
-                overflow: "hidden"
-              }
-            ]}
-          >
-            {pictureOnAnalyser ? this._renderPicture() : this._renderCamera()}
-          </DnaShadowContainer>*/}
-          {pictureOnAnalyser ? null : this._renderControllers()}
-          {/*<Modal
-          ref={"addFoodModal"}
-          style={{ height: height * 0.85 }}
-          position={"bottom"}
-          swipeToClose={true}
-          backdrop={true}
-          backdropPressToClose={true}
-          onClosed={this.props.toggleAddFoodModal}
-          isOpen={!!this.props.isFoodModalOpen}
-        >
-          <AddFoodForm
-            {...this.state}
-            handleOverlayPress={this.handleOverlayPress}
-            handleAddFoodChange={this.handleAddFoodChange}
-            handleFoodNameChange={this.handleFoodNameChange}
-            handlePortionSizeChange={this.handlePortionSizeChange}
-            handleFoodSubmit={this.handleFoodSubmit}
-            handleManualFoodPress={this.handleManualFoodPress}
-            setFoodsShowing={this.setFoodsShowing}
-            getFoods={this.props.getFoods}
-          />
-        </Modal>
-        <Modal
-          ref={"editFood"}
-          style={{ height: height * 0.85 }}
-          position={"bottom"}
-          swipeToClose={true}
-          backdrop={true}
-          backdropPressToClose={true}
-          onClosed={() => this.setState({ isEditFoodModalOpen: false })}
-          isOpen={!!this.state.isEditFoodModalOpen}
-        >
-          <EditFood
-            {...this.props}
-            {...this.state}
-            handleOverlayPress={this.handleOverlayPress}
-            setFoodsShowing={this.setFoodsShowing}
-            handlePortionSizeChange={this.handlePortionSizeChange}
-            setLoading={this.setLoading}
-            food={this.state.foodBeingEdited}
-            handleEditFoodChange={this.handleEditFoodChange}
-            handleOptionChange={this.handleOptionChange}
-          />
-        </Modal>
-        <Modal
-          ref={"dashboardModal"}
-          style={{ height: height }}
-          position={"bottom"}
-          swipeToClose={true}
-          backdrop={true}
-          backdropPressToClose={true}
-          onClosed={() => this.setState({ isDashboardOpen: false })}
-          isOpen={!!this.state.isDashboardOpen}
-        >
-          <DashboardContainer navigation={this.props.navigation} />
-        </Modal>*/}
-        </DnaContainer>
-        <Animated.View
-          style={{
-            transform: [{ translateY: conceptsTopValue }],
-            bottom: DEFAULT_TABBAR_HEIGHT,
-            width: "100%",
-            height: "60%",
-            position: "absolute",
-            backgroundColor: Colors.white,
-            opacity
-          }}
-        >
-          {this._renderConcepts()}
-        </Animated.View>
-      </Animated.View>
+          scrollEnabled={!activeMealId}
+        />
+      </View>
     );
   }
 }
@@ -648,35 +597,28 @@ const localStyles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   picture: {
-    flex: 1
-  },
-  belowHeaderContainer: {
-    flex: 1
-  },
-  container: {
     flex: 1,
-    flexDirection: "column"
-  },
-  header: {
-    height: DEFAULT_HEADER_HEIGHT
   },
   cameraContainer: {
     alignSelf: "center",
     marginVertical: 32,
-    overflow: "hidden"
+    overflow: "hidden",
+    shadowOpacity: 1,
+    shadowRadius: 1,
+    shadowColor: Colors.black,
+    backgroundColor: "red",
   },
   camera: {
     flex: 1,
-    overflow: "hidden"
   },
   bottom: {
     flexDirection: "row",
     backgroundColor: "white",
     justifyContent: "center",
-    flex: 0.5
+    flex: 0.5,
   },
   previousMealContainer: {
     position: "absolute",
@@ -686,7 +628,7 @@ const localStyles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 5,
     borderWidth: 0.1,
-    backgroundColor: "#f9f8f3"
+    backgroundColor: "#f9f8f3",
   },
   previousMeal: {
     flexDirection: "column",
@@ -695,46 +637,46 @@ const localStyles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignItems: "center",
-    top: 5
+    top: 5,
   },
   shutterContainer: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    top: "6%"
+    top: "6%",
   },
   footer: {
     flex: 1,
-    height: height * 0.2
+    height: height * 0.2,
   },
   image: {
     height: "100%",
     width: "100%",
     backgroundColor: "transparent",
-    zIndex: 1
+    zIndex: 1,
   },
   foods: {
     flexDirection: "row",
     width: width,
     height: "100%",
     flexWrap: "wrap",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   food: {
     margin: 10,
-    padding: 16
+    padding: 16,
   },
   shadow: {
     shadowOpacity: 0.4,
     shadowOffset: {
       width: -1,
-      height: 1
-    }
+      height: 1,
+    },
   },
   form: {
     width: width * 0.8,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   addFoodButton: {
     flex: 0.33,
@@ -746,8 +688,8 @@ const localStyles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowOffset: {
       width: 1,
-      height: 1
-    }
+      height: 1,
+    },
   },
   empty: {
     flex: 0.33,
@@ -755,14 +697,13 @@ const localStyles = StyleSheet.create({
     backgroundColor: "transparent",
     borderRadius: 0,
     height: 70,
-    width: 100
-  }
+    width: 100,
+  },
 });
 
 const mapStateToProps = state => {
   const {
     meals: {
-      mealOnAnalyser: meal,
       userMealsData,
       mealOnAnalyser,
       mealOnAnalyser: {
@@ -771,15 +712,15 @@ const mapStateToProps = state => {
         foods: mealFoods,
         concepts: mealConcepts,
         conceptsData: mealConceptsData,
-        _id: mealOnAnalyserId
+        _id: mealOnAnalyserId,
       },
-      activeMealId
+      activeMealId,
     },
     foods: { stageThree: foods },
     ui: { pictureOnAnalyser, isLoading, isFoodModalOpen },
-    user
+    user,
   } = state;
-  const userMeals = userMealseSel(state);
+  const userMeals = userMealsSel(state);
 
   return {
     previewVisible: DEV && false && !!mealConcepts && mealConcepts.length,
@@ -796,45 +737,20 @@ const mapStateToProps = state => {
         ? mealOnAnalyser
         : userMealsData[activeMealId],
     user,
-    meal,
+    meal: mealOnAnalyser,
     macros,
-    micros
+    micros,
   };
 };
 
 UnconnectedCameraScreen.defaultProps = {
-  activeMeal: defaultRefs.emptyObj
+  activeMeal: defaultRefs.emptyObj,
 };
-
-function mapDispatchToProps(dispatch) {
-  return {
-    startAnalyser: picturePath => dispatch(startAnalyser(picturePath)),
-    saveMeal: meal => dispatch(saveMeal(meal)),
-    toggleAddFoodModal: () => dispatch(toggleAddFoodModal()),
-    getFoods: foodName =>
-      dispatch(getResourceForStageTwo(new Food(), foodName)),
-    getOptions: (food, foodName) =>
-      dispatch(getResourceForStageTwo(food, foodName)),
-    getAnalysis: (food, ndbno) =>
-      dispatch(getResourceForStageThree(food, ndbno)),
-    addOrRemoveFood: foodId => dispatch(addOrRemoveFood(foodId)),
-    changeSelOption: (food, selectedOptionId) =>
-      dispatch(changeSelOption(food, selectedOptionId)),
-    updateMacros: () => dispatch(updateMacrosInMeal()),
-    changeFoodOptions: (food, newOptions) =>
-      dispatch(changeOptions(food, newOptions)),
-    changePortionSize: (food, portionSize) =>
-      dispatch(changePortionSize(food, portionSize)),
-    resetFoods: () => dispatch(resetFoods()),
-    resetMeals: () => dispatch(resetMeals()),
-    retakePicture: () => dispatch(pictureOnAnalyser(null))
-  };
-}
 
 export const CameraScreen = connect(mapStateToProps, {
   startAnalyser,
   saveMeal,
   toggleAddFoodModal,
   addOrRemoveFood,
-  reset: () => dispatch => dispatch({ type: T.RESET_KEEP_LOGGED_IN })
+  reset: () => dispatch => dispatch({ type: T.RESET_KEEP_LOGGED_IN }),
 })(UnconnectedCameraScreen);
