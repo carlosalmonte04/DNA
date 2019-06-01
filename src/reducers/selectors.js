@@ -20,7 +20,7 @@ const concepIdSelector = (state, { conceptId }) => conceptId;
 export const conceptSel = createSelector(
   ConceptsDataSel,
   concepIdSelector,
-  (conceptsData, conceptId) => conceptsData[conceptId],
+  (conceptsData, conceptId) => conceptsData && conceptsData[conceptId] || {},
 );
 
 const conceptOptionsSel = createSelector(conceptSel, nullfunc, concept => {
@@ -43,7 +43,7 @@ export const conceptSelectedOptionSel = createSelector(
   optionsDataSel,
   (concept, optionsData) => {
     if (concept) {
-      optionsData[concept.selectedOptionId];
+      return optionsData && optionsData[concept.selectedOptionId] || {};
     } else {
       return {};
     }
@@ -51,7 +51,7 @@ export const conceptSelectedOptionSel = createSelector(
 );
 
 export const selectedOptionNameSel = createSelector(
-  [conceptSelectedOptionSel],
+  conceptSelectedOptionSel,
   ({ name }) => name,
 );
 

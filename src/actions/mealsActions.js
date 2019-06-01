@@ -105,16 +105,15 @@ export const startAnalyser = picturePath => {
   };
 };
 
-export const fetchAllMeals = () => {
+export const fetchAllMeals = token => {
   return async dispatch => {
     const apiUrl = `${API_URL}/meals/`;
-    const token = await AsyncStorage.getItem("token");
     const requestData = {
       method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        token: token
+        token,
       }
     };
     return fetch(apiUrl, requestData)
@@ -122,10 +121,8 @@ export const fetchAllMeals = () => {
       .catch(error => console.log("error while getting all users meals", error))
       .then(allMealsResponse => {
         console.log("ALL MEALS RESPONSE", allMealsResponse);
-        const mealsCollection = allMealsResponse.map(meal => new Meal(meal));
-        dispatch(setUserMeals({ meals: mealsCollection }));
-        dispatch(toggleDashboardLoading(false));
-        return mealsCollection;
+        // const mealsCollection = allMealsResponse.map(meal => new Meal(meal));
+        dispatch(setUserMeals(allMealsResponse));
       });
   };
 };

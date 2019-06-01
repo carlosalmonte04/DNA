@@ -58,11 +58,10 @@ class App extends React.PureComponent {
     // const allowedStorage = await PermissionsAndroid.request(
     //   PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
     // );
-    console.log(`HEYYY REHYDRATED STATUS!!`, this.props.rehydrated);
     const { setIsSplashOver } = this.props;
 
     this.addAllEventListeners();
-    // this.getAllUserData();
+    this.getAllUserData();
 
     setTimeout(() => {
       this.setState({ isLoaded: true }, setIsSplashOver);

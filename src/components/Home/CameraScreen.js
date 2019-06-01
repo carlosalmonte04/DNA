@@ -250,6 +250,7 @@ class UnconnectedCameraScreen extends Component {
   };
 
   takePicture = () => {
+    console.log('taking pic', )
     const options = { jpegQuality: "70%" };
     //options.location = ...
     this.camera
@@ -474,34 +475,37 @@ class UnconnectedCameraScreen extends Component {
   ];
 
   _renderCamera = () => {
-    return [
-      <Camera
-        key={0}
-        ref={cam => {
-          this.camera = cam;
-        }}
-        style={localStyles.camera}
-        aspect={Camera.constants.Aspect.fill}
-        mirrorImage={false}
-        captureTarget={Camera.constants.CaptureTarget.disk}
-        captureQuality="medium"
-      />,
-      <TouchableOpacity key={1} onPress={this.takePicture}>
-        <View
-          style={{
-            position: "absolute",
-            height: 50,
-            width: 50,
-            borderRadius: 25,
-            borderColor: Colors.gray,
-            borderWidth: 4,
-            backgroundColor: Colors.white05,
-            alignSelf: "center",
-            bottom: 50,
+    return (
+      <>
+        <Camera
+          key={0}
+          ref={cam => {
+            this.camera = cam;
           }}
+          style={localStyles.camera}
+          aspect={Camera.constants.Aspect.fill}
+          mirrorImage={false}
+          captureTarget={Camera.constants.CaptureTarget.disk}
+          captureQuality="medium"
         />
-      </TouchableOpacity>,
-    ];
+        <TouchableOpacity
+          key={1}
+          onPress={this.takePicture}
+            style={{
+              position: "absolute",
+              height: 50,
+              width: 50,
+              borderRadius: 25,
+              // borderColor: Colors.gray,
+              borderColor: 'red',
+              borderWidth: 4,
+              backgroundColor: Colors.white05,
+              alignSelf: "center",
+              bottom: 50,
+            }}
+        />
+      </>
+    );
   };
 
   getFlatListRef = () => this._flatList;
@@ -563,13 +567,13 @@ class UnconnectedCameraScreen extends Component {
 
     console.log(`CAM - mealFocused`, this.props.activeMealId);
     return (
-      <View>
-        <Image key={2} source={Img.collectionsBg} style={localStyles.bgImg} />
-        <DnaCalendar
-          hide={!!this.props.activeMealId}
-          midway={this.state.calMidway}
-        />
-        <StatusBar barStyle="light-content" />
+      <View style={{flex: 1, backgroundColor: 'red'}}>
+        <View style={{ flex: 0.18 }}>
+          <DnaCalendar
+            hide={!!this.props.activeMealId}
+            midway={this.state.calMidway}
+          />
+        </View>
         <FlatList
           // {...this._panResponder.panHandlers}
           ref={el => {
@@ -579,7 +583,7 @@ class UnconnectedCameraScreen extends Component {
           data={userMeals}
           renderItem={this.renderMealItem}
           contentContainerStyle={{
-            paddingBottom: DEFAULT_HEADER_HEIGHT,
+            paddingBottom: DEFAULT_HEADER_HEIGHT
           }}
           scrollEventThrottle={16}
           scrollEnabled={!activeMealId}

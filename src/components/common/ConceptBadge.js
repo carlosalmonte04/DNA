@@ -60,7 +60,6 @@ class UnconnectedConceptBadge extends React.PureComponent {
   render() {
     const { concept } = this.props;
     const { name } = concept;
-
     return (
       <DnaTouchable
         style={localStyles.container}
@@ -69,7 +68,7 @@ class UnconnectedConceptBadge extends React.PureComponent {
         <DnaPText
           bold
           text={name}
-          color={Colors.white}
+          color={Colors.black}
           size={4}
           style={localStyles.text}
         />

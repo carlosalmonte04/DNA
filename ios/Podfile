@@ -1,4 +1,5 @@
 # Uncomment the next line to define a global platform for your project
+platform :ios, '9.0'
 # platform :ios, '9.0'
 
 target 'DNA' do
@@ -27,7 +28,6 @@ target 'DNA' do
   ]
 
   pod 'RNImageCropPicker', :path =>  '../node_modules/react-native-image-crop-picker'
-  platform :ios, '9.0'
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 

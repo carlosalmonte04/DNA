@@ -14,7 +14,7 @@ const appBundleIdentifier = `${DeviceInfo.getBundleId()}`;
   dev or prod
 */
 
-const SERVER_DEV_API = true;
+const SERVE_DEV_API = false;
 
 export const ALLOWED_DEEPLINKING_ROUTES = {
   "": true,
@@ -32,7 +32,7 @@ export const DEVICE_INFO = {
 };
 
 export const ENV = {
-  API_URL: SERVER_DEV_API ? API_URL_DEV : API_URL,
+  API_URL: SERVE_DEV_API ? API_URL_DEV : API_URL,
   USDA_KEY,
 };
 
@@ -54,7 +54,8 @@ export const Constants = {
     - PURGE_ALL_CHANNELS: purges Twilio channel data. Reload the app twice when toggling from false to true. You know it's successful if you reload the app and the CHAT/SET_ALL_USER_CHANNELS action sets an empty object
 */
 export const devFlags = {
-  keepMealOnView: DEV && true,
+  keepMealOnView: DEV && false,
+  purgeAllData: DEV && false,
 };
 
 export const defaultRefs = {

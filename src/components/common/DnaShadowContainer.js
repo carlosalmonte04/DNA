@@ -253,10 +253,6 @@ class UnconnectedDnaShadowContainer extends React.PureComponent {
     } = this.props;
     const { expanded, textLayedOut, textContentHeight } = this.state;
 
-    if (textLayedOut) {
-      console.log(`CAM - TEXT HEIGHT: `, textContentHeight);
-    }
-
     const scale = this._animVal.interpolate({
       inputRange: [-0.5, 0, 1],
       outputRange: [0.89, 0.9, 1],

@@ -34,8 +34,8 @@ export const setUserToken = token => ({
   payload: { token }
 });
 
-export const userLoggedInSuccess = () => async dispatch => {
-  dispatch(fetchAllMeals());
+export const userLoggedInSuccess = (token) => async dispatch => {
+  dispatch(fetchAllMeals(token));
 };
 
 export const createUser = userInfo => {
@@ -88,7 +88,7 @@ export const login = userInfo => {
       await dispatch(fetchUser(token));
       dispatch(toggleLoggedIn(!!token));
 
-      await dispatch(userLoggedInSuccess());
+      await dispatch(userLoggedInSuccess(token));
 
       console.log("*User - logged in");
     } catch (err) {

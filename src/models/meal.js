@@ -73,7 +73,7 @@ export const Meal = (() => {
         make API call to return all meals
       */
 
-      console.log(`Meals - Getting meals`);
+      console.log(`Meals - Getting meals`, token);
 
       const { userMealsIds, userMealsData } = await getAllUserMeals({ token });
 
@@ -92,9 +92,9 @@ export const Meal = (() => {
             token
           });
 
-          console.log(`Meal - what is mealData`, mealData);
+          console.log(`Meal - what is mealData`, mealData, conceptsData);
 
-          const meal = new Meal(mealData);
+          const meal = new Meal({ ...mealData, conceptsData });
 
           return meal;
         } catch (err) {
