@@ -1,4 +1,6 @@
-export * from "./food";
-export * from "./meal";
-export * from "./user";
-export * from "./app";
+import Food from './food';
+import { Meal } from './meal';
+import { User } from './user';
+import { App } from './app';
+
+export { Food, Meal, User, App };

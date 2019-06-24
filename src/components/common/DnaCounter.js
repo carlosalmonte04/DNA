@@ -1,30 +1,30 @@
-import React, { PureComponent } from "react";
-import { View, Image, StyleSheet } from "react-native";
-import PropTypes from "prop-types";
-import { DnaTouchable, DnaPText } from "./";
-import { Icons, Colors } from "@dnaAssets";
-import { defaultRefs } from "@dnaConfig";
+import React, { PureComponent } from 'react';
+import { View, Image, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
+import { DnaTouchable, DnaPText } from './';
+import { Icons, Colors } from '@dnaAssets';
+import { defaultRefs } from 'config/env';
 
 const localStyles = StyleSheet.create({
   container: {
     width: 90,
     height: 40,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between"
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   btnContainer: {
     width: 25,
     height: 25,
     borderRadius: 5,
     backgroundColor: Colors.green,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   btn: {
-    width: "70%",
-    height: "70%",
-    alignSelf: "center"
-  }
+    width: '70%',
+    height: '70%',
+    alignSelf: 'center',
+  },
 });
 
 class DnaCounter extends PureComponent {
@@ -62,13 +62,13 @@ class DnaCounter extends PureComponent {
 DnaCounter.propTypes = {
   count: PropTypes.number,
   onIncreasePress: PropTypes.func,
-  onDecreasePress: PropTypes.func
+  onDecreasePress: PropTypes.func,
 };
 
 DnaCounter.defaultProps = {
   count: 0,
   onIncreasePress: defaultRefs.nullFunc,
-  onDecreasePress: defaultRefs.nullFunc
+  onDecreasePress: defaultRefs.nullFunc,
 };
 
 export { DnaCounter };

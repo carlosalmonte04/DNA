@@ -1,6 +1,6 @@
-import { Meal, Food } from "@dnaModels";
-import { defaultRefs } from "@dnaConfig";
-import * as T from "@dnaActions";
+import { Meal, Food } from '@dnaModels';
+import { defaultRefs } from 'config/env';
+import * as T from '@dnaActions';
 
 const { emptyArr } = defaultRefs;
 
@@ -12,12 +12,12 @@ const initialState = {
     calorie: 0,
     protein: 0,
     fat: 0,
-    carbohydrate: 0
+    carbohydrate: 0,
   },
   micros: {},
-  activeMealId: "",
+  activeMealId: '',
   userMealsIds: emptyArr,
-  userMealsData: {}
+  userMealsData: {},
 };
 
 export const mealsReducer = (state = initialState, action) => {
@@ -37,31 +37,31 @@ export const mealsReducer = (state = initialState, action) => {
       }
 
       if (state.mealOnAnalyser.foods.find(food => food.id === action.payload)) {
-        console.log("removing");
+        console.log('removing');
         state.mealOnAnalyser.foods = state.mealOnAnalyser.foods.filter(
-          food => food.id !== action.payload
+          food => food.id !== action.payload,
         );
         const newMacros = state.mealOnAnalyser.macros();
         const newMicros = state.mealOnAnalyser.micros();
         return Object.assign({}, state, {
           macros: newMacros,
-          micros: newMicros
+          micros: newMicros,
         });
       } else {
         state.mealOnAnalyser.foods.push(
-          Food.all().find(food => food.id === action.payload)
+          Food.all().find(food => food.id === action.payload),
         );
-        console.log("adding");
+        console.log('adding');
         const newMacros = state.mealOnAnalyser.macros();
         const newMicros = state.mealOnAnalyser.micros();
         return Object.assign({}, state, {
           macros: newMacros,
-          micros: newMicros
+          micros: newMicros,
         });
       }
 
     case T.ADD_MEAL:
-      console.log("BEFORE ADDED MEAL TO STATE", state);
+      console.log('BEFORE ADDED MEAL TO STATE', state);
       return Object.assign({}, state, { all: [...state.all, action.payload] });
 
     case T.SET_ALL_MEALS_IN_STATE:
@@ -69,7 +69,7 @@ export const mealsReducer = (state = initialState, action) => {
       return {
         ...state,
         userMealsIds,
-        userMealsData
+        userMealsData,
       };
 
     case T.RESET_MEALS:
@@ -77,7 +77,7 @@ export const mealsReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         mealOnAnalyser: new Meal(),
         macros: { ...initialState.macros },
-        all: emptyArr
+        all: emptyArr,
       });
 
     case T.SET_CONCEPT_PORTION_SIZE: {
@@ -91,10 +91,10 @@ export const mealsReducer = (state = initialState, action) => {
             ...mealConceptsData,
             [conceptId]: {
               ...mealConceptsData[conceptId],
-              portionSize
-            }
-          }
-        }
+              portionSize,
+            },
+          },
+        },
       };
     }
     case T.UPDATE_MACROS:

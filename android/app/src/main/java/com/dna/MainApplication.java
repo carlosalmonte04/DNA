@@ -3,19 +3,19 @@ package com.dna;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.horcrux.svg.SvgPackage;
+import com.beefe.picker.PickerViewPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
-import com.beefe.picker.PickerViewPackage;
-import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
-import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
-import com.microsoft.appcenter.reactnative.appcenter.AppCenterReactNativePackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.BV.LinearGradient.LinearGradientPackage;
-import com.RNFetchBlob.RNFetchBlobPackage;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.cmcewen.blurview.BlurViewPackage;
+import com.reactnativecommunity.netinfo.NetInfoPackage;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -36,19 +36,19 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new VectorIconsPackage(),
             new SvgPackage(),
+            new PickerViewPackage(),
+            new LinearGradientPackage(),
+            new PickerPackage(),
+            new RNFetchBlobPackage(),
             new FastImageViewPackage(),
             new RNDeviceInfo(),
-            new PickerPackage(),
-            new PickerViewPackage(),
-            new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
-            new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
-            new AppCenterReactNativePackage(MainApplication.this),
-            new VectorIconsPackage(),
-            new LinearGradientPackage(),
-            new RNFetchBlobPackage(),
+            new ReactNativeConfigPackage(),
             new RCTCameraPackage(),
-            new BlurViewPackage()
+            new BlurViewPackage(),
+            new NetInfoPackage(),
+            new AsyncStoragePackage()
       );
     }
 

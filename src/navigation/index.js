@@ -1,3 +1,2 @@
-export * from "./AppNavigator";
-export * from "./HomeNavigator";
-export * from "./MealNavigator";
+export * from './RootNavigator';
+export * from './HomeNavigator';

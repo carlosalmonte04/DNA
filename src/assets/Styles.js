@@ -2,12 +2,12 @@ import {
   Dimensions,
   StyleSheet,
   StatusBarManager,
-  Platform
-} from "react-native";
-import { IOS } from "@dnaConfig";
+  Platform,
+} from 'react-native';
+import { IOS } from 'config/env';
 
-export const WIDTH = Dimensions.get("window").width;
-export const HEIGHT = Dimensions.get("window").height;
+export const WIDTH = Dimensions.get('window').width;
+export const HEIGHT = Dimensions.get('window').height;
 
 export const IOSX = HEIGHT === 812 && IOS;
 
@@ -31,26 +31,26 @@ export const VIEWABLE_CONTENT_HEIGHT =
 
 export const Styles = StyleSheet.create({
   flexNull: {
-    flex: null
+    flex: null,
   },
   fullScreen: {
     height: HEIGHT,
-    width: WIDTH
+    width: WIDTH,
   },
   fullWidth: {
-    width: WIDTH
+    width: WIDTH,
   },
   flex1: {
-    flex: 1
+    flex: 1,
   },
   alignSelfCenter: {
-    alignSelf: "center"
+    alignSelf: 'center',
   },
   centerAll: {
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   flexRow: {
-    flexDirection: "row"
-  }
+    flexDirection: 'row',
+  },
 });

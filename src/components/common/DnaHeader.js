@@ -1,9 +1,8 @@
-import React from "react";
-import { View, Image } from "react-native";
-import PropTypes from "prop-types";
-import ImageSourcePropType from "ImageSourcePropType";
-import { connect } from "react-redux";
-import { defaultRefs } from "@dnaConfig";
+import React from 'react';
+import { View, Image } from 'react-native';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { defaultRefs } from 'config/env';
 
 const { nullfunc } = defaultRefs;
 
@@ -14,7 +13,7 @@ export const UnconnectedDnaHeader = props => {
     middleElementToggle,
     middleElementAction,
     rightElementToggle,
-    rightElementAction
+    rightElementAction,
   } = props;
 
   return (
@@ -29,12 +28,9 @@ export const UnconnectedDnaHeader = props => {
 export const DnaHeader = connect()(UnconnectedDnaHeader);
 
 UnconnectedDnaHeader.propTypes = {
-  leftElementToggle: ImageSourcePropType, // image
   leftElementAction: PropTypes.function,
-  middleElementToggle: ImageSourcePropType,
   middleElementAction: PropTypes.function,
-  rightElementToggle: ImageSourcePropType,
-  rightElementAction: PropTypes.function
+  rightElementAction: PropTypes.function,
 };
 
 UnconnectedDnaHeader.defaultProps = {
@@ -43,5 +39,5 @@ UnconnectedDnaHeader.defaultProps = {
   middleElementToggle: null,
   middleElementAction: nullfunc,
   rightElementToggle: null,
-  rightElementAction: nullfunc
+  rightElementAction: nullfunc,
 };

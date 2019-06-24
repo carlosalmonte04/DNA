@@ -4,29 +4,29 @@
   
 */
 
-import React from "react";
-import { Image, View } from "react-native";
-import { createStackNavigator } from "react-navigation";
-import { connect } from "react-redux";
-import { Meal, Meals } from "@dnaComponents";
-import { DEV } from "@dnaConfig";
-import { Colors, IOS, Icons, DEFAULT_TABBAR_HEIGHT } from "@dnaAssets";
+import React from 'react';
+import { Image, View } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
+import { connect } from 'react-redux';
+import { Meal, Meals } from '@dnaComponents';
+import { DEV } from 'config/env';
+import { Colors, IOS, Icons, DEFAULT_TABBAR_HEIGHT } from '@dnaAssets';
 import {
   reduxifyNavigator,
-  createReactNavigationReduxMiddleware
-} from "react-navigation-redux-helpers";
+  createReactNavigationReduxMiddleware,
+} from 'react-navigation-redux-helpers';
 
-const FIRST_SCREEN = DEV ? "Meals" : "Meals";
+const FIRST_SCREEN = DEV ? 'Meals' : 'Meals';
 
 const NAV_ICONS = {
   CameraScreen: {
     active: Icons.greenCamera,
-    inactive: Icons.grayCamera
+    inactive: Icons.grayCamera,
   },
   ProfileScreen: {
     active: Icons.greenProfile,
-    inactive: Icons.grayProfile
-  }
+    inactive: Icons.grayProfile,
+  },
 };
 
 const TabBarIcon = ({ screen, state }) => {
@@ -37,7 +37,7 @@ const TabBarIcon = ({ screen, state }) => {
         style={{
           height: 23,
           width: 23,
-          alignSelf: "center"
+          alignSelf: 'center',
         }}
         resizeMode="cover"
       />
@@ -53,10 +53,10 @@ const createTabConfig = initialRouteName => {
       activeTintColor: Colors.green,
       showLabel: false,
       style: {
-        height: DEFAULT_TABBAR_HEIGHT
-      }
+        height: DEFAULT_TABBAR_HEIGHT,
+      },
     },
-    initialRouteName
+    initialRouteName,
   };
 
   if (IOS) {
@@ -65,40 +65,40 @@ const createTabConfig = initialRouteName => {
       navigationOptions: {
         headerLeft: null,
         swipeEnabled: false,
-        gesturesEnabled: false
-      }
+        gesturesEnabled: false,
+      },
     };
   }
 
   return {
     ...commonConfig,
-    tabBarPosition: "bottom",
+    tabBarPosition: 'bottom',
     // enimationEnabled: false,
-    backBehavior: "none",
+    backBehavior: 'none',
     swipeEnabled: false,
     navigationOptions: {
       headerLeft: null,
-      gesturesEnabled: false
-    }
+      gesturesEnabled: false,
+    },
   };
 };
 
 const tabScreens = {
   Meal: {
-    screen: Meal
+    screen: Meal,
   },
   Meals: {
-    screen: Meals
-  }
+    screen: Meals,
+  },
 };
 
 export const MealsNavigator = createStackNavigator(
   tabScreens,
-  createTabConfig(FIRST_SCREEN)
+  createTabConfig(FIRST_SCREEN),
 );
 
 const mapStateToProps = ({ nav }) => ({
-  state: { ...nav }
+  state: { ...nav },
 });
 
 // export const mealNavMiddleware = createReactNavigationReduxMiddleware(

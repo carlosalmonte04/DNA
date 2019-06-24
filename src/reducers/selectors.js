@@ -1,5 +1,5 @@
-import { createSelector } from "reselect";
-import { defaultRefs } from "@dnaConfig";
+import { createSelector } from 'reselect';
+import { defaultRefs } from 'config/env';
 
 const { nullfunc, emptyArr } = defaultRefs;
 
@@ -20,12 +20,16 @@ const concepIdSelector = (state, { conceptId }) => conceptId;
 export const conceptSel = createSelector(
   ConceptsDataSel,
   concepIdSelector,
-  (conceptsData, conceptId) => conceptsData && conceptsData[conceptId] || {},
+  (conceptsData, conceptId) => (conceptsData && conceptsData[conceptId]) || {},
 );
 
-const conceptOptionsSel = createSelector(conceptSel, nullfunc, concept => {
-  return concept && concept.options;
-});
+const conceptOptionsSel = createSelector(
+  conceptSel,
+  nullfunc,
+  concept => {
+    return concept && concept.options;
+  },
+);
 
 export const conceptOptionsDataSel = createSelector(
   [conceptSel, conceptOptionsSel, optionsDataSel],
@@ -43,7 +47,7 @@ export const conceptSelectedOptionSel = createSelector(
   optionsDataSel,
   (concept, optionsData) => {
     if (concept) {
-      return optionsData && optionsData[concept.selectedOptionId] || {};
+      return (optionsData && optionsData[concept.selectedOptionId]) || {};
     } else {
       return {};
     }

@@ -1,103 +1,98 @@
-import * as T from "./types";
+import * as T from './types';
 import {
   toggleDashboardLoading,
   setLoading,
   setPictureOnAnalyser,
-  setAnalyserProcessTracker
-} from "./uiActions";
-import { AsyncStorage } from "react-native";
-import { ENV } from "@dnaConfig";
-import { Meal, Food } from "@dnaModels";
-import { getAPIEndpoint, getUSDAApiUrl, uploadMedia } from "@dnaHelpers";
-import { getStore } from "@dnaStore";
+  setAnalyserProcessTracker,
+} from './uiActions';
+import AsyncStorage from '@react-native-community/async-storage';
+import { ENV } from 'config/env';
+import { Meal, Food } from 'models';
+import { getAPIEndpoint, getUSDAApiUrl, uploadMedia } from '@dnaHelpers';
+import { getStore } from 'redux/store';
 
 const { USDA_KEY, API_URL } = ENV;
 
 export const ANALYSER_STATES = {
-  MEAL_WITH_CONCEPTS: "meal_with_concepts",
-  CONCEPTS_WITH_OPTIONS: "concepts_with_options",
-  OPTIONS_WITH_ANALYSIS: "options_with_analysis"
+  MEAL_WITH_CONCEPTS: 'meal_with_concepts',
+  CONCEPTS_WITH_OPTIONS: 'concepts_with_options',
+  OPTIONS_WITH_ANALYSIS: 'options_with_analysis',
 };
 
 export const addFood = (food, foodInfo) => {
   return {
     type: T.ADD_FOOD_TO_MEAL,
-    payload: { food, foodInfo }
+    payload: { food, foodInfo },
   };
 };
 
 export const addMeal = meal => {
   return {
     type: T.ADD_MEAL,
-    payload: meal
+    payload: meal,
   };
 };
 
 export const addOrRemoveFood = foodId => {
   return {
     type: T.ADD_OR_REMOVE_FOOD,
-    payload: { foodId }
+    payload: { foodId },
   };
 };
 
 export const setMealOnAnalyser = meal => {
   return {
     type: T.SET_MEAL_ON_ANALYSER,
-    payload: { meal }
+    payload: { meal },
   };
 };
 
 export const removeFood = food => {
   return {
     type: T.REMOVE_FOOD_FROM_MEAL,
-    payload: food
+    payload: food,
   };
 };
 
 export const resetMeals = () => {
   return {
-    type: T.RESET_MEALS
+    type: T.RESET_MEALS,
   };
 };
 
 export const setUserMeals = ({ userMealsIds, userMealsData }) => {
+  console.log('setting user meal', T.SET_ALL_MEALS_IN_STATE);
   return {
     type: T.SET_ALL_MEALS_IN_STATE,
-    payload: { userMealsIds, userMealsData }
+    payload: { userMealsIds, userMealsData },
   };
 };
 
 export const updateMacrosInMeal = () => {
   return {
-    type: T.UPDATE_MACROS
+    type: T.UPDATE_MACROS,
   };
 };
 
 export const setInStageThree = foods => {
   return {
     type: T.SET_IN_STAGE_THREE,
-    payload: foods
+    payload: foods,
   };
 };
 export const setActiveMealId = mealId => {
   return {
     type: T.SET_ACTIVE_MEAL_ID,
-    payload: { mealId }
+    payload: { mealId },
   };
 };
 
 export const setConceptPortionSize = ({ conceptId, portionSize }) => ({
   type: T.SET_CONCEPT_PORTION_SIZE,
-  payload: { conceptId, portionSize }
+  payload: { conceptId, portionSize },
 });
 
-export const startAnalyser = picturePath => {
-  const {
-    store: { getState }
-  } = getStore();
-  const {
-    user: { token }
-  } = getState();
+export const startAnalyser = (picturePath, token) => {
   return dispatch => {
     dispatch(setLoading(true));
     dispatch(setPictureOnAnalyser(picturePath));
@@ -109,18 +104,18 @@ export const fetchAllMeals = token => {
   return async dispatch => {
     const apiUrl = `${API_URL}/meals/`;
     const requestData = {
-      method: "GET",
+      method: 'GET',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
         token,
-      }
+      },
     };
     return fetch(apiUrl, requestData)
       .then(res => res.json())
-      .catch(error => console.log("error while getting all users meals", error))
+      .catch(error => console.log('error while getting all users meals', error))
       .then(allMealsResponse => {
-        console.log("ALL MEALS RESPONSE", allMealsResponse);
+        console.log('ALL MEALS RESPONSE', allMealsResponse);
         // const mealsCollection = allMealsResponse.map(meal => new Meal(meal));
         dispatch(setUserMeals(allMealsResponse));
       });
@@ -146,7 +141,7 @@ export const fetchAllMeals = token => {
 // };
 
 export const getUSDAOptionsWithFoodName = async foodName => {
-  const url = getUSDAApiUrl({ endpoint: "search", foodName });
+  const url = getUSDAApiUrl({ endpoint: 'search', foodName });
 
   if (!!foodName) {
     try {
@@ -155,13 +150,13 @@ export const getUSDAOptionsWithFoodName = async foodName => {
 
       return foodOptions.list.item;
     } catch (err) {
-      console.log("**Meal - getting options for food/concept", foodName);
+      console.log('**Meal - getting options for food/concept', foodName);
     }
   }
 };
 
 export const getUSDAAnalysisWithNdbno = async usdaNdbno => {
-  const url = getUSDAApiUrl({ endpoint: "report", usdaNdbno });
+  const url = getUSDAApiUrl({ endpoint: 'report', usdaNdbno });
 
   if (!!usdaNdbno) {
     try {
@@ -171,7 +166,7 @@ export const getUSDAAnalysisWithNdbno = async usdaNdbno => {
       const analysis = report.foods[0].food;
       return analysis;
     } catch (err) {
-      console.log("**Meal - getting report for food", food);
+      console.log('**Meal - getting report for food', food);
     }
   }
 };
@@ -182,7 +177,7 @@ export function analysePictureWithToken(picturePath, token) {
   const {
     MEAL_WITH_CONCEPTS,
     CONCEPTS_WITH_OPTIONS,
-    OPTIONS_WITH_ANALYSIS
+    OPTIONS_WITH_ANALYSIS,
   } = ANALYSER_STATES;
 
   return async dispatch => {
@@ -192,9 +187,9 @@ export function analysePictureWithToken(picturePath, token) {
       //-----------------
       const meal = await Meal.create({
         picturePath,
-        token
+        token,
       });
-      console.log("***Meal - created", meal);
+      console.log('***Meal - created', meal, token, picturePath);
       dispatch(setMealOnAnalyser(meal));
       dispatch(setAnalyserProcessTracker(MEAL_WITH_CONCEPTS));
       dispatch(setLoading(false));
@@ -203,17 +198,17 @@ export function analysePictureWithToken(picturePath, token) {
       //  2. For each concept, get USDA options
       //-----------------
       await meal.getUSDAOptions(token);
-      console.log("***Meal - with options");
+      console.log('***Meal - with options');
       dispatch(setAnalyserProcessTracker(CONCEPTS_WITH_OPTIONS));
 
       //-----------------
       //  3. Get analysis of first food
       //-----------------
       await meal.getAllAnalysisForSelectedOptions();
-      console.log("***Meal - with analysis");
+      console.log('***Meal - with analysis');
       dispatch(setAnalyserProcessTracker(OPTIONS_WITH_ANALYSIS));
     } catch (err) {
-      console.log("**Meal - analyse", err);
+      console.log('**Meal - analyse', err);
     }
 
     // if (Food.all().length === foodsInPicture.length) {

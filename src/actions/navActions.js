@@ -1,6 +1,6 @@
 import { NavigationActions } from "react-navigation";
 import * as T from "./types";
-import { homeTabNames } from "../Config";
+import { homeTabNames } from "../config";
 
 export const popAuthNav = () => ({
   type: T.AUTH_POP

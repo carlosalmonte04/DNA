@@ -1,12 +1,12 @@
-import { addNavigationHelpers } from "react-navigation";
-import { addListener } from "@dnaStore";
+import { addNavigationHelpers } from 'react-navigation';
+import { addListener } from 'redux/store';
 
 export const getCurrentRouteName = nav => {
   if (nav.index === undefined) {
     const name = nav.routeName
-      .split("")
+      .split('')
       .slice(0)
-      .join("");
+      .join('');
 
     return name;
   }

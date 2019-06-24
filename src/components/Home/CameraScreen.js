@@ -2,7 +2,7 @@
   eslint
   no-use-before-define: 0
 */
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   FlatList,
   Alert,
@@ -17,8 +17,8 @@ import {
   Animated,
   Easing,
   PanResponder,
-} from "react-native";
-import LinearGradient from "react-native-linear-gradient";
+} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import {
   Container,
   Button,
@@ -36,9 +36,9 @@ import {
   FooterTab,
   Footer,
   Form,
-} from "native-base";
-import * as T from "@dnaActions";
-import { userMealsSel } from "@dnaReducers";
+} from 'native-base';
+import * as T from '@dnaActions';
+import { userMealsSel } from '@dnaReducers';
 import {
   toggleAddFoodModal,
   startAnalyser,
@@ -54,14 +54,14 @@ import {
   _cleanedAnalysis,
   resetFoods,
   resetMeals,
-} from "@dnaActions";
-import Camera from "react-native-camera";
-import { connect } from "react-redux";
-import * as Progress from "react-native-progress";
-import { Jiro } from "react-native-textinput-effects";
-import Modal from "react-native-modalbox";
-import ImagePicker from "react-native-image-crop-picker";
-import * as Animatable from "react-native-animatable";
+} from '@dnaActions';
+import Camera from 'react-native-camera';
+import { connect } from 'react-redux';
+import * as Progress from 'react-native-progress';
+import { Jiro } from 'react-native-textinput-effects';
+import Modal from 'react-native-modalbox';
+import ImagePicker from 'react-native-image-crop-picker';
+import * as Animatable from 'react-native-animatable';
 import {
   Img,
   Colors,
@@ -70,25 +70,25 @@ import {
   DEFAULT_HEADER_HEIGHT,
   Styles,
   DEFAULT_TABBAR_HEIGHT,
-} from "@dnaAssets";
-import { DEV, defaultRefs } from "@dnaConfig";
-import { Food } from "@dnaModels";
+} from '@dnaAssets';
+import { DEV, defaultRefs } from 'config/env';
+import { Food } from '@dnaModels';
 import {
   FullScreenContainer,
   DnaImage,
   ConceptListItem,
   DnaContainer,
   DnaShadowContainer,
-} from "@dnaCommon";
-import { DnaCalendar } from "./";
+} from '@dnaCommon';
+import { DnaCalendar } from './';
 
-import DashboardContainer from "../DashboardContainer";
-import Preview from "../Preview";
-import { ConceptsList, CameraControllers, INACTIVE_LIST_HEIGHT } from "./";
-import AddFoodForm from "../AddFoodForm";
-import EditFood from "../EditFood";
+import DashboardContainer from '../DashboardContainer';
+import Preview from '../Preview';
+import { ConceptsList, CameraControllers, INACTIVE_LIST_HEIGHT } from './';
+import AddFoodForm from '../AddFoodForm';
+import EditFood from '../EditFood';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 const createAnimation = (
   value,
@@ -107,12 +107,12 @@ const createAnimation = (
   });
 };
 
-class UnconnectedCameraScreen extends Component {
+class UnconnectedHome extends Component {
   constructor(props) {
     super(props);
     this.state = {
       hasCameraPermission: null,
-      foodName: "",
+      foodName: '',
       portionSize: 1,
       isFoodsShowing: false,
       isLoading: true,
@@ -242,21 +242,21 @@ class UnconnectedCameraScreen extends Component {
 
   handleRetake = () => {
     Alert.alert(
-      "Retake Picture",
-      "Unsaved results will be permanently erased.",
-      [{ text: "Cancel" }, { text: "OK", onPress: this.props.resetAll }],
+      'Retake Picture',
+      'Unsaved results will be permanently erased.',
+      [{ text: 'Cancel' }, { text: 'OK', onPress: this.props.resetAll }],
       { cancelable: true },
     );
   };
 
   takePicture = () => {
-    console.log('taking pic', )
-    const options = { jpegQuality: "70%" };
+    console.log('taking pic');
+    const options = { jpegQuality: '70%' };
     //options.location = ...
     this.camera
       .capture({ metadata: options })
       .then(picture => {
-        console.log("PICTURE PATH!!!", picture);
+        console.log('PICTURE PATH!!!', picture);
         this.props.startAnalyser(picture.path);
       })
       .catch(err => console.error(err));
@@ -278,7 +278,7 @@ class UnconnectedCameraScreen extends Component {
   handleAddFoodChange = foodName => {
     if (foodName.length > 3) {
       this.props.getFoods(foodName).then(foods => {
-        console.log("Foods", foods);
+        console.log('Foods', foods);
         this.setState({
           foodName,
           foods,
@@ -383,7 +383,7 @@ class UnconnectedCameraScreen extends Component {
     return this.props.meal.foods.includes(food);
   };
 
-  onProfilePress = () => this.props.navigation.navigate("UserProfile");
+  onProfilePress = () => this.props.navigation.navigate('UserProfile');
 
   _renderConceptListItem = conceptId => {
     const concept = this.props.meal.conceptsData[conceptId];
@@ -442,14 +442,14 @@ class UnconnectedCameraScreen extends Component {
     <TouchableOpacity onPress={this.takePicture}>
       <View
         style={{
-          position: "absolute",
+          position: 'absolute',
           height: 50,
           width: 50,
           borderRadius: 25,
           borderColor: Colors.gray,
           borderWidth: 4,
           backgroundColor: Colors.white05,
-          alignSelf: "center",
+          alignSelf: 'center',
           bottom: 50,
         }}
       />
@@ -457,7 +457,7 @@ class UnconnectedCameraScreen extends Component {
   );
 
   toggleAnimStatus = newState => {
-    if (newState === "atCenter") {
+    if (newState === 'atCenter') {
       this._animPictureToCenter();
     } else {
       this._animPictureToTop();
@@ -491,18 +491,18 @@ class UnconnectedCameraScreen extends Component {
         <TouchableOpacity
           key={1}
           onPress={this.takePicture}
-            style={{
-              position: "absolute",
-              height: 50,
-              width: 50,
-              borderRadius: 25,
-              // borderColor: Colors.gray,
-              borderColor: 'red',
-              borderWidth: 4,
-              backgroundColor: Colors.white05,
-              alignSelf: "center",
-              bottom: 50,
-            }}
+          style={{
+            position: 'absolute',
+            height: 50,
+            width: 50,
+            borderRadius: 25,
+            // borderColor: Colors.gray,
+            borderColor: 'red',
+            borderWidth: 4,
+            backgroundColor: Colors.white05,
+            alignSelf: 'center',
+            bottom: 50,
+          }}
         />
       </>
     );
@@ -567,7 +567,7 @@ class UnconnectedCameraScreen extends Component {
 
     console.log(`CAM - mealFocused`, this.props.activeMealId);
     return (
-      <View style={{flex: 1, backgroundColor: 'red'}}>
+      <View style={{ flex: 1, backgroundColor: 'red' }}>
         <View style={{ flex: 0.18 }}>
           <DnaCalendar
             hide={!!this.props.activeMealId}
@@ -583,7 +583,7 @@ class UnconnectedCameraScreen extends Component {
           data={userMeals}
           renderItem={this.renderMealItem}
           contentContainerStyle={{
-            paddingBottom: DEFAULT_HEADER_HEIGHT
+            paddingBottom: DEFAULT_HEADER_HEIGHT,
           }}
           scrollEventThrottle={16}
           scrollEnabled={!activeMealId}
@@ -595,7 +595,7 @@ class UnconnectedCameraScreen extends Component {
 
 const localStyles = StyleSheet.create({
   bgImg: {
-    position: "absolute",
+    position: 'absolute',
     height: HEIGHT,
     width: WIDTH,
     top: 0,
@@ -607,65 +607,65 @@ const localStyles = StyleSheet.create({
     flex: 1,
   },
   cameraContainer: {
-    alignSelf: "center",
+    alignSelf: 'center',
     marginVertical: 32,
-    overflow: "hidden",
+    overflow: 'hidden',
     shadowOpacity: 1,
     shadowRadius: 1,
     shadowColor: Colors.black,
-    backgroundColor: "red",
+    backgroundColor: 'red',
   },
   camera: {
     flex: 1,
   },
   bottom: {
-    flexDirection: "row",
-    backgroundColor: "white",
-    justifyContent: "center",
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    justifyContent: 'center',
     flex: 0.5,
   },
   previousMealContainer: {
-    position: "absolute",
+    position: 'absolute',
     width: 60,
     height: 70,
     margin: 30,
     marginTop: 10,
     borderRadius: 5,
     borderWidth: 0.1,
-    backgroundColor: "#f9f8f3",
+    backgroundColor: '#f9f8f3',
   },
   previousMeal: {
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    height: "100%",
-    alignItems: "center",
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
     top: 5,
   },
   shutterContainer: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    top: "6%",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    top: '6%',
   },
   footer: {
     flex: 1,
     height: height * 0.2,
   },
   image: {
-    height: "100%",
-    width: "100%",
-    backgroundColor: "transparent",
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'transparent',
     zIndex: 1,
   },
   foods: {
-    flexDirection: "row",
+    flexDirection: 'row',
     width: width,
-    height: "100%",
-    flexWrap: "wrap",
-    justifyContent: "center",
+    height: '100%',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
   food: {
     margin: 10,
@@ -680,12 +680,12 @@ const localStyles = StyleSheet.create({
   },
   form: {
     width: width * 0.8,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   addFoodButton: {
     flex: 0.33,
     bottom: 2,
-    backgroundColor: "#fec64a",
+    backgroundColor: '#fec64a',
     borderRadius: 0,
     height: 70,
     width: 100,
@@ -698,7 +698,7 @@ const localStyles = StyleSheet.create({
   empty: {
     flex: 0.33,
     bottom: 2,
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     borderRadius: 0,
     height: 70,
     width: 100,
@@ -747,14 +747,17 @@ const mapStateToProps = state => {
   };
 };
 
-UnconnectedCameraScreen.defaultProps = {
+UnconnectedHome.defaultProps = {
   activeMeal: defaultRefs.emptyObj,
 };
 
-export const CameraScreen = connect(mapStateToProps, {
-  startAnalyser,
-  saveMeal,
-  toggleAddFoodModal,
-  addOrRemoveFood,
-  reset: () => dispatch => dispatch({ type: T.RESET_KEEP_LOGGED_IN }),
-})(UnconnectedCameraScreen);
+export const CameraScreen = connect(
+  mapStateToProps,
+  {
+    startAnalyser,
+    saveMeal,
+    toggleAddFoodModal,
+    addOrRemoveFood,
+    reset: () => dispatch => dispatch({ type: T.RESET_KEEP_LOGGED_IN }),
+  },
+)(UnconnectedHome);
