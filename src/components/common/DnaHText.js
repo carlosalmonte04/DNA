@@ -1,7 +1,7 @@
-import React from "react";
-import { Text } from "react-native";
-import PropTypes from "prop-types";
-import { IOS } from "@dnaConfig";
+import React from 'react';
+import { Text } from 'react-native';
+import PropTypes from 'prop-types';
+import { IOS } from 'config/config';
 
 const DEFAULT_SIZES = {
   1: 30,
@@ -24,7 +24,7 @@ export const DnaHText = props => {
 
   const styleToUse = {
     fontSize: fontSize || DEFAULT_SIZES[size],
-    fontWeight: bold ? "bold" : fontWeight,
+    fontWeight: bold ? 'bold' : fontWeight,
     fontFamily,
     color,
   };
@@ -43,11 +43,11 @@ DnaHText.propTypes = {
 };
 
 DnaHText.defaultProps = {
-  text: "",
+  text: '',
   fontSize: 0,
   size: 2,
-  fontWeight: "500",
-  fontFamily: IOS ? "Raleway" : "Roboto",
-  color: IOS ? "Raleway" : "Roboto",
+  fontWeight: '500',
+  fontFamily: IOS ? 'Raleway' : 'Roboto',
+  color: IOS ? 'Raleway' : 'Roboto',
   bold: false,
 };

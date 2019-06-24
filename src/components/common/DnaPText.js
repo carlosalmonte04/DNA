@@ -1,13 +1,13 @@
-import React from "react";
-import { Text } from "react-native";
-import PropTypes from "prop-types";
-import { IOS } from "@dnaAssets";
+import React from 'react';
+import { Text } from 'react-native';
+import PropTypes from 'prop-types';
+import { IOS } from 'config/config';
 
 const DEFAULT_SIZES = {
   1: 20,
   2: 18,
   3: 16,
-  4: 14
+  4: 14,
 };
 
 export const DnaPText = props => {
@@ -17,7 +17,7 @@ export const DnaPText = props => {
     fontSize: fontSize || DEFAULT_SIZES[size],
     fontWeight,
     fontFamily,
-    color
+    color,
   };
 
   return <Text style={[styleToUse, style]}>{text}</Text>;
@@ -29,14 +29,14 @@ DnaPText.propTypes = {
   size: PropTypes.number,
   fontWeight: PropTypes.string,
   fontFamily: PropTypes.string,
-  color: PropTypes.string
+  color: PropTypes.string,
 };
 
 DnaPText.defaultProps = {
-  text: "",
+  text: '',
   fontSize: 0,
   size: 2,
-  fontWeight: "normal",
-  fontFamily: IOS ? "Avenir" : "Roboto",
-  color: IOS ? "Avenir" : "Roboto"
+  fontWeight: 'normal',
+  fontFamily: IOS ? 'Avenir' : 'Roboto',
+  color: IOS ? 'Avenir' : 'Roboto',
 };

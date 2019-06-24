@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { AsyncStorage } from "react-native";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 import {
   toggleLoggedIn,
   saveMeal,
@@ -8,10 +8,10 @@ import {
   fetchUser,
   resetFoods,
   resetMeals,
-  pictureOnAnalyser
-} from "@dnaActions";
-import { CameraScreen } from "./Home";
-import WelcomeLoginForm from "./WelcomeLoginForm";
+  pictureOnAnalyser,
+} from '@dnaActions';
+import { CameraScreen } from './Home';
+import WelcomeLoginForm from './WelcomeLoginForm';
 
 class CameraDashboardContainer extends Component {
   componentDidMount() {
@@ -19,10 +19,10 @@ class CameraDashboardContainer extends Component {
   }
 
   isLoggedIn = async () => {
-    const token = await AsyncStorage.getItem("token");
+    const token = await AsyncStorage.getItem('token');
     this.props.toggleLoggedIn(!!token);
     if (this.props.isLoggedIn) await this.props.fetchUser(token);
-    console.log("Toggling to false");
+    console.log('Toggling to false');
     this.props.setLoading(false);
   };
 
@@ -55,7 +55,7 @@ class CameraDashboardContainer extends Component {
 function mapStateToProps(state) {
   return {
     isLoading: state.ui.isLoading,
-    isLoggedIn: state.ui.isLoggedIn
+    isLoggedIn: state.ui.isLoggedIn,
   };
 }
 
@@ -67,7 +67,7 @@ function mapDispatchToProps(dispatch) {
     fetchUser: token => dispatch(fetchUser(token)),
     retakePicture: () => dispatch(pictureOnAnalyser(null)),
     resetFoods: () => dispatch(resetFoods()),
-    resetMeals: () => dispatch(resetMeals())
+    resetMeals: () => dispatch(resetMeals()),
   };
 }
 
@@ -80,6 +80,6 @@ export default connect(
     fetchUser,
     retakePicture: () => pictureOnAnalyser(null),
     resetFoods,
-    resetMeals
-  }
+    resetMeals,
+  },
 )(CameraDashboardContainer);

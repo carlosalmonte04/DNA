@@ -3,7 +3,7 @@
   react/no-unused-prop-types: 0
   react/no-typos: 0
 */
-import React from "react";
+import React from 'react';
 import {
   Text,
   View,
@@ -14,11 +14,11 @@ import {
   Image,
   StyleSheet,
   ScrollView,
-} from "react-native";
-import { truncate } from "lodash";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { setActiveMealId } from "@dnaActions";
+} from 'react-native';
+import { truncate } from 'lodash';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { setActiveMealId } from '@dnaActions';
 import {
   Colors,
   WIDTH,
@@ -27,11 +27,11 @@ import {
   Icons,
   IOSX,
   Styles,
-} from "@dnaAssets";
-import { defaultRefs } from "@dnaConfig";
-import { BoxShadow } from "react-native-shadow";
-import { DnaHText, DnaPText, ConceptBadge } from "@dnaCommon";
-import { ConceptsList } from "../Home";
+} from '@dnaAssets';
+import { defaultRefs } from 'config/env';
+import { BoxShadow } from 'react-native-shadow';
+import { DnaHText, DnaPText, ConceptBadge } from '@dnaCommon';
+import { ConceptsList } from '../Home';
 
 const _mapPropsToShawoOptions = ({
   width,
@@ -83,35 +83,35 @@ const ViewToUse = ({ expanded, children }) =>
 
 const localStyles = StyleSheet.create({
   heartIcon: {
-    position: "absolute",
+    position: 'absolute',
     right: IOSX ? 32 : 16,
     top: IOSX ? 32 : 16,
-    resizeMode: "contain",
+    resizeMode: 'contain',
     width: 25,
     height: 25,
   },
   mealInfoContainer: {
-    position: "absolute",
+    position: 'absolute',
     // paddingBottom: IOSX ? 64 : 32,
     bottom: 0,
     left: 0,
     right: 0,
-    height: "20%",
+    height: '20%',
     paddingHorizontal: 16,
     backgroundColor: Colors.white,
   },
   locationIcon: {
     width: 15,
     height: 15,
-    resizeMode: "contain",
+    resizeMode: 'contain',
   },
   locationContainer: {
-    flexDirection: "row",
-    alignItems: "flex-end",
+    flexDirection: 'row',
+    alignItems: 'flex-end',
   },
   conceptsPreviewContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
 });
 
@@ -135,10 +135,10 @@ class UnconnectedDnaShadowContainer extends React.PureComponent {
   };
 
   _animPictureToCenter = () => {
-    this.props.setActiveMealId("");
+    this.props.setActiveMealId('');
     createAnimation(this._animVal, 0, null, undefined, true, true).start(() => {
       this.setState({ expanded: false });
-      this.props.setActiveMealId("");
+      this.props.setActiveMealId('');
     });
   };
 
@@ -150,10 +150,10 @@ class UnconnectedDnaShadowContainer extends React.PureComponent {
 
       if (this.state.expanded) {
         this._animPictureToCenter();
-        toggleAnimStatus("atCenter");
+        toggleAnimStatus('atCenter');
       } else {
         this._animPictureToTop();
-        toggleAnimStatus("atTop");
+        toggleAnimStatus('atTop');
       }
     }
   };
@@ -261,25 +261,25 @@ class UnconnectedDnaShadowContainer extends React.PureComponent {
     const pictureHeight = this._animVal.interpolate({
       inputRange: [0, 1],
       outputRange: [HEIGHT * 0.5, HEIGHT * 0.7],
-      extrapolate: "clamp",
+      extrapolate: 'clamp',
     });
 
     const borderRadius = this._animVal.interpolate({
       inputRange: [0, 1],
       outputRange: [20, 0],
-      extrapolate: "clamp",
+      extrapolate: 'clamp',
     });
 
     const textHeight = this._animVal.interpolate({
       inputRange: [0, 1],
       outputRange: [0, textContentHeight],
-      extrapolate: "clamp",
+      extrapolate: 'clamp',
     });
 
     const textPadding = this._animVal.interpolate({
       inputRange: [0, 1],
       outputRange: [0, 16],
-      extrapolate: "clamp",
+      extrapolate: 'clamp',
     });
 
     console.log(`CAM - ACTIVE MEAL IDE!!!`, !!activeMealId);
@@ -296,8 +296,8 @@ class UnconnectedDnaShadowContainer extends React.PureComponent {
               flex: 1,
               transform: [{ scale }],
               width: WIDTH,
-              alignSelf: "center",
-              overflow: "visible",
+              alignSelf: 'center',
+              overflow: 'visible',
             }}
             contentContainerStyle={{
               shadowColor: Colors.black,
@@ -315,8 +315,8 @@ class UnconnectedDnaShadowContainer extends React.PureComponent {
             >
               <Animated.View
                 style={{
-                  width: "100%",
-                  overflow: "hidden",
+                  width: '100%',
+                  overflow: 'hidden',
                   borderRadius,
                   height: pictureHeight,
                 }}
@@ -338,7 +338,7 @@ class UnconnectedDnaShadowContainer extends React.PureComponent {
                 backgroundColor: Colors.white,
                 padding: textPadding,
                 height: textLayedOut ? textHeight : null,
-                overflow: "hidden",
+                overflow: 'hidden',
               }}
             >
               <View onLayout={this.onTextLayout}>
@@ -396,6 +396,7 @@ UnconnectedDnaShadowContainer.defaultProps = {
   toggleAnimStatus: defaultRefs.nullFunc,
 };
 
-export const DnaShadowContainer = connect(mapStateToProps, { setActiveMealId })(
-  UnconnectedDnaShadowContainer,
-);
+export const DnaShadowContainer = connect(
+  mapStateToProps,
+  { setActiveMealId },
+)(UnconnectedDnaShadowContainer);

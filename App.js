@@ -4,31 +4,26 @@
  * @flow
  */
 
-import React from "react";
+import React from 'react';
 import {
-  View,
   Linking,
   Platform,
   Keyboard,
-  NetInfo,
   NativeModules,
   StatusBarIOS,
-} from "react-native";
-import { connect } from "react-redux";
-import StatusBarAlert from "react-native-statusbar-alert";
-import { EnterLoginModal, FullScreenContainer } from "@dnaComponents";
-import { getCurrentRouteName } from "@dnaHelpers";
-import { setStatusBarHeight, setTopLevelNavigator } from "@dnaActions";
-import {
-  homeTabNames,
-  Constants,
-  DEV,
-  ALLOWED_DEEPLINKING_ROUTES,
-  IOS,
-} from "@dnaConfig";
-import { Colors, IOSX } from "@dnaAssets";
-import { ConnectedAppWithNavState } from "@dnaNavigation";
-import { Meal } from "@dnaModels";
+} from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
+import { connect } from 'react-redux';
+
+import { FullScreenContainer } from 'components/common';
+import { EnterLoginModal } from 'components/Authentication';
+
+import { Constants, DEV, ALLOWED_DEEPLINKING_ROUTES, IOS } from 'config/env';
+import { Meal } from 'models/meal';
+
+import { setStatusBarHeight, setTopLevelNavigator } from 'actions';
+import { ConnectedAppWithNavState } from 'navigation';
+
 const { StatusBarManager } = NativeModules;
 
 if (__DEV__) {
@@ -48,7 +43,7 @@ class App extends React.PureComponent {
     super(props);
     this.state = {
       isLoaded: false,
-      connectionType: IOS ? "wifi" : "wifi",
+      connectionType: IOS ? 'wifi' : 'wifi',
     };
 
     // this.checkForCodePushOTA();
@@ -76,7 +71,7 @@ class App extends React.PureComponent {
       this.handleRehydration(nextProps);
     }
 
-    if (appState !== "active" && nextAppState === "active") {
+    if (appState !== 'active' && nextAppState === 'active') {
       this.checkForCodePushOTA();
     }
   }
@@ -96,20 +91,20 @@ class App extends React.PureComponent {
     if (IOS) {
       StatusBarManager.getHeight(res => {
         if (res) {
-          console.log("***Status Bar - res", res);
+          console.log('***Status Bar - res', res);
           const { height: statusBarHeight } = res;
           this.props.setStatusBarHeight(statusBarHeight);
         }
       });
 
       this.iosStatusBarHeightListener = StatusBarIOS.addListener(
-        "statusBarFrameWillChange",
+        'statusBarFrameWillChange',
         res => {
           if (res) {
             const {
               frame: { height: statusBarHeight },
             } = res;
-            console.log("***Status Bar - res", res);
+            console.log('***Status Bar - res', res);
             this.props.setStatusBarHeight(statusBarHeight);
           }
         },
@@ -117,7 +112,7 @@ class App extends React.PureComponent {
     }
 
     // DEEPLINK
-    if (Platform.OS === "android") {
+    if (Platform.OS === 'android') {
       Linking.getInitialURL().then(this.handleOpenURL);
       const connectionInfo = await NetInfo.getConnectionInfo();
       const { type: connectionType } = connectionInfo;
@@ -125,15 +120,15 @@ class App extends React.PureComponent {
         connectionType,
       });
     } else {
-      Linking.addEventListener("url", this.handleOpenURL);
+      Linking.addEventListener('url', this.handleOpenURL);
     }
 
     // INTERNET CONNECTION
-    NetInfo.addEventListener("connectionChange", this.handleConnectionChange);
+    NetInfo.addEventListener('connectionChange', this.handleConnectionChange);
   };
 
   removeAllEventListeners = () => {
-    Linking.removeEventListener("url", this.handleOpenURL);
+    Linking.removeEventListener('url', this.handleOpenURL);
     this.iosStatusBarHeightListener.remove();
     Keyboard.dismiss();
   };
@@ -147,7 +142,7 @@ class App extends React.PureComponent {
           updateDialog: {
             mandatoryUpdateMessage:
               "There's an update available for Kickwheel!",
-            mandatoryContinueButtonLabel: "Download and Install",
+            mandatoryContinueButtonLabel: 'Download and Install',
           },
           // checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
           installMode: codePush.InstallMode.IMMEDIATE,
@@ -187,22 +182,22 @@ class App extends React.PureComponent {
         string:url (ANDROID)
     */
     const appUrl = IOS ? param.url : param;
-    const [, route] = appUrl.split("://"); // for e.g.; "utilitynyckickwheelapp://HelloWorld"
+    const [, route] = appUrl.split('://'); // for e.g.; "utilitynyckickwheelapp://HelloWorld"
     if (ALLOWED_DEEPLINKING_ROUTES[route]) {
       this.props.customNavigationAction(route);
     }
 
-    if (typeof route === "string" && route === "") {
+    if (typeof route === 'string' && route === '') {
       // this.props.customNavigationAction("EnterSignupPassword");
     }
   };
 
   resetConnectionChangeHandler = () => {
     NetInfo.removeEventListener(
-      "connectionChange",
+      'connectionChange',
       this.handleConnectionChange,
     );
-    NetInfo.addEventListener("connectionChange", this.handleConnectionChange);
+    NetInfo.addEventListener('connectionChange', this.handleConnectionChange);
   };
 
   handleResetConnChangeHandler = (prevConnectionType, connectionType) => {
@@ -239,7 +234,7 @@ class App extends React.PureComponent {
     const { connectionType } = this.state;
     const { user } = this.props;
 
-    console.log("**** FULL RENDER ****");
+    console.log('**** FULL RENDER ****');
 
     return (
       <FullScreenContainer>
@@ -257,6 +252,9 @@ const mapStateToProps = ({ user, nav }) => {
   };
 };
 
-export default connect(mapStateToProps, {
-  setStatusBarHeight,
-})(App);
+export default connect(
+  mapStateToProps,
+  {
+    setStatusBarHeight,
+  },
+)(App);

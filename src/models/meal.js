@@ -1,16 +1,16 @@
-import { setUserMeals } from "@dnaActions";
+import { setUserMeals } from '@dnaActions';
 import {
   createMealWithPicture,
   defaultAPIReqData,
   getAPIEndpoint,
-  getAllUserMeals
-} from "@dnaHelpers";
+  getAllUserMeals,
+} from '@dnaHelpers';
 
 export const DEFAULT_MEAL_ATTRIBUTES = {
-  _id: "",
-  name: "",
-  userId: "",
-  pictureUrl: "",
+  _id: '',
+  name: '',
+  userId: '',
+  pictureUrl: '',
   optionsData: {},
   concepts: [],
   conceptsData: {},
@@ -19,8 +19,8 @@ export const DEFAULT_MEAL_ATTRIBUTES = {
     calorie: 0,
     protein: 0,
     fat: 0,
-    carbohydrate: 0
-  }
+    carbohydrate: 0,
+  },
 };
 
 export const Meal = (() => {
@@ -38,19 +38,19 @@ export const Meal = (() => {
       allUserMeals = [];
     }
 
-    static connectDispatch({ dispatch }) {
+    static connectDispatch(dispatchFromStore) {
+      console.log('dispatch connecting', dispatchFromStore);
       if (!this.dispatch) {
-        this.dispatch = dispatch;
+        this.dispatch = dispatchFromStore;
       }
-      return next => action => next(action);
     }
 
     static get DEFAULT_MEAL_ATTRIBUTES() {
       return {
-        _id: "",
-        name: "",
-        userId: "",
-        pictureUrl: "",
+        _id: '',
+        name: '',
+        userId: '',
+        pictureUrl: '',
         concepts: [],
         conceptsData: {},
         optionsData: {},
@@ -59,8 +59,8 @@ export const Meal = (() => {
           calorie: 0,
           protein: 0,
           fat: 0,
-          carbohydrate: 0
-        }
+          carbohydrate: 0,
+        },
       };
     }
 
@@ -80,7 +80,7 @@ export const Meal = (() => {
       userMealsIds.forEach(mealId => {
         userMealsData[mealId] = new Meal(userMealsData[mealId]);
       });
-      console.log(`meals - saving meals`);
+      console.log(`meals - saving meals`, this.dispatch);
       return this.dispatch(setUserMeals({ userMealsIds, userMealsData }));
     };
 
@@ -89,7 +89,7 @@ export const Meal = (() => {
         try {
           const { meal: mealData, conceptsData } = await createMealWithPicture({
             picturePath,
-            token
+            token,
           });
 
           console.log(`Meal - what is mealData`, mealData, conceptsData);
@@ -98,7 +98,7 @@ export const Meal = (() => {
 
           return meal;
         } catch (err) {
-          console.log("*Meal concepts", err);
+          console.log('*Meal concepts', err);
           return new Meal(Meal.DEFAULT_MEAL_ATTRIBUTES);
         }
       }
@@ -109,7 +109,7 @@ export const Meal = (() => {
         calorie: 0,
         protein: 0,
         fat: 0,
-        carbohydrate: 0
+        carbohydrate: 0,
       };
       this.foods.forEach(food => {
         macros.calorie += food.macros.calorie.value * food.portionSize;
@@ -127,8 +127,8 @@ export const Meal = (() => {
       this.foods.forEach(food => {
         for (let key in food.micros) {
           if (micros[key]) {
-            micros[key]["value"] +=
-              food.micros[key]["value"] * food.portionSize;
+            micros[key]['value'] +=
+              food.micros[key]['value'] * food.portionSize;
           } else {
             micros[key] = Object.assign({}, food.micros[key]);
           }
@@ -152,7 +152,7 @@ export const Meal = (() => {
     getUSDAOptions = async token => {
       const optionsRes = await fetch(
         getAPIEndpoint(`/meals/${this._id}/conceptsOptions/`),
-        defaultAPIReqData({ token })
+        defaultAPIReqData({ token }),
       );
 
       const { conceptsWithOptions, optionsData } = await optionsRes.json();
@@ -181,8 +181,8 @@ export const Meal = (() => {
         const { ndbno } = selectedOption;
         const analysisRes = await fetch(
           getAPIEndpoint(
-            `/meals/${this._id}/concepts/${conceptId}/options/${ndbno}/analysis`
-          )
+            `/meals/${this._id}/concepts/${conceptId}/options/${ndbno}/analysis`,
+          ),
         );
         const { analysis } = await analysisRes.json();
 

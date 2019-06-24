@@ -1,33 +1,32 @@
-/* eslint
-
-  react/display-name: 0
-  
-*/
-
-import React from "react";
-import { Image, View } from "react-native";
-import { createBottomTabNavigator } from "react-navigation";
-import { connect } from "react-redux";
-import { reduxifiedAppNavigator } from "@dnaStore";
-import { CameraScreen, ProfileScreen } from "@dnaComponents";
-import { DEV } from "@dnaConfig";
-import { Colors, IOS, Icons, DEFAULT_TABBAR_HEIGHT } from "@dnaAssets";
+import React from 'react';
+import { Image, View } from 'react-native';
 import {
   reduxifyNavigator,
-  createReactNavigationReduxMiddleware
-} from "react-navigation-redux-helpers";
+  createReactNavigationReduxMiddleware,
+} from 'react-navigation-redux-helpers';
+import { createBottomTabNavigator } from 'react-navigation';
+import { connect } from 'react-redux';
+import { reduxifiedAppNavigator } from 'redux/store';
 
-const FIRST_SCREEN = DEV ? "CameraScreen" : "CameraScreen";
+import routes from 'routes/routes';
+import Home from 'routes/Home';
+import Profile from 'routes/Profile';
+
+import { DEV } from 'config/env';
+
+import { Colors, IOS, Icons, DEFAULT_TABBAR_HEIGHT } from 'assets';
+
+const FIRST_SCREEN = DEV ? routes.Home : routes.Home;
 
 const NAV_ICONS = {
-  CameraScreen: {
+  [routes.Home]: {
     active: Icons.greenCamera,
-    inactive: Icons.grayCamera
+    inactive: Icons.grayCamera,
   },
-  ProfileScreen: {
+  [routes.Profile]: {
     active: Icons.greenProfile,
-    inactive: Icons.grayProfile
-  }
+    inactive: Icons.grayProfile,
+  },
 };
 
 const TabBarIcon = ({ screen, state }) => {
@@ -38,7 +37,7 @@ const TabBarIcon = ({ screen, state }) => {
         style={{
           height: 23,
           width: 23,
-          alignSelf: "center"
+          alignSelf: 'center',
         }}
         resizeMode="cover"
       />
@@ -54,10 +53,10 @@ const createTabConfig = initialRouteName => {
       activeTintColor: Colors.green,
       showLabel: false,
       style: {
-        height: DEFAULT_TABBAR_HEIGHT
-      }
+        height: DEFAULT_TABBAR_HEIGHT,
+      },
     },
-    initialRouteName
+    initialRouteName,
   };
 
   if (IOS) {
@@ -66,65 +65,44 @@ const createTabConfig = initialRouteName => {
       navigationOptions: {
         headerLeft: null,
         swipeEnabled: false,
-        gesturesEnabled: false
-      }
+        gesturesEnabled: false,
+      },
     };
   }
 
   return {
     ...commonConfig,
-    tabBarPosition: "bottom",
+    tabBarPosition: 'bottom',
     // enimationEnabled: false,
-    backBehavior: "none",
+    backBehavior: 'none',
     swipeEnabled: false,
     navigationOptions: {
       headerLeft: null,
-      gesturesEnabled: false
-    }
+      gesturesEnabled: false,
+    },
   };
 };
 
 const tabScreens = {
-  CameraScreen: {
-    screen: CameraScreen,
+  [routes.Home]: {
+    screen: Home,
     navigationOptions: {
       tabBarIcon: ({ focused }) => (
-        <TabBarIcon
-          state={focused ? "active" : "inactive"}
-          screen="CameraScreen"
-        />
-      )
-    }
+        <TabBarIcon state={focused ? 'active' : 'inactive'} screen="Home" />
+      ),
+    },
   },
-  ProfileScreen: {
-    screen: ProfileScreen,
+  [routes.Profile]: {
+    screen: Profile,
     navigationOptions: {
       tabBarIcon: ({ focused }) => (
-        <TabBarIcon
-          state={focused ? "active" : "inactive"}
-          screen="ProfileScreen"
-        />
-      )
-    }
-  }
+        <TabBarIcon state={focused ? 'active' : 'inactive'} screen="Profile" />
+      ),
+    },
+  },
 };
 
 export const HomeNavigator = createBottomTabNavigator(
   tabScreens,
-  createTabConfig(FIRST_SCREEN)
+  createTabConfig(FIRST_SCREEN),
 );
-
-const mapStateToProps = ({ nav }) => ({
-  state: nav
-});
-
-// export const homeNavMiddleware = createReactNavigationReduxMiddleware(
-//   "root",
-//   state => state.nav
-// );
-
-// const UnconnectedHomeWithNavState = reduxifyNavigator(HomeNavigator, "root");
-
-// export const ConnectedHomeWithNavState = connect(mapStateToProps)(
-//   UnconnectedHomeWithNavState
-// );

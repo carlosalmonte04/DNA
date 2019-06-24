@@ -15,12 +15,7 @@
       "jsx": true
     }
   },
-  "plugins": [
-    "react-native",
-    "flowtype",
-    "jsx-a11y",
-    "import"
-  ],
+  "plugins": ["react-native", "flowtype", "jsx-a11y", "import"],
   "env": {
     "es6": true,
     "jest": true
@@ -30,9 +25,13 @@
     "func-names": [2, "never"],
     "global-require": 0,
     "func-style": [2, "expression", { "allowArrowFunctions": true }],
-    "import/order": [2,
+    "import/order": [
+      2,
       {
-        "groups": [["builtin", "external"], ["sibling", "parent", "internal", "index"]],
+        "groups": [
+          ["builtin", "external"],
+          ["sibling", "parent", "internal", "index"]
+        ],
         "newlines-between": "always-and-inside-groups"
       }
     ],
@@ -42,17 +41,12 @@
     "jsx-a11y/anchor-is-valid": [1, { "aspects": ["invalidHref"] }],
     "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
     "react/prefer-stateless-function": [0, { "ignorePureComponents": true }],
-    "react/prop-types" : 0,
+    "react/prop-types": 0,
     "react/no-unused-prop-types": 0,
     "react/sort-comp": [
       2,
       {
-        "order": [
-          "static-methods",
-          "lifecycle",
-          "everything-else",
-          "render"
-        ]
+        "order": ["static-methods", "lifecycle", "everything-else", "render"]
       }
     ],
 
@@ -60,12 +54,17 @@
     "flowtype/delimiter-dangle": [2, "always-multiline"],
     "flowtype/require-return-type": 2,
     "flowtype/require-parameter-type": 2,
-    "flowtype/require-valid-file-annotation": [2, "always", {
-       "annotationStyle": "none"
-    }],
+    "flowtype/require-valid-file-annotation": [
+      2,
+      "always",
+      {
+        "annotationStyle": "none"
+      }
+    ],
     "flowtype/sort-keys": [
       2,
-      "asc", {
+      "asc",
+      {
         "caseSensitive": true,
         "natural": false
       }
@@ -78,11 +77,7 @@
     "import/resolver": {
       "babel-module": {},
       "node": {
-        "extensions": [
-          ".js",
-          ".android.js",
-          ".ios.js"
-        ]
+        "extensions": [".js", ".android.js", ".ios.js"]
       }
     }
   },

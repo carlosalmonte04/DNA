@@ -1,68 +1,169 @@
 PODS:
+  - boost-for-react-native (1.63.0)
+  - BVLinearGradient (2.3.0):
+    - React
+  - DoubleConversion (1.1.5)
+  - FLAnimatedImage (1.0.12)
+  - Folly (2018.10.22.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - glog
+  - glog (0.3.4)
   - QBImagePickerController (3.4.0)
-  - React (0.56.0):
-    - React/Core (= 0.56.0)
-  - React/Core (0.56.0):
-    - yoga (= 0.56.0.React)
-  - React/fishhook (0.56.0)
-  - React/RCTActionSheet (0.56.0):
+  - React (0.59.9):
+    - React/Core (= 0.59.9)
+  - react-native-camera (0.10.0):
+    - React
+  - react-native-config (0.11.7):
+    - React
+  - react-native-fast-image (4.0.14):
+    - FLAnimatedImage
+    - React
+    - SDWebImage/Core
+    - SDWebImage/GIF
+  - react-native-fetch-blob (0.10.6):
     - React/Core
-  - React/RCTAnimation (0.56.0):
+  - react-native-netinfo (3.2.1):
+    - React
+  - React/ART (0.59.9):
     - React/Core
-  - React/RCTBlob (0.56.0):
+  - React/Core (0.59.9):
+    - yoga (= 0.59.9.React)
+  - React/CxxBridge (0.59.9):
+    - Folly (= 2018.10.22.00)
     - React/Core
-  - React/RCTGeolocation (0.56.0):
+    - React/cxxreact
+    - React/jsiexecutor
+  - React/cxxreact (0.59.9):
+    - boost-for-react-native (= 1.63.0)
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React/jsinspector
+  - React/DevSupport (0.59.9):
     - React/Core
-  - React/RCTImage (0.56.0):
+    - React/RCTWebSocket
+  - React/fishhook (0.59.9)
+  - React/jsi (0.59.9):
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+  - React/jsiexecutor (0.59.9):
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React/cxxreact
+    - React/jsi
+  - React/jsinspector (0.59.9)
+  - React/RCTActionSheet (0.59.9):
+    - React/Core
+  - React/RCTAnimation (0.59.9):
+    - React/Core
+  - React/RCTBlob (0.59.9):
+    - React/Core
+  - React/RCTCameraRoll (0.59.9):
+    - React/Core
+    - React/RCTImage
+  - React/RCTGeolocation (0.59.9):
+    - React/Core
+  - React/RCTImage (0.59.9):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.56.0):
+  - React/RCTLinkingIOS (0.59.9):
     - React/Core
-  - React/RCTNetwork (0.56.0):
+  - React/RCTNetwork (0.59.9):
     - React/Core
-  - React/RCTSettings (0.56.0):
+  - React/RCTPushNotification (0.59.9):
     - React/Core
-  - React/RCTText (0.56.0):
+  - React/RCTSettings (0.59.9):
     - React/Core
-  - React/RCTVibration (0.56.0):
+  - React/RCTText (0.59.9):
     - React/Core
-  - React/RCTWebSocket (0.56.0):
+  - React/RCTVibration (0.59.9):
+    - React/Core
+  - React/RCTWebSocket (0.59.9):
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - RNCAsyncStorage (1.5.0):
+    - React
+  - RNDeviceInfo (0.21.5):
+    - React
   - RNImageCropPicker (0.20.3):
     - QBImagePickerController
     - React/Core
     - RSKImageCropper
-  - RNSVG (6.4.1):
+  - RNSVG (6.5.3):
     - React
-  - RSKImageCropper (2.2.1)
-  - yoga (0.56.0.React)
+  - RSKImageCropper (2.2.2)
+  - SDWebImage/Core (4.4.7)
+  - SDWebImage/GIF (4.4.7):
+    - FLAnimatedImage (~> 1.0)
+    - SDWebImage/Core
+  - yoga (0.59.9.React)
 
 DEPENDENCIES:
+  - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
+  - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
+  - react-native-camera (from `../node_modules/react-native-camera`)
+  - react-native-config (from `../node_modules/react-native-config`)
+  - react-native-fast-image (from `../node_modules/react-native-fast-image`)
+  - react-native-fetch-blob (from `../node_modules/react-native-fetch-blob`)
+  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - React/ART (from `../node_modules/react-native`)
   - React/Core (from `../node_modules/react-native`)
+  - React/CxxBridge (from `../node_modules/react-native`)
+  - React/DevSupport (from `../node_modules/react-native`)
   - React/RCTActionSheet (from `../node_modules/react-native`)
   - React/RCTAnimation (from `../node_modules/react-native`)
+  - React/RCTBlob (from `../node_modules/react-native`)
+  - React/RCTCameraRoll (from `../node_modules/react-native`)
   - React/RCTGeolocation (from `../node_modules/react-native`)
   - React/RCTImage (from `../node_modules/react-native`)
   - React/RCTLinkingIOS (from `../node_modules/react-native`)
   - React/RCTNetwork (from `../node_modules/react-native`)
+  - React/RCTPushNotification (from `../node_modules/react-native`)
   - React/RCTSettings (from `../node_modules/react-native`)
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info/RNDeviceInfo.podspec`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - boost-for-react-native
+    - DoubleConversion
+    - FLAnimatedImage
+    - glog
     - QBImagePickerController
     - RSKImageCropper
+    - SDWebImage
 
 EXTERNAL SOURCES:
+  BVLinearGradient:
+    :path: "../node_modules/react-native-linear-gradient"
+  Folly:
+    :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   React:
     :path: "../node_modules/react-native"
+  react-native-camera:
+    :path: "../node_modules/react-native-camera"
+  react-native-config:
+    :path: "../node_modules/react-native-config"
+  react-native-fast-image:
+    :path: "../node_modules/react-native-fast-image"
+  react-native-fetch-blob:
+    :path: "../node_modules/react-native-fetch-blob"
+  react-native-netinfo:
+    :path: "../node_modules/@react-native-community/netinfo"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-community/async-storage"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info/RNDeviceInfo.podspec"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
   RNSVG:
@@ -71,13 +172,27 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
 
 SPEC CHECKSUMS:
+  boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  BVLinearGradient: 4b3f3bdf1ac1a52a5ef5e65c9585d793a7c3f825
+  DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
+  Folly: de497beb10f102453a1afa9edbf8cf8a251890de
+  glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
-  React: bdb39c05e2eed10a43056cff89a68bc9ebe7f232
-  RNImageCropPicker: 043273b7368fdfb61cc458f359242f0fb75139be
-  RNSVG: cfc21c5d37622f0861d65ce33b439930b7035af4
-  RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
-  yoga: 2418c171de153cbe3c94dc28c3bf691b1695ae17
+  React: 1d605e098d69bdf08960787f3446f0a9dc2e2ccf
+  react-native-camera: 46c2596d7b5f0d46eaf8022eeee4b7689f826a67
+  react-native-config: 8c2a92aa66a6cec1a23d9eda7ba6fcf31a63ace5
+  react-native-fast-image: cba3d9bf9c2cf8ddb643d887a686c53a5dd90a2c
+  react-native-fetch-blob: 63394b1d7b0781547b3e4463b3195790177b1222
+  react-native-netinfo: f4039dc64d3a55da59d6d03d4bd667d0a9f5450e
+  RNCAsyncStorage: 6ae5aba8a41bfe0a9f21885ec91faf23ca3fe7ee
+  RNDeviceInfo: 568c5641057313b4912d08a7742ff0b2f753ed5c
+  RNImageCropPicker: 32ca4b9fef4e1b7b85ba69494242122948117e06
+  RNSVG: 6252323c0312735f0af5f58b5adf2965b6a9ffbf
+  RSKImageCropper: 05e3b82a18da83ea3c2b7bffa7f2199a621d6802
+  SDWebImage: c10d14a8883ebd89664f02a422006f66a85c0c5d
+  yoga: 128daf064cacaede0c3bb27424b6b4c71052e6cd
 
-PODFILE CHECKSUM: cd3ea3d471454fa95ff538c72ddec7b79a9b53ec
+PODFILE CHECKSUM: f192dad92a52516398254a1dbc46f3b793e21b08
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.5.3
