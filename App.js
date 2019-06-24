@@ -1,7 +1,6 @@
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
- * @flow
  */
 
 import React from 'react';
@@ -21,7 +20,7 @@ import { EnterLoginModal } from 'components/Authentication';
 import { Constants, DEV, ALLOWED_DEEPLINKING_ROUTES, IOS } from 'config/env';
 import { Meal } from 'models/meal';
 
-import { setStatusBarHeight, setTopLevelNavigator } from 'actions';
+import { setStatusBarHeight } from 'actions';
 import { ConnectedAppWithNavState } from 'navigation';
 
 const { StatusBarManager } = NativeModules;
@@ -33,8 +32,6 @@ if (__DEV__) {
     to allow for frequent refreshes of the cache.
   */
 }
-
-console.disableYellowBox = true;
 
 const { SPLASH_TIME } = Constants;
 

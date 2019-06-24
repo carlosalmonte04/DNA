@@ -1,37 +1,160 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
+
+defaults: &defaults
+  working_directory: ~/project
+  docker:
+    - image: circleci/node:latest
+
+android_defaults: &android_defaults
+  working_directory: ~/project/android
+  docker:
+    - image: farwayer/react-native
+  environment:
+    - LANG: 'en_US.UTF-8'
+    - _JAVA_OPTIONS: '-Xms518m -Xmx2048m'
+    - GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+    - BUILD_THREADS: 2
+
+ios_defaults: &ios_defaults
+  working_directory: ~/project/ios
+  macos:
+    xcode: '10.1'
+  environment:
+    - LANG: 'en_US.UTF-8'
+    - MATCH_KEYCHAIN_NAME: 'circle'
+    - MATCH_KEYCHAIN_PASSWORD: 'circle'
+
 jobs:
-  build:
-    docker:
-      # specify the version you desire here
-      - image: circleci/node:10.14.2
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
-
+  install-dependencies:
+    <<: *defaults
     steps:
       - checkout
-
-      # Download and cache dependencies
+      - attach_workspace:
+          at: ~/project
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-0-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - run: yarn install
-
+            - v1-0-dependencies-
+      - run:
+          name: Remove Dependencies
+          command: rm -rf ./node_modules
+      - run:
+          name: Install Dependencies
+          command: yarn
       - save_cache:
+          key: v1-0-dependencies-{{ checksum "package.json" }}
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      # run tests!
+            - yarn.lock
+      - persist_to_workspace:
+          root: .
+          paths: .
+  flow:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: yarn flow
+  lint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: yarn lint
+  unit-tests:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - v1-0-jest-cache-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-0-jest-cache-
       - run: yarn test
+      - save_cache:
+          key: v1-0-jest-cache-{{ checksum "package.json" }}
+          paths:
+            - .jestCache
+      - persist_to_workspace:
+          root: .
+          paths: .
+  ios-beta:
+    <<: *ios_defaults
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Install CocoaPod Spec
+          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+      - run:
+          name: Install Ruby and Fastlane
+          command: |
+            brew install ruby
+            gem install fastlane
+      - run:
+          name: Update CocaPods dependencies
+          command: pod install --verbose
+          timeout: 1200
+      - run:
+          name: Bundle update
+          command: bundle update
+      - run:
+          name: Fastlane
+          command: bundle exec fastlane beta
+  android-beta:
+    <<: *android_defaults
+    steps:
+      - attach_workspace:
+          at: ~/darwin
+      - run:
+          name: 'Optimize build.gradle for CI'
+          command: sed -i 's/2g/1g/' app/build.gradle
+      - run:
+          name: Install Fastlane
+          command: |
+            gem install fastlane -NV
+      - run:
+          name: Bundle update
+          command: bundle update
+      - run:
+          name: Fastlane
+          command: bundle exec fastlane beta
+workflows:
+  version: 2
+  test:
+    jobs:
+      - install-dependencies
+      # - lint:
+      #     requires:
+      #       - install-dependencies
+      - flow:
+          requires:
+            - install-dependencies
+      - unit-tests:
+          requires:
+            - install-dependencies
+      - ios-beta:
+          requires:
+            - install-dependencies
+            - unit-tests
+            # - run-ios
+          filters:
+            branches:
+              only: staging
+      - ios-prod:
+          requires:
+            - install-dependencies
+            - unit-tests
+            # - run-ios
+          filters:
+            branches:
+              only: master
+      - android-beta:
+          requires:
+            - install-dependencies
+            - unit-tests
+          filters:
+            branches:
+              only: master

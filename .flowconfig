@@ -8,60 +8,83 @@
 ; Ignore unexpected extra "@providesModule"
 .*/node_modules/.*/node_modules/fbjs/.*
 
-; Ignore duplicate module providers
-; For RN Apps installed via npm, "Libraries" folder is inside
-; "node_modules/react-native" but in the source repo it is in the root
-.*/Libraries/react-native/React.js
+; Ignore templates for 'react-native init'
+<PROJECT_ROOT>/node_modules/react-native/local-cli/.*
 
 ; Ignore polyfills
-.*/Libraries/polyfills/.*
+<PROJECT_ROOT>/node_modules/react-native/Libraries/polyfills/.*
 
-; Ignore metro
-.*/node_modules/metro/.*
+; Ignore various node_modules
+<PROJECT_ROOT>/node_modules/findup/.*
+<PROJECT_ROOT>/node_modules/react-navigation/.*
+<PROJECT_ROOT>/node_modules/metro/.*
+<PROJECT_ROOT>/node_modules/react-native-tab-view/.*
+<PROJECT_ROOT>/node_modules/react-native-permissions/.*
+<PROJECT_ROOT>/node_modules/react-native-payments/lib/js/NativePayments.js
+<PROJECT_ROOT>/node_modules/react-native-fs/FS.common.js
+<PROJECT_ROOT>/node_modules/react-native-passkit-wallet/.*
+<PROJECT_ROOT>/node_modules/react-native-view-shot/.*
+<PROJECT_ROOT>/node_modules/react-native-linear-gradient/.*
+<PROJECT_ROOT>/node_modules/react-native-fast-image/.*
+
+; FIXME: The latest version of react-native-inappbrowser-reborn has flow errors
+; (https://github.com/proyecto26/react-native-inappbrowser/issues/62). Until
+; those get fixed upstream, we're ignoring it on .flowconfig, requiring it to
+; be declared as a custom flow-typed package.
+<PROJECT_ROOT>/node_modules/react-native-inappbrowser-reborn/.*
+
+; Ignore react-native-health-kit
+<PROJECT_ROOT>/ios/react-native-health-kit/*
+
+; Ignore RN jest
+<PROJECT_ROOT>/node_modules/react-native/.*
 
 [include]
+<PROJECT_ROOT>/node_modules/react-native/Libraries/StyleSheet/StyleSheetTypes
 
 [libs]
 node_modules/react-native/Libraries/react-native/react-native-interface.js
-node_modules/react-native/flow/
+node_modules/react-native/flow
 node_modules/react-native/flow-github/
+src/definitions/
 
 [options]
-emoji=true
-
 module.system=haste
-module.system.haste.use_name_reducers=true
-# get basename
-module.system.haste.name_reducers='^.*/\([a-zA-Z0-9$_.-]+\.js\(\.flow\)?\)$' -> '\1'
-# strip .js or .js.flow suffix
-module.system.haste.name_reducers='^\(.*\)\.js\(\.flow\)?$' -> '\1'
-# strip .ios suffix
-module.system.haste.name_reducers='^\(.*\)\.ios$' -> '\1'
-module.system.haste.name_reducers='^\(.*\)\.android$' -> '\1'
-module.system.haste.name_reducers='^\(.*\)\.native$' -> '\1'
-module.system.haste.paths.blacklist=.*/__tests__/.*
-module.system.haste.paths.blacklist=.*/__mocks__/.*
-module.system.haste.paths.blacklist=<PROJECT_ROOT>/node_modules/react-native/Libraries/Animated/src/polyfills/.*
-module.system.haste.paths.whitelist=<PROJECT_ROOT>/node_modules/react-native/Libraries/.*
+
+emoji=true
 
 munge_underscores=true
 
 module.name_mapper='^[./a-zA-Z0-9$_-]+\.\(bmp\|gif\|jpg\|jpeg\|png\|psd\|svg\|webp\|m4v\|mov\|mp4\|mpeg\|mpg\|webm\|aac\|aiff\|caf\|m4a\|mp3\|wav\|html\|pdf\)$' -> 'RelativeImageStub'
 
+module.system.node.resolve_dirname=node_modules
+module.system.node.resolve_dirname=./src/
+
 module.file_ext=.js
 module.file_ext=.jsx
 module.file_ext=.json
 module.file_ext=.native.js
+module.file_ext=.ios.js
+module.file_ext=.android.js
 
 suppress_type=$FlowIssue
 suppress_type=$FlowFixMe
-suppress_type=$FlowFixMeProps
-suppress_type=$FlowFixMeState
+suppress_type=$FixMe
 
-suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe\\($\\|[^(]\\|(\\(<VERSION>\\)? *\\(site=[a-z,_]*react_native[a-z,_]*\\)?)\\)
-suppress_comment=\\(.\\|\n\\)*\\$FlowIssue\\((\\(<VERSION>\\)? *\\(site=[a-z,_]*react_native[a-z,_]*\\)?)\\)?:? #[0-9]+
+suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe\\($\\|[^(]\\|(\\(>=0\\.\\(4[0-9]\\|[1-3][0-9]\\|[0-9]\\).[0-9]\\)? *\\(site=[a-z,_]*react_native[a-z,_]*\\)?)\\)
+suppress_comment=\\(.\\|\n\\)*\\$FlowIssue\\((\\(>=0\\.\\(4[0-9]\\|[1-3][0-9]\\|[0-9]\\).[0-9]\\)? *\\(site=[a-z,_]*react_native[a-z,_]*\\)?)\\)?:? #[0-9]+
 suppress_comment=\\(.\\|\n\\)*\\$FlowFixedInNextDeploy
 suppress_comment=\\(.\\|\n\\)*\\$FlowExpectedError
 
+esproposal.decorators=ignore
+
+module.name_mapper.extension='png' -> 'emptyObject'
+module.name_mapper.extension='jpg' -> 'emptyObject'
+module.name_mapper.extension='svg' -> 'emptyObject'
+module.name_mapper='^react-navigation$' -> 'emptyObject'
+
+; https://github.com/facebook/react-native/issues/14927
+module.name_mapper='^./link/link$' -> 'emptyObject'
+
 [version]
-^0.75.0
+^0.84.0
