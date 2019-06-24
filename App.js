@@ -30,7 +30,7 @@ if (__DEV__) {
   console.log(`****** DEV * MODE ******`);
   /*
     Enable Remote Config developer mode 
-    to allow for frequent refreshes of the cache
+    to allow for frequent refreshes of the cache.
   */
 }
 
